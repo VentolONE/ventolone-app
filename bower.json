@@ -1,0 +1,20 @@
+{
+  "name": "Ventolone",
+  "version": "0.0.0",
+  "authors": [
+    "Carlo Colombo <carlo.colombo@gmx.com>"
+  ],
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular": "~1.2.7",
+    "angular-route": "~1.2.7"
+  }
+}
