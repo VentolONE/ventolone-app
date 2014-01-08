@@ -43,7 +43,7 @@ angular.module('Ventolone', [
   'Ventolone.resources',
   'ngGoogleCharts'
 ])
-  .controller('Main', function($scope, chartReady, ventolone, $q) {
+  .controller('MainCtrl', function($scope, chartReady, ventolone, $q) {
 
     $scope.options = {
       month: 2,

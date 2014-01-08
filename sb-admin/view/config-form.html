@@ -1,0 +1,110 @@
+     <div class="row">
+          <form role="form" name='addTurbineForm' ng-controller="AddTurbineController">
+
+            <div class="alert alert-dismissable alert-success"  ng-show='message'>
+              <button type="button" class="close" data-dismiss="alert">×</button>
+              <strong>Well done!</strong> {{message}}
+            </div>
+
+
+            <div class="col-lg-6">
+                <legend>Dati posto</legend>
+                <div class="form-group">
+                  <label>Localit&agrave; turbina</label>
+                  <input class="form-control" placeholder="Enter text" name='turbineLocale' ng-model='turbine.locale' required>
+                  <p class="help-block">Example block-level help text here.</p>
+                </div>
+
+                <div class="form-group">
+                  <label>Latitudine</label>
+                  <input class="form-control" placeholder="Enter text" name='turbineLat' ng-model='turbine.lat' required>
+                </div>
+
+                <div class="form-group">
+                  <label>Longitudine</label>
+                  <input class="form-control" placeholder="Enter text" name='turbineLong' ng-model='turbine.long' required>
+                </div>
+
+                 <div class="form-group">
+                  <label>Altitudine</label>
+                  <input class="form-control" placeholder="Enter text" name='turbineAltitudine' ng-model='turbine.altitudine' required>
+                </div>
+                <div class="form-group">
+                  <label>Note</label>
+                  <textarea class="form-control" rows="3" name='turbineNote1' ng-model='turbine.note1'></textarea>
+                </div>
+            </div>
+            <div class="col-lg-6">
+              <legend>Dati turbina</legend>
+              <div class="form-group">
+                <label>Nome turbina</label>
+                <input class="form-control" placeholder="Enter text" name='turbineName' ng-model='turbine.nome' required>
+                <p class="help-block">Example block-level help text here.</p>
+              </div>
+
+              <div class="form-group">
+                <label>Numero pale</label>
+                <input class="form-control" placeholder="Enter text" name='turbinePale' ng-model='turbine.pale' required>
+              </div>
+
+              <div class="form-group">
+                <label>Aria frontale</label>
+                <input class="form-control" placeholder="Enter text" name='turbineAir' ng-model='turbine.air' required>
+              </div>
+
+              <div class="form-group">
+                <label>Tipo turbina</label>
+                <select class="form-control" name='turbineType' ng-model='turbine.type' required>
+                  <option>asse verticale</option>
+                  <option>asse orizzontale</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label>Diametro turbina</label>
+                <input class="form-control" placeholder="Enter text" name='turbineDiametro' ng-model='turbine.diametro' required>
+              </div>
+
+              <div class="form-group">
+                <label>Tip speed Ratio (lambda)</label>
+                <input class="form-control" placeholder="Enter text" name='turbineLambda' ng-model='turbine.lambda' required>
+              </div>
+
+              <div class="form-group">
+                <label>Coefficiente di potenza</label>
+                <input class="form-control" placeholder="Enter text" name='turbinePower' ng-model='turbine.power' required>
+              </div>
+
+              <div class="form-group">
+                <label>Velocità cut IN</label>
+                <input class="form-control" placeholder="Enter text" name='turbineCutIn' ng-model='turbine.cutIn' required >
+              </div>
+
+              <div class="form-group">
+                <label>Velocità cut OFF</label>
+                <input class="form-control" placeholder="Enter text" name='turbineCutOff' ng-model='turbine.cutOff' required>
+              </div>
+
+              <div class="form-group">
+                <label>Note</label>
+                <textarea class="form-control" rows="3" name='turbineNote2' ng-model='turbine.note2'></textarea>
+              </div>
+
+            </div>
+
+            <button type="submit" class="btn btn-default" ng-click='addTurbine()' ng-disabled='!addTurbineForm.$valid'>Submit Button</button>
+            <button type="reset" class="btn btn-default">Reset Button</button>
+          </form>
+        </div><!-- /.row -->
+
+        <script type="text/javascript">
+          function AddTurbineController($scope) {
+              $scope.message = '';
+              $scope.addTurbine = function () {
+              // TODO for the reader: actually save user to database...
+              $scope.message = $scope.turbine.nome + ', we added you!';
+
+
+            };
+          }
+        </script>
