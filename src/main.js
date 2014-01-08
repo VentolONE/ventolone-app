@@ -10,7 +10,7 @@ angular.module('Ventolone', ['ngRoute'])
         controller: 'DashboardController'
       })
       .when('/upload',{
-        templateUrl: 'views/upload.html',
+        templateUrl: 'views/form-upload.html',
         controller: 'UploadController'
       })
   })
