@@ -14,6 +14,31 @@ angular.module('Ventolone', ['ngRoute'])
         controller: 'UploadController'
       })
   })
-.controller('ConfigController',angular.noop)
+.controller('ConfigController',function ($scope) {
+  $scope.submit = function  () {
+    console.log($scope.turbine)
+  }
+})
 .controller('DashboardController',angular.noop)
 .controller('UploadController',angular.noop)
+
+.directive('formGroup',function () {
+  return {
+    restrict: 'E',
+    transclude: true,
+    templateUrl: 'partials/form-group.html',
+    replace:true,
+    scope: {
+      help: '@',
+      label: '@',
+      required: '=',
+      placeholder:'@'
+    },
+    link: function (scope, element, attrs1) {
+      element.find('input')
+        .addClass('form-control')
+        .attr('placeholder', scope.placeholder || 'Enter text')
+        .attr('ng-required', scope.required)
+    }
+  }
+})
