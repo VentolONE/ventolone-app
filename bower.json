@@ -14,7 +14,8 @@
     "tests"
   ],
   "dependencies": {
-    "angular": "~1.2.7",
-    "angular-route": "~1.2.7"
+    "angular": "~1.2.9",
+    "angular-route": "~1.2.9",
+    "angular-resource": "~1.2.9"
   }
 }
