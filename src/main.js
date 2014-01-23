@@ -13,7 +13,15 @@ angular.module('Ventolone', ['ngRoute','ngGoogleCharts','Ventolone.resources'])
         templateUrl: 'views/form-upload.html',
         controller: 'UploadController'
       })
+      .when('/dashboard', {
+        redirectTo:'/config'
+      })
   })
+.controller('AppController', function($routeParams, $location){
+  if(! $routeParams.id ) {
+    $location.path('/config');
+  }
+})
 .controller('ConfigController',function ($scope, turbine, $routeParams, $rootScope) {
   $scope.submit = function  () {
     turbine.save($scope.turbine)
