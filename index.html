@@ -26,6 +26,12 @@
 
   <script src="src/chart.js"></script>
   <script src="src/main.js"></script>
+
+<style type="text/css">
+
+  input.ng-invalid {border:1px solid red;}
+</style>
+
 </head>
 
 <body>
@@ -48,14 +54,14 @@
       <!-- Collect the nav links, forms, and other content for toggling -->
       <div class="collapse navbar-collapse navbar-ex1-collapse">
         <ul class="nav navbar-nav side-nav">
-          <li>
-            <a href="#/dashboard"><i class="fa fa-dashboard">Dashboard</i></a>
+          <li ng-show="turbine">
+            <a href="#/dashboard/{{turbine._id}}"><i class="fa fa-dashboard">Dashboard</i></a>
           </li>
           <li>
             <a href="#/config"><i class="fa fa-wrench">Config Form</i></a>
           </li>
-          <li>
-            <a href="#/upload"><i class="fa fa-edit">Upload</i></a>
+          <li ng-show="turbine">
+            <a href="#/upload/{{turbine._id}}"><i class="fa fa-edit">Upload</i></a>
           </li>
         </ul>
 

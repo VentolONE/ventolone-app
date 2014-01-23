@@ -1,27 +1,35 @@
 angular.module('Ventolone', ['ngRoute','ngGoogleCharts','Ventolone.resources'])
   .config(function($routeProvider) {
     $routeProvider
-      .when('/config',{
+      .when('/config/:id?',{
         templateUrl: 'views/config-form.html',
         controller: 'ConfigController'
       })
-      .when('/dashboard',{
+      .when('/dashboard/:id',{
         templateUrl: 'views/dashboard.html',
-        controller: 'DashboardController'
+        controller: 'DashboardController',
       })
-      .when('/upload',{
+      .when('/upload/:id',{
         templateUrl: 'views/form-upload.html',
         controller: 'UploadController'
       })
   })
-.controller('ConfigController',function ($scope) {
+.controller('ConfigController',function ($scope, turbine, $routeParams, $rootScope) {
   $scope.submit = function  () {
-    console.log($scope.turbine)
+    turbine.save($scope.turbine)
   }
+
+  if ($routeParams.id) {
+    // id db di test '51bec2794c04c9c003f45e8ae30004f2'
+    turbine.get({id: $routeParams.id},function(data){
+      $rootScope.turbine = data;
+    })
+  }
+
 })
 .controller('DashboardController',
 function ($scope , ventolone , chartReady , $q ) {
-  
+
   $scope.options = {
       month: 2,
       day: 3,
@@ -202,3 +210,7 @@ angular.module('Ventolone.resources', ['ngResource'])
     }
   })
 })
+.factory('turbine', function($resource) {
+
+  return $resource('http://localhost:5984/turbine/:id',{},{});
+});
