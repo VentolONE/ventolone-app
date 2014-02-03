@@ -1,28 +1,67 @@
-angular.module('Ventolone', ['ngRoute','ngGoogleCharts','Ventolone.resources'])
-  .config(function($routeProvider) {
-    $routeProvider
-      .when('/config/:id?',{
-        templateUrl: 'views/config-form.html',
-        controller: 'ConfigController'
-      })
-      .when('/dashboard/:id',{
-        templateUrl: 'views/dashboard.html',
-        controller: 'DashboardController',
-      })
-      .when('/upload/:id',{
-        templateUrl: 'views/form-upload.html',
-        controller: 'UploadController'
-      })
-      .when('/dashboard', {
-        redirectTo:'/config'
+angular.module('Ventolone', [
+  'ngRoute'
+  ,'ngGoogleCharts'
+  ,'Ventolone.resources'
+  ,'ngRouting'
+])
+
+/**
+ *   /dashboard -> list
+ *   /dashboard/:id
+ */
+
+  .config(function(routingProvider) {
+    routingProvider.build([{
+        model:'turbine'
+      }])
+      .when('/',{
+        redirectTo:'/turbines'
       })
   })
-.controller('AppController', function($routeParams, $location){
-  if(! $routeParams.id ) {
-    $location.path('/config');
+  .run( function($rootScope, $location, $routeParams, routing) {
+    $rootScope.h = routing.helpers
+ })
+
+.controller('TurbineCtrl'    , function ($scope, Turbine, $routeParams) {
+  $scope.turbine = Turbine.get({
+    id:$routeParams.turbineId
+  })
+})
+.controller('NewTurbineCtrl' , function ($scope, Turbine, $location) {
+  $scope.turbine = {}
+  $scope.submit = function  () {
+    Turbine.save($scope.turbine).$promise.then(function (response) {
+      $location.path($scope.h.turbineRoute(response.id))
+    })
   }
 })
-.controller('ConfigController',function ($scope, turbine, $routeParams, $rootScope) {
+.controller('EditTurbineCtrl', function ($scope, Turbine, $routeParams) {
+  $scope.turbine = Turbine.get({
+    id:$routeParams.turbineId
+  })
+  $scope.submit = function  () {
+    Turbine.save($scope.turbine)
+  }
+})
+.controller('TurbineListCtrl', function ($scope, Turbine, $route) {
+  Turbine.query().$promise.then(function (turbines) {
+    $scope.turbines = turbines
+  })
+
+  $scope.delete = function(turbine){
+    Turbine.delete({
+      id:turbine._id,
+      rev:turbine._rev
+    },function () {
+      $route.reload()
+    })
+  }
+})
+
+.controller('AppController', function($routeParams, $location){
+
+})
+.controller('ConfigController',function ($scope, Turbine, $routeParams, $rootScope) {
   $scope.submit = function  () {
     turbine.save($scope.turbine)
   }
@@ -176,49 +215,3 @@ function ($scope , ventolone , chartReady , $q ) {
 
 })
 .controller('UploadController',angular.noop)
-
-
-
-angular.module('Ventolone.resources', ['ngResource'])
-.factory('ventolone', function($resource) {
-
-  function getRows(data) {
-    return JSON.parse(data).rows
-  }
-
-//  return $resource('http://ventolone-litapp.rhcloud.com/ventolone_db/_design/charts/_view/:type', {
-  return $resource('http://localhost:5984/ventolone/_design/charts/_view/:type', {
-    group: true,
-    descending: false
-  }, {
-    time: {
-      method: 'get',
-      transformResponse: getRows,
-      isArray: true,
-      params: {
-        type:'time'
-      }
-    },
-    frequency: {
-      method: 'get',
-      transformResponse: getRows,
-      isArray: true,
-      params: {
-        type:'frequency'
-      }
-    },
-    stats: {
-      method: 'get',
-      transformResponse: function (data) {
-        return JSON.parse(data).rows[0].value
-      },
-      params:{
-        type: 'stats'
-      }
-    }
-  })
-})
-.factory('turbine', function($resource) {
-
-  return $resource('http://localhost:5984/turbine/:id',{},{});
-});
