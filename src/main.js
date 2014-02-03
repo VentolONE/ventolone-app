@@ -5,11 +5,6 @@ angular.module('Ventolone', [
   ,'ngRouting'
 ])
 
-/**
- *   /dashboard -> list
- *   /dashboard/:id
- */
-
   .config(function(routingProvider) {
     routingProvider.build([{
         model:'turbine'
@@ -56,23 +51,6 @@ angular.module('Ventolone', [
       $route.reload()
     })
   }
-})
-
-.controller('AppController', function($routeParams, $location){
-
-})
-.controller('ConfigController',function ($scope, Turbine, $routeParams, $rootScope) {
-  $scope.submit = function  () {
-    turbine.save($scope.turbine)
-  }
-
-  if ($routeParams.id) {
-    // id db di test '51bec2794c04c9c003f45e8ae30004f2'
-    turbine.get({id: $routeParams.id},function(data){
-      $rootScope.turbine = data;
-    })
-  }
-
 })
 .controller('DashboardController',
 function ($scope , ventolone , chartReady , $q ) {
