@@ -1,0 +1,23 @@
+{
+  "name": "angular-routing",
+  "version": "0.0.2",
+  "main": "angular-routing.js",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "components"
+  ],
+  "dependencies": {
+    "angular": "~1.x"
+  },
+  "homepage": "https://github.com/carlo-colombo/angular-routing",
+  "_release": "0.0.2",
+  "_resolution": {
+    "type": "version",
+    "tag": "0.0.2",
+    "commit": "e21896e8dc39ae9f650e39a914a87e27dc5fa406"
+  },
+  "_source": "git://github.com/carlo-colombo/angular-routing.git",
+  "_target": "~0.0.2",
+  "_originalSource": "angular-routing"
+}
