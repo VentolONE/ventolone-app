@@ -1,0 +1,14 @@
+{
+  "docs": [
+    {
+      "_id": "_design/ventolone",
+      "language": "javascript",
+      "views": {
+        "time": {
+          "map": "function(doc) {\n  var intervals = [3600 * 24, 3600 * 6, 3600, 1800, 600, 60]\n  var keys = []\n\n  for (var i in intervals) {\n    keys.push(new Date(parseInt(doc.time / intervals[i]) * intervals[i] * 1000))\n  }\n  var d = keys[0]\n\n  emit([\n  doc.plant.name,\n  new Date(d.getUTCFullYear(), d.getMonth(), 1)\n].concat(keys), {\n    speed: parseFloat(doc.speed),\n    battery: parseFloat(doc.battery) / 423\n  });\n}",
+          "reduce": "function(keys, values, rereduce) {\n  var battery = 0,\n    speed = 0,\n    len = values.length\n  for (var i in values) {\n    battery += values[i].battery\n    speed += values[i].speed\n  }\n  return {\n    speed: speed / len,\n    battery: battery / len\n  }\n}"
+        }
+      }
+    }
+  ]
+}
