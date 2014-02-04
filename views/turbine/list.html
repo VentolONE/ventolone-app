@@ -3,6 +3,6 @@
 
 <ul>
   <li ng-repeat="turbine in turbines">
-    <a href="{{h.turbinePath(turbine.id)}}">{{turbine.locale}}</a> | <a ng-click="delete(turbine)">X</a>
+    <a href="{{h.turbinePath(turbine._id)}}">{{turbine.locale}}</a> | <a ng-click="delete(turbine)">X</a> ({{turbine._id}})
   </li>
 </ul>

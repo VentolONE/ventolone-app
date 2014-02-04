@@ -4,7 +4,7 @@ angular.module('Ventolone.resources', ['ngResource'])
 .constant('getRows',function getRows(data) {
   return JSON.parse(data).rows
 })
-.factory('ventolone', function($resource, basePath) {
+.factory('ventolone', function($resource, basePath, getRows) {
   return $resource(basePath+'ventolone/_design/charts/_view/:type', {
     group: true,
     descending: false

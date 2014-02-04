@@ -17,11 +17,6 @@ angular.module('Ventolone', [
     $rootScope.h = routing.helpers
  })
 
-.controller('TurbineCtrl'    , function ($scope, Turbine, $routeParams) {
-  $scope.turbine = Turbine.get({
-    id:$routeParams.turbineId
-  })
-})
 .controller('NewTurbineCtrl' , function ($scope, Turbine, $location) {
   $scope.turbine = {}
   $scope.submit = function  () {
@@ -52,8 +47,10 @@ angular.module('Ventolone', [
     })
   }
 })
-.controller('DashboardController',
-function ($scope , ventolone , chartReady , $q ) {
+.controller('TurbineCtrl'    , function ($scope, Turbine, $routeParams, ventolone , chartReady , $q) {
+  $scope.turbine = Turbine.get({
+    id:$routeParams.turbineId
+  })
 
   $scope.options = {
       month: 2,
