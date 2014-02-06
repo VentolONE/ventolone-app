@@ -24,22 +24,22 @@
         </form>
       </div>
     </div>
-    
+
     <file ng-model="fileToImport"></file>
 
     <div class="row">
       <div class="col-xs-12">
-        <chart data="data" chart-type="LineChart" />
+        <chart data="data" chart-type="LineChart" options="dtOptions"/>
       </div>
     </div>
     <div class="row">
       <div class="col-xs-12">
-        <chart data="dataBattery" chart-type="LineChart" />
+        <chart data="dataBattery" chart-type="LineChart" options="dtBatteryOptions" />
       </div>
     </div>
     <div class="row">
       <div class="col-xs-12">
-        <chart data="frequency" chart-type="ColumnChart" />
+        <chart data="frequency" chart-type="ColumnChart" options="dtFrequencyOptions" />
       </div>
     </div>
   </div>

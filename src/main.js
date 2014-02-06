@@ -121,6 +121,18 @@ angular.module('Ventolone', [
 
           var tooltip = $interpolate('{{date | date:"dd/MM/yyyy - hh:mm"}} \n {{label}}: {{value}}');
 
+          $scope.dtOptions = {
+            'title': 'Velocità'
+          }
+
+          $scope.dtBatteryOptions = {
+            'title': 'Batteria'
+          }
+
+          $scope.dtFrequencyOptions = {
+            'title': 'Frequenza'
+          }
+
           angular.forEach(ready.data, function(value, key) {
             var date = new Date(value.key[value.key.length - 1])
 
