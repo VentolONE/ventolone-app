@@ -16,10 +16,18 @@ module.exports = function(grunt) {
           'design_docs.json': 'couchdb/*'
         }
       }
+    },
+    connect: {
+      server: {
+        options: {
+          port: 8000,
+          keepalive: true
+        }
+      }
     }
   });
 
   // Actually load this plugin's task(s).
-  grunt.loadTasks('tasks');
+  grunt.loadNpmTasks('grunt-contrib-connect');
   grunt.loadNpmTasks('grunt-couch');
 };
