@@ -105,6 +105,7 @@ angular.module('Ventolone', [
 
           dt.addColumn('date', 'Date')
           dt.addColumn('number', 'Speed (m/s)')
+          dt.addColumn({type: 'string', role: 'tooltip', p:{html:true} })
 
           dtBattery.addColumn('date','Date')
           dtBattery.addColumn('number','Battery %')
@@ -114,7 +115,9 @@ angular.module('Ventolone', [
 
             dt.addRow([
               date,
-              value.value.speed
+              value.value.speed,
+              'pippo'
+
             ])
             dtBattery.addRow([
               date,
