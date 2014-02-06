@@ -25,10 +25,10 @@ var ngGoogleCharts = angular.module('ngGoogleCharts', [])
         chartReady.then(function(){
           $scope.$watch('data',function (data) {
             if(data){
-              var dataTable = data instanceof google.visualization.DataTable 
-                                ? data 
+              var dataTable = data instanceof google.visualization.DataTable
+                                ? data
                                 : google.visualization.arrayToDataTable(data),
-                  chart     = $scope.chart || new google.visualization['LineChart']($element[0]);
+                  chart     = $scope.chart || new google.visualization[$attrs.chartType]($element[0]);
 
               chart.draw(dataTable, {
                 hAxis:{
