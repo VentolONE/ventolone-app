@@ -10,9 +10,10 @@ function(doc) {
     }
     var d = keys[0]
 
-    emit([doc.plant.name,
-            new Date(d.getUTCFullYear(), d.getMonth(), 1)
-            , value
-          ].concat(keys), 1);
+    emit([
+      doc.plant.name,
+      new Date(d.getUTCFullYear(),d.getMonth(), 1),
+      value
+    ].concat(keys), 1);
   }
 }

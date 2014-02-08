@@ -8,9 +8,9 @@ function(doc) {
   var d = keys[0]
 
   emit([
-  doc.plant.name,
-  new Date(d.getUTCFullYear(), d.getMonth(), 1)
-].concat(keys), {
+    doc.plant.name,
+    new Date(d.getUTCFullYear(), d.getMonth(), 1)
+  ].concat(keys), {
     speed: parseFloat(doc.speed),
     battery: parseFloat(doc.battery) / 423
   });
