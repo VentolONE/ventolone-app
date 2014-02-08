@@ -52,4 +52,44 @@ angular.module('Ventolone.resources', ['ngResource'])
       }
     }
   });
-});
+})
+.factory('upload', function ($http, $q, basePath) {
+  var numberOfDocs = 10000
+  return function (turbine, iterator) {
+    var numberOfUploads = Math.ceil(iterator.size() / numberOfDocs)
+        ,promises = []
+        ,deferred = $q.defer()
+
+    for (var i = 0; i < numberOfUploads; i++) {
+      (function(batch){
+        var slice = iterator.slice(i*numberOfDocs,(i+1)*numberOfDocs)
+            , promise = $http.post(basePath+'prova/_bulk_docs', {
+              docs: slice.map(function (item) {
+                return {
+                  turbineId: turbine._id
+                  , time:    parseFloat(item[0])
+                  , deltaT:  parseFloat(item[1])
+                  , p:       parseFloat(item[2])
+                  , battery: parseFloat(item[3])
+                  , speed:   parseFloat(item[2])/parseFloat(item[1]) * 1.1176
+                }
+              })
+            }).success(function () {
+              deferred.notify(batch)
+            })
+
+          promises.push(promise)
+        }(i))
+
+    };
+
+    $q.all(promises).then(function (res) {
+      deferred.resolve(res)
+    })
+
+    return {
+      promise: deferred.promise,
+      numberOfUploads: numberOfUploads
+    }
+  }
+})

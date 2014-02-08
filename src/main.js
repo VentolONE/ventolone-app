@@ -207,19 +207,33 @@ angular.module('Ventolone', [
       })
     })
 
-})
-.controller('UploadController',angular.noop)
-.factory('upload', function ($http) {
-  return function (url, file, fileParam, params) {
-    var fd = new FormData()
-        , blob = new Blob([file], { type: "text/csv"})
-    
-    fd.append("importFile", blob);
-    params && _.each(params, _.flip(fd.append,2).bind(fd))
 
-    return $http.post(url, fd, {
-      headers: {'Content-Type': undefined },
-      transformRequest: angular.identity
-    })
-  }
 })
+.controller('UploadController',function ($scope, readFile, csvReader, upload) {
+    var iterator 
+    $scope.$watch('importFile', function(file) {
+      if(file){
+        readFile(file).then(function (csv) {
+          iterator = csvReader(csv)
+          $scope.numberOfLines = iterator.size()
+        })
+      }
+    })
+
+
+    $scope.submit = function () {
+      $scope.progress = 0
+      var up = upload($scope.turbine, iterator)
+      up.promise.then(
+        function (val) {
+          console.log(val)
+        },
+        angular.noop,
+        function (val) {
+          $scope.progress++
+          $scope.progressPerCent = $scope.progress/up.numberOfUploads * 100 
+        }
+      )
+    }
+})
+
