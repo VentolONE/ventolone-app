@@ -37,7 +37,7 @@ angular.module('Ventolone.resources', ['ngResource'])
   })
 })
 .factory('Turbine', function($resource, basePath, getRows) {
-  return $resource(basePath+'/turbine/:id',{},{
+  return $resource(basePath+'turbine/:id',{},{
     query:{
       isArray:true,
       method:'get',
