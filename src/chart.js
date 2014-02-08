@@ -17,7 +17,8 @@ var ngGoogleCharts = angular.module('ngGoogleCharts', [])
     return {
       restrict: 'E',
       scope:{
-        data:'='
+        data:'=',
+        options: '='
       },
       template:'<div></div>',
       replace:true,
@@ -30,14 +31,7 @@ var ngGoogleCharts = angular.module('ngGoogleCharts', [])
                                 : google.visualization.arrayToDataTable(data),
                   chart     = $scope.chart || new google.visualization[$attrs.chartType]($element[0]);
 
-              chart.draw(dataTable, {
-                hAxis:{
-                  slantedTextAngle:0
-                },
-                vAxis:{
-                  baseline:0
-                }
-              });
+              chart.draw(dataTable, $scope.options);
             }
           })
         })

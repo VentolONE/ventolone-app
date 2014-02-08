@@ -47,7 +47,7 @@ angular.module('Ventolone', [
     })
   }
 })
-.controller('TurbineCtrl'    , function ($scope, Turbine, $routeParams, ventolone , chartReady , $q) {
+.controller('TurbineCtrl'    , function ($scope, Turbine, $routeParams, ventolone , chartReady , $q, $interpolate) {
   $scope.turbine = Turbine.get({
     id:$routeParams.turbineId
   })
@@ -112,20 +112,39 @@ angular.module('Ventolone', [
 
           dt.addColumn('date', 'Date')
           dt.addColumn('number', 'Speed (m/s)')
+          dt.addColumn({type: 'string', role: 'tooltip', p:{html:true}})
 
           dtBattery.addColumn('date','Date')
           dtBattery.addColumn('number','Battery %')
+          dtBattery.addColumn({type: 'string', role: 'tooltip', p:{html:true}})
+
+
+          var tooltip = $interpolate('{{date | date:"dd/MM/yyyy - hh:mm"}} \n {{label}}: {{value}}');
+
+          $scope.dtOptions = {
+            'title': 'Velocità'
+          }
+
+          $scope.dtBatteryOptions = {
+            'title': 'Batteria'
+          }
+
+          $scope.dtFrequencyOptions = {
+            'title': 'Frequenza'
+          }
 
           angular.forEach(ready.data, function(value, key) {
             var date = new Date(value.key[value.key.length - 1])
 
             dt.addRow([
               date,
-              value.value.speed
+              value.value.speed,
+              tooltip({date:date, label:'Speed (m/s)', value:value.value.speed})
             ])
             dtBattery.addRow([
               date,
-              value.value.battery*100
+              value.value.battery*100,
+              tooltip({date:date, label:'Battery %', value:value.value.battery*100})
             ])
           });
 
