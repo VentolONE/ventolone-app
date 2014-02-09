@@ -1,0 +1,20 @@
+<div class="row">
+  <div class="col-xs-12">
+    <div class="progress" ng-class="{'active progress-striped': progressActive }">
+      <div class="progress-bar" role="progressbar" aria-valuenow="{{progressPerCent}}" aria-valuemin="0" aria-valuemax="100" style="width: {{progressPerCent}}%;">
+        <span class="sr-only">{{progressPerCent | number}}% Complete</span>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class="col-xs-6 col-xs-offset-3">
+    <file ng-model="importFile" class="btn-block">
+      <icon name="table"></icon>
+      Choose file
+    </file>
+    <button class="btn btn-primary btn-block" ng-disabled="!numberOfLines" ng-click="submit()">
+      <icon name="upload"></icon>Upload {{numberOfLines| number}} records
+    </button>
+  </div>
+</div>

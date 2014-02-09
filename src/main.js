@@ -6,15 +6,36 @@ angular.module('Ventolone', [
 ])
 
   .config(function(routingProvider) {
-    routingProvider.build([{
+    var resolve = {
+      turbine: function (Turbine, $route, $routeParams) {
+        return Turbine.get({
+          id:$route.current.pathParams.turbineId
+        })
+      }
+    }
+
+    routingProvider
+      .withResolve(resolve)
+      .build([{
         model:'turbine'
       }])
+      .when('/turbines/:turbineId/upload',{
+        templateUrl: 'views/turbine/upload.html',
+        controller:  'UploadController',
+        resolve:     resolve
+      })
       .when('/',{
         redirectTo:'/turbines'
       })
   })
-  .run( function($rootScope, $location, $routeParams, routing) {
+  .run( function($rootScope, routing) {
     $rootScope.h = routing.helpers
+    $rootScope.h.turbineUploadPath  = function(turbineId){
+      return $rootScope.h.turbinePath(turbineId)  + '/upload'
+    }
+    $rootScope.h.turbineUploadRoute = function(turbineId){
+      return $rootScope.h.turbineRoute(turbineId) + '/upload'
+    }
  })
 
 .controller('NewTurbineCtrl' , function ($scope, Turbine, $location) {
@@ -25,10 +46,8 @@ angular.module('Ventolone', [
     })
   }
 })
-.controller('EditTurbineCtrl', function ($scope, Turbine, $routeParams) {
-  $scope.turbine = Turbine.get({
-    id:$routeParams.turbineId
-  })
+.controller('EditTurbineCtrl', function ($scope, Turbine, turbine, $routeParams) {
+  $scope.turbine = turbine
   $scope.submit = function  () {
     Turbine.save($scope.turbine)
   }
@@ -47,10 +66,8 @@ angular.module('Ventolone', [
     })
   }
 })
-.controller('TurbineCtrl'    , function ($scope, Turbine, $routeParams, ventolone , chartReady , $q, $interpolate) {
-  $scope.turbine = Turbine.get({
-    id:$routeParams.turbineId
-  })
+.controller('TurbineCtrl', function ($scope, turbine, $routeParams, ventolone , chartReady , $q, $interpolate) {
+  $scope.turbine = turbine
 
   $scope.options = {
       month: 2,
@@ -209,7 +226,7 @@ angular.module('Ventolone', [
 
 
 })
-.controller('UploadController',function ($scope, readFile, csvReader, upload) {
+.controller('UploadController',function ($scope, readFile, csvReader, upload, turbine) {
     var iterator 
     $scope.$watch('importFile', function(file) {
       if(file){
@@ -220,17 +237,18 @@ angular.module('Ventolone', [
       }
     })
 
-
     $scope.submit = function () {
       $scope.progress = 0
-      var up = upload($scope.turbine, iterator)
+      $scope.progressActive = false
+      var up = upload(turbine, iterator)
       up.promise.then(
-        function (val) {
-          console.log(val)
+        function () {
+          $scope.progressActive = false
         },
         angular.noop,
         function (val) {
           $scope.progress++
+          $scope.progressActive=true
           $scope.progressPerCent = $scope.progress/up.numberOfUploads * 100 
         }
       )

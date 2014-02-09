@@ -29,21 +29,21 @@ angular.module('Ventolone')
     }
   })
   .directive('file',function ($interpolate) {
-    var fileName = $interpolate("{{name}} ({{size/1024|number:'1'}}kb)")
+    var fileName = $interpolate("[{{name}} ({{size/1024|number:'1'}}kb)]")
     return {
       replace: true,
-      template: '<span>'+
-                '  <input type="file" style="opacity:0; width:0"></input>'+
-                '  <button class="btn btn-primary" ng-transclude>'+
-                '  </button>'+
-                '  <div></div>'+
-                '</span>',
+      template: '<button class="btn btn-primary" >'+
+                '  <input type="file" style="opacity:0; width:0; height: 0"></input>'+
+                '  <span ng-transclude>'+
+                '  </span>'+
+                '  <div style="display:inline; font-style:italic;"></div>'+
+                '</button>',
       restrict:'E',
       require: 'ngModel',
       transclude:true,
       link: function (scope, element, attrs, ngModel) {
         var $input = element.find('input')
-            , $button = element.find('button')
+            , $button = element
             , $fileName = element.find('div')
 
         ngModel.$render = function() {
@@ -64,5 +64,15 @@ angular.module('Ventolone')
           $input[0].click()
         })
       }
+    }
+  })
+  .directive('icon', function () {
+    return {
+      restrict:'E',
+      scope:{
+        name: '@'
+      },
+      replace:true,
+      template:'<i class="fa fa-{{name}}"></i>'
     }
   })
