@@ -239,7 +239,7 @@ angular.module('Ventolone', [
 
     $scope.submit = function () {
       $scope.uploads = 0
-      $scope.uploadsActive = false
+      $scope.uploadsActive = true
       $scope.uploadsComplete = false
       
       var up = upload(turbine, iterator)
@@ -253,7 +253,6 @@ angular.module('Ventolone', [
         angular.noop,
         function (val) {
           $scope.uploads++
-          $scope.uploadsActive=true
           $scope.uploadsPerCent = $scope.uploads/up.numberOfUploads * 100 
         }
       )
