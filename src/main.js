@@ -247,6 +247,8 @@ angular.module('Ventolone', [
         function () {
           $scope.uploadsActive = false
           $scope.uploadsComplete = true
+          $scope.importFile = null
+          $scope.numberOfLines = null
         },
         angular.noop,
         function (val) {
