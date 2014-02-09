@@ -1,8 +1,8 @@
 <div class="row">
   <div class="col-xs-12">
-    <div class="progress" ng-class="{'active progress-striped': progressActive }">
-      <div class="progress-bar" role="progressbar" aria-valuenow="{{progressPerCent}}" aria-valuemin="0" aria-valuemax="100" style="width: {{progressPerCent}}%;">
-        <span class="sr-only">{{progressPerCent | number}}% Complete</span>
+    <div class="progress" ng-class="{'active progress-striped': uploadsActive}">
+      <div class="progress-bar" ng-class="{'progress-bar-success': uploadsComplete}" role="progressbar" aria-valuenow="{{uploadsPerCent}}" aria-valuemin="0" aria-valuemax="100" style="width: {{uploadsPerCent}}%;">
+        <span class="sr-only">{{uploadsPerCent | number}}% Complete</span>
       </div>
     </div>
   </div>

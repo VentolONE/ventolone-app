@@ -238,18 +238,21 @@ angular.module('Ventolone', [
     })
 
     $scope.submit = function () {
-      $scope.progress = 0
-      $scope.progressActive = false
+      $scope.uploads = 0
+      $scope.uploadsActive = false
+      $scope.uploadsComplete = false
+      
       var up = upload(turbine, iterator)
       up.promise.then(
         function () {
-          $scope.progressActive = false
+          $scope.uploadsActive = false
+          $scope.uploadsComplete = true
         },
         angular.noop,
         function (val) {
-          $scope.progress++
-          $scope.progressActive=true
-          $scope.progressPerCent = $scope.progress/up.numberOfUploads * 100 
+          $scope.uploads++
+          $scope.uploadsActive=true
+          $scope.uploadsPerCent = $scope.uploads/up.numberOfUploads * 100 
         }
       )
     }
