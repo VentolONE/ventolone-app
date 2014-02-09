@@ -54,7 +54,7 @@ angular.module('Ventolone.resources', ['ngResource'])
   });
 })
 .factory('upload', function ($http, $q, basePath) {
-  var numberOfDocs = 10000
+  var numberOfDocs = 100
   return function (turbine, iterator) {
     var numberOfUploads = Math.ceil(iterator.size() / numberOfDocs)
         ,promises = []
@@ -66,12 +66,13 @@ angular.module('Ventolone.resources', ['ngResource'])
             , promise = $http.post(basePath+'prova/_bulk_docs', {
               docs: slice.map(function (item) {
                 return {
-                  turbineId: turbine._id
-                  , time:    parseFloat(item[0])
-                  , deltaT:  parseFloat(item[1])
-                  , p:       parseFloat(item[2])
-                  , battery: parseFloat(item[3])
-                  , speed:   parseFloat(item[2])/parseFloat(item[1]) * 1.1176
+                  _id:         turbine._id+'_'+item[0]
+                  , turbineId: turbine._id
+                  , time:      item[0]
+                  , deltaT:    item[1]
+                  , p:         item[2]
+                  , battery:   item[3]
+                  , speed:     item[2]/item[1] * 1.1176
                 }
               })
             }).success(function () {

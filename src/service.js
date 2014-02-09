@@ -23,12 +23,12 @@ angular.module('Ventolone')
 
     function splitRow(row){
       return row.split(',').map(function(cell){
-        return cell.trim()
+        return angular.isNumber(cell) ? parseFloat(cell) : cell.trim()
       })
     }
 
     var CsvIterator = function (file) {
-      this.rows = str.split('\n')
+      this.rows = file.split('\n')
       return this
     }
 
