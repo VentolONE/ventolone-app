@@ -10,7 +10,7 @@ angular.module('Ventolone', [
       turbine: function (Turbine, $route, $routeParams) {
         return Turbine.get({
           id:$route.current.pathParams.turbineId
-        })
+        }).$promise
       }
     }
 
@@ -115,13 +115,13 @@ angular.module('Ventolone', [
 
     $scope.$watch('dataFrequency+plant+timeSpan.from+timeSpan.to', function() {
       var dataFrequency = $scope.dataFrequency
-      if(dataFrequency && $scope.plant){
+      if(dataFrequency && turbine._id){
         $q.all({
           chartReady: chartReady,
           data: ventolone.time({
             group_level:dataFrequency,
-            startkey:  JSON.stringify([$scope.plant].concat(timeFilter(dataFrequency, $scope.timeSpan.from))),
-            endkey:  JSON.stringify([$scope.plant].concat(timeFilter(dataFrequency, $scope.timeSpan.to)).concat({}))
+            startkey:  JSON.stringify([turbine._id].concat(timeFilter(dataFrequency, $scope.timeSpan.from))),
+            endkey:  JSON.stringify([turbine._id].concat(timeFilter(dataFrequency, $scope.timeSpan.to)).concat({}))
           }).$promise
         }).then(function(ready) {
           var dt = new google.visualization.DataTable()
@@ -186,20 +186,19 @@ angular.module('Ventolone', [
     }
 
     $scope.$watch('dataFrequency+plant+timeSpan.from+timeSpan.to',function () {
-      var plant = $scope.plant
       var dataFrequency = $scope.dataFrequency
       var group_level = (dataFrequency-1)*2+1
 
       $q.all({
         chartReady:chartReady,
         stats: ventolone.stats({
-          key: JSON.stringify([plant]),
+          key: JSON.stringify([turbine._id]),
           group_level:1
         }).$promise,
         frequency: ventolone.frequency({
           group_level: group_level,
-          startkey: JSON.stringify([plant].concat(frequencyTimeFilter(dataFrequency, $scope.timeSpan.from, -100))),
-          endkey: JSON.stringify([plant].concat(frequencyTimeFilter(dataFrequency, $scope.timeSpan.to, 100)))
+          startkey: JSON.stringify([turbine._id].concat(frequencyTimeFilter(dataFrequency, $scope.timeSpan.from, -100))),
+          endkey: JSON.stringify([turbine._id].concat(frequencyTimeFilter(dataFrequency, $scope.timeSpan.to, 100)))
         }).$promise
       }).then(function (data) {
         var total = data.stats.count

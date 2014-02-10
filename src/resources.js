@@ -54,7 +54,7 @@ angular.module('Ventolone.resources', ['ngResource'])
   });
 })
 .factory('upload', function ($http, $q, basePath) {
-  var numberOfDocs = 100
+  var numberOfDocs = 1000
   return function (turbine, iterator) {
     var numberOfUploads = Math.ceil(iterator.size() / numberOfDocs)
         ,promises = []
@@ -63,18 +63,20 @@ angular.module('Ventolone.resources', ['ngResource'])
     for (var i = 0; i < numberOfUploads; i++) {
       (function(batch){
         var slice = iterator.slice(i*numberOfDocs,(i+1)*numberOfDocs)
-            , promise = $http.post(basePath+'prova/_bulk_docs', {
+            , promise = $http.post(basePath+'ventolone/_bulk_docs', {
               docs: slice.map(function (item) {
-                return {
-                  _id:         turbine._id+'_'+item[0]
-                  , turbineId: turbine._id
-                  , time:      item[0]
-                  , deltaT:    item[1]
-                  , p:         item[2]
-                  , battery:   item[3]
-                  , speed:     item[2]/item[1] * 1.1176
+                if(item[0]){
+                  return {
+                    _id:         turbine._id+'_'+item[0]
+                    , turbineId: turbine._id
+                    , time:      item[0]
+                    , deltaT:    item[1]
+                    , p:         item[2]
+                    , battery:   item[3]
+                    , speed:     item[2]/item[1] * 1.1176
+                  }
                 }
-              })
+              }).filter(angular.identity)
             }).success(function () {
               deferred.notify(batch)
             })

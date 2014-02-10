@@ -1,3 +1,5 @@
 function(doc) {
-  emit([doc.plant.name], doc.speed);
+  if(doc.speed){
+    emit([doc.turbineId], parseFloat(doc.speed));
+  }
 }
