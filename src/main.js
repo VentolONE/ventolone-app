@@ -7,9 +7,9 @@ angular.module('Ventolone', [
 
   .config(function(routingProvider) {
     var resolve = {
-      turbine: function (Turbine, $route, $routeParams) {
-        return Turbine.get({
-          id:$route.current.pathParams.turbineId
+      anemometer: function (Anemometer, $route, $routeParams) {
+        return Anemometer.get({
+          id:$route.current.pathParams.anemometerId
         }).$promise
       }
     }
@@ -17,57 +17,57 @@ angular.module('Ventolone', [
     routingProvider
       .withResolve(resolve)
       .build([{
-        model:'turbine'
+        model:'anemometer'
       }])
-      .when('/turbines/:turbineId/upload',{
-        templateUrl: 'views/turbine/upload.html',
+      .when('/anemometers/:anemometerId/upload',{
+        templateUrl: 'views/anemometer/upload.html',
         controller:  'UploadController',
         resolve:     resolve
       })
       .when('/',{
-        redirectTo:'/turbines'
+        redirectTo:'/anemometers'
       })
   })
   .run( function($rootScope, routing) {
     $rootScope.h = routing.helpers
-    $rootScope.h.turbineUploadPath  = function(turbineId){
-      return $rootScope.h.turbinePath(turbineId)  + '/upload'
+    $rootScope.h.anemometerUploadPath  = function(anemometerId){
+      return $rootScope.h.anemometerPath(anemometerId)  + '/upload'
     }
-    $rootScope.h.turbineUploadRoute = function(turbineId){
-      return $rootScope.h.turbineRoute(turbineId) + '/upload'
+    $rootScope.h.anemometerUploadRoute = function(anemometerId){
+      return $rootScope.h.anemometerRoute(anemometerId) + '/upload'
     }
  })
 
-.controller('NewTurbineCtrl' , function ($scope, Turbine, $location) {
-  $scope.turbine = {}
+.controller('NewAnemometerCtrl' , function ($scope, Anemometer, $location) {
+  $scope.anemometer = {}
   $scope.submit = function  () {
-    Turbine.save($scope.turbine).$promise.then(function (response) {
-      $location.path($scope.h.turbineRoute(response.id))
+    Anemometer.save($scope.anemometer).$promise.then(function (response) {
+      $location.path($scope.h.anemometerRoute(response.id))
     })
   }
 })
-.controller('EditTurbineCtrl', function ($scope, Turbine, turbine, $routeParams) {
-  $scope.turbine = turbine
+.controller('EditAnemometerCtrl', function ($scope, Anemometer, anemometer, $routeParams) {
+  $scope.anemometer = anemometer
   $scope.submit = function  () {
-    Turbine.save($scope.turbine)
+    Anemometer.save($scope.anemometer)
   }
 })
-.controller('TurbineListCtrl', function ($scope, Turbine, $route) {
-  Turbine.query().$promise.then(function (turbines) {
-    $scope.turbines = turbines
+.controller('AnemometerListCtrl', function ($scope, Anemometer, $route) {
+  Anemometer.query().$promise.then(function (anemometers) {
+    $scope.anemometers = anemometers
   })
 
-  $scope.delete = function(turbine){
-    Turbine.delete({
-      id:turbine._id,
-      rev:turbine._rev
+  $scope.delete = function(anemometer){
+    Anemometer.delete({
+      id:anemometer._id,
+      rev:anemometer._rev
     },function () {
       $route.reload()
     })
   }
 })
-.controller('TurbineCtrl', function ($scope, turbine, $routeParams, ventolone , chartReady , $q, $interpolate) {
-  $scope.turbine = turbine
+.controller('AnemometerCtrl', function ($scope, anemometer, $routeParams, Sample , chartReady , $q, $interpolate) {
+  $scope.anemometer = anemometer
 
   $scope.options = {
       month: 2,
@@ -115,13 +115,13 @@ angular.module('Ventolone', [
 
     $scope.$watch('dataFrequency+plant+timeSpan.from+timeSpan.to', function() {
       var dataFrequency = $scope.dataFrequency
-      if(dataFrequency && turbine._id){
+      if(dataFrequency && anemometer._id){
         $q.all({
           chartReady: chartReady,
-          data: ventolone.time({
+          data: Sample.time({
             group_level:dataFrequency,
-            startkey:  JSON.stringify([turbine._id].concat(timeFilter(dataFrequency, $scope.timeSpan.from))),
-            endkey:  JSON.stringify([turbine._id].concat(timeFilter(dataFrequency, $scope.timeSpan.to)).concat({}))
+            startkey:  JSON.stringify([anemometer._id].concat(timeFilter(dataFrequency, $scope.timeSpan.from))),
+            endkey:  JSON.stringify([anemometer._id].concat(timeFilter(dataFrequency, $scope.timeSpan.to)).concat({}))
           }).$promise
         }).then(function(ready) {
           var dt = new google.visualization.DataTable()
@@ -191,14 +191,14 @@ angular.module('Ventolone', [
 
       $q.all({
         chartReady:chartReady,
-        stats: ventolone.stats({
-          key: JSON.stringify([turbine._id]),
+        stats: Sample.stats({
+          key: JSON.stringify([anemometer._id]),
           group_level:1
         }).$promise,
-        frequency: ventolone.frequency({
+        frequency: Sample.frequency({
           group_level: group_level,
-          startkey: JSON.stringify([turbine._id].concat(frequencyTimeFilter(dataFrequency, $scope.timeSpan.from, -100))),
-          endkey: JSON.stringify([turbine._id].concat(frequencyTimeFilter(dataFrequency, $scope.timeSpan.to, 100)))
+          startkey: JSON.stringify([anemometer._id].concat(frequencyTimeFilter(dataFrequency, $scope.timeSpan.from, -100))),
+          endkey: JSON.stringify([anemometer._id].concat(frequencyTimeFilter(dataFrequency, $scope.timeSpan.to, 100)))
         }).$promise
       }).then(function (data) {
         var total = data.stats.count
@@ -225,7 +225,7 @@ angular.module('Ventolone', [
 
 
 })
-.controller('UploadController',function ($scope, readFile, csvReader, upload, turbine) {
+.controller('UploadController',function ($scope, readFile, csvReader, upload, anemometer) {
     var iterator 
     $scope.$watch('importFile', function(file) {
       if(file){
@@ -241,7 +241,7 @@ angular.module('Ventolone', [
       $scope.uploadsActive = true
       $scope.uploadsComplete = false
       
-      var up = upload(turbine, iterator)
+      var up = upload(anemometer, iterator)
       up.promise.then(
         function () {
           $scope.uploadsActive = false

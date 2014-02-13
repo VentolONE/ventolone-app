@@ -1,8 +1,0 @@
-<a href="{{h.turbinesPath()}}">List</a>
-<a href="{{h.newTurbinePath()}}">New</a>
-
-<ul>
-  <li ng-repeat="turbine in turbines">
-    <a href="{{h.turbinePath(turbine._id)}}">{{turbine.locale}}</a> | <a ng-click="delete(turbine)">X</a> ({{turbine._id}})
-  </li>
-</ul>

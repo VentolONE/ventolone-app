@@ -6,7 +6,7 @@ module.exports = function(grunt) {
     'couch-push': {
       localhost: {
         files: {
-          'http://localhost:5984/ventolone': 'design_docs.json'
+          'http://localhost:5984/sample': 'design_docs.json'
         }
       }
     },

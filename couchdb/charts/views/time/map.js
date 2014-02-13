@@ -9,7 +9,7 @@ function(doc) {
     var d = keys[0]
 
     emit([
-      doc.turbineId,
+      doc.anemometerId,
       new Date(d.getUTCFullYear(), d.getMonth(), 1)
     ].concat(keys), {
       speed: parseFloat(doc.speed),

@@ -1,0 +1,8 @@
+<a href="{{h.anemometersPath()}}">List</a>
+<a href="{{h.newAnemometerPath()}}">New</a>
+
+<ul>
+  <li ng-repeat="anemometer in anemometers">
+    <a href="{{h.anemometerPath(anemometer._id)}}">{{anemometer.locale}}</a> | <a ng-click="delete(anemometer)">X</a> ({{anemometer._id}})
+  </li>
+</ul>

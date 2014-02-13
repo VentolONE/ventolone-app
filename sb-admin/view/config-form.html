@@ -1,5 +1,5 @@
      <div class="row">
-          <form role="form" name='addTurbineForm' ng-controller="AddTurbineController">
+          <form role="form" name='addAnemometerForm' ng-controller="AddAnemometerController">
 
             <div class="alert alert-dismissable alert-success"  ng-show='message'>
               <button type="button" class="close" data-dismiss="alert">×</button>
@@ -11,50 +11,50 @@
                 <legend>Dati posto</legend>
                 <div class="form-group">
                   <label>Localit&agrave; turbina</label>
-                  <input class="form-control" placeholder="Enter text" name='turbineLocale' ng-model='turbine.locale' required>
+                  <input class="form-control" placeholder="Enter text" name='anemometerLocale' ng-model='anemometer.locale' required>
                   <p class="help-block">Example block-level help text here.</p>
                 </div>
 
                 <div class="form-group">
                   <label>Latitudine</label>
-                  <input class="form-control" placeholder="Enter text" name='turbineLat' ng-model='turbine.lat' required>
+                  <input class="form-control" placeholder="Enter text" name='anemometerLat' ng-model='anemometer.lat' required>
                 </div>
 
                 <div class="form-group">
                   <label>Longitudine</label>
-                  <input class="form-control" placeholder="Enter text" name='turbineLong' ng-model='turbine.long' required>
+                  <input class="form-control" placeholder="Enter text" name='anemometerLong' ng-model='anemometer.long' required>
                 </div>
 
                  <div class="form-group">
                   <label>Altitudine</label>
-                  <input class="form-control" placeholder="Enter text" name='turbineAltitudine' ng-model='turbine.altitudine' required>
+                  <input class="form-control" placeholder="Enter text" name='anemometerAltitudine' ng-model='anemometer.altitudine' required>
                 </div>
                 <div class="form-group">
                   <label>Note</label>
-                  <textarea class="form-control" rows="3" name='turbineNote1' ng-model='turbine.note1'></textarea>
+                  <textarea class="form-control" rows="3" name='anemometerNote1' ng-model='anemometer.note1'></textarea>
                 </div>
             </div>
             <div class="col-lg-6">
               <legend>Dati turbina</legend>
               <div class="form-group">
                 <label>Nome turbina</label>
-                <input class="form-control" placeholder="Enter text" name='turbineName' ng-model='turbine.nome' required>
+                <input class="form-control" placeholder="Enter text" name='anemometerName' ng-model='anemometer.nome' required>
                 <p class="help-block">Example block-level help text here.</p>
               </div>
 
               <div class="form-group">
                 <label>Numero pale</label>
-                <input class="form-control" placeholder="Enter text" name='turbinePale' ng-model='turbine.pale' required>
+                <input class="form-control" placeholder="Enter text" name='anemometerPale' ng-model='anemometer.pale' required>
               </div>
 
               <div class="form-group">
                 <label>Aria frontale</label>
-                <input class="form-control" placeholder="Enter text" name='turbineAir' ng-model='turbine.air' required>
+                <input class="form-control" placeholder="Enter text" name='anemometerAir' ng-model='anemometer.air' required>
               </div>
 
               <div class="form-group">
                 <label>Tipo turbina</label>
-                <select class="form-control" name='turbineType' ng-model='turbine.type' required>
+                <select class="form-control" name='anemometerType' ng-model='anemometer.type' required>
                   <option>asse verticale</option>
                   <option>asse orizzontale</option>
                 </select>
@@ -62,47 +62,47 @@
 
               <div class="form-group">
                 <label>Diametro turbina</label>
-                <input class="form-control" placeholder="Enter text" name='turbineDiametro' ng-model='turbine.diametro' required>
+                <input class="form-control" placeholder="Enter text" name='anemometerDiametro' ng-model='anemometer.diametro' required>
               </div>
 
               <div class="form-group">
                 <label>Tip speed Ratio (lambda)</label>
-                <input class="form-control" placeholder="Enter text" name='turbineLambda' ng-model='turbine.lambda' required>
+                <input class="form-control" placeholder="Enter text" name='anemometerLambda' ng-model='anemometer.lambda' required>
               </div>
 
               <div class="form-group">
                 <label>Coefficiente di potenza</label>
-                <input class="form-control" placeholder="Enter text" name='turbinePower' ng-model='turbine.power' required>
+                <input class="form-control" placeholder="Enter text" name='anemometerPower' ng-model='anemometer.power' required>
               </div>
 
               <div class="form-group">
                 <label>Velocità cut IN</label>
-                <input class="form-control" placeholder="Enter text" name='turbineCutIn' ng-model='turbine.cutIn' required >
+                <input class="form-control" placeholder="Enter text" name='anemometerCutIn' ng-model='anemometer.cutIn' required >
               </div>
 
               <div class="form-group">
                 <label>Velocità cut OFF</label>
-                <input class="form-control" placeholder="Enter text" name='turbineCutOff' ng-model='turbine.cutOff' required>
+                <input class="form-control" placeholder="Enter text" name='anemometerCutOff' ng-model='anemometer.cutOff' required>
               </div>
 
               <div class="form-group">
                 <label>Note</label>
-                <textarea class="form-control" rows="3" name='turbineNote2' ng-model='turbine.note2'></textarea>
+                <textarea class="form-control" rows="3" name='anemometerNote2' ng-model='anemometer.note2'></textarea>
               </div>
 
             </div>
 
-            <button type="submit" class="btn btn-default" ng-click='addTurbine()' ng-disabled='!addTurbineForm.$valid'>Submit Button</button>
+            <button type="submit" class="btn btn-default" ng-click='addAnemometer()' ng-disabled='!addAnemometerForm.$valid'>Submit Button</button>
             <button type="reset" class="btn btn-default">Reset Button</button>
           </form>
         </div><!-- /.row -->
 
         <script type="text/javascript">
-          function AddTurbineController($scope) {
+          function AddAnemometerController($scope) {
               $scope.message = '';
-              $scope.addTurbine = function () {
+              $scope.addAnemometer = function () {
               // TODO for the reader: actually save user to database...
-              $scope.message = $scope.turbine.nome + ', we added you!';
+              $scope.message = $scope.anemometer.nome + ', we added you!';
 
 
             };
