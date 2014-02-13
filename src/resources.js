@@ -19,15 +19,20 @@ angular.module('Ventolone.resources', ['ngResource'])
     }
   }
 
+  function makeStatsView(viewName){
+    return makeView(viewName, false, function (data) {
+      return (getRows(data)[0] || {}).value
+    })
+  }
+
   return $resource(resourcesConf.basePath + '/sample/_design/charts/_view/:viewName',{
     group:true,
     descending:false
   },{
     time:      makeView('time'),
     frequency: makeView('frequency'),
-    stats:     makeView('stats', false, function (data) {
-      return (getRows(data)[0] || {}).value
-    }),
+    stats:     makeStatsView('stats'),
+    dates:     makeStatsView('dates'),
   })
 })
 .factory('Anemometer', function ($resource, resourcesConf, getRows) {

@@ -66,7 +66,7 @@ angular.module('Ventolone', [
     })
   }
 })
-.controller('AnemometerCtrl', function ($scope, anemometer, $routeParams, Sample , chartReady , $q, $interpolate) {
+.controller('AnemometerCtrl', function ($scope, anemometer, $routeParams, Sample , chartReady , $q, $interpolate, $filter) {
   $scope.anemometer = anemometer
 
   $scope.options = {
@@ -97,6 +97,13 @@ angular.module('Ventolone', [
       , to: '2013-09-15'
     }
 
+
+    Sample.dates(function (dates) {
+      $scope.timeSpan = {
+        from: $filter('date')(new Date(dates.min*1000),'yyyy-MM-dd')
+        , to: $filter('date')(new Date(dates.max*1000),'yyyy-MM-dd')
+      }
+    })
 
     var intervals =  [3600 * 24, 3600 * 6, 3600, 1800, 600, 60]
 

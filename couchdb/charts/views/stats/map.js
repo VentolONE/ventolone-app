@@ -1,5 +1,5 @@
 function(doc) {
-  if(doc.speed){
+  if(parseFloat(doc.speed)){
     emit([doc.anemometerId], parseFloat(doc.speed));
   }
 }
