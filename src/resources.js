@@ -1,11 +1,14 @@
 angular.module('Ventolone.resources', ['ngResource'])
-.constant('basePath', 'http://localhost:5984/')
-// .constant('basePath', 'http://lit.iriscouch.com/')
+.constant('resourcesConf',{
+  // basePath: 'http://localhost:5984/',
+  basePath: 'http://ventolone-litapp.rhcloud.com/',
+  numberOfDocs: 10000
+})
 .constant('getRows',function getRows(data) {
   return JSON.parse(data).rows
 })
-.factory('ventolone', function($resource, basePath, getRows) {
-  return $resource(basePath+'ventolone/_design/charts/_view/:type', {
+.factory('ventolone', function($resource, resourcesConf, getRows) {
+  return $resource(resourcesConf.basePath+'ventolone/_design/charts/_view/:type', {
     group: true,
     descending: false
   }, {
@@ -36,8 +39,8 @@ angular.module('Ventolone.resources', ['ngResource'])
     }
   })
 })
-.factory('Turbine', function($resource, basePath, getRows) {
-  return $resource(basePath+'turbine/:id',{},{
+.factory('Turbine', function($resource, resourcesConf, getRows) {
+  return $resource(resourcesConf.basePath+'turbine/:id',{},{
     query:{
       isArray:true,
       method:'get',
@@ -53,8 +56,8 @@ angular.module('Ventolone.resources', ['ngResource'])
     }
   });
 })
-.factory('upload', function ($http, $q, basePath) {
-  var numberOfDocs = 1000
+.factory('upload', function ($http, $q, resourcesConf) {
+  var numberOfDocs = resourcesConf.numberOfDocs
   return function (turbine, iterator) {
     var numberOfUploads = Math.ceil(iterator.size() / numberOfDocs)
         ,promises = []
@@ -63,7 +66,7 @@ angular.module('Ventolone.resources', ['ngResource'])
     for (var i = 0; i < numberOfUploads; i++) {
       (function(batch){
         var slice = iterator.slice(i*numberOfDocs,(i+1)*numberOfDocs)
-            , promise = $http.post(basePath+'ventolone/_bulk_docs', {
+            , promise = $http.post(resourcesConf.basePath+'ventolone/_bulk_docs', {
               docs: slice.map(function (item) {
                 if(item[0]){
                   return {

@@ -19,8 +19,7 @@ angular.module('Ventolone')
       return deferred.promise
     }
   })
-  .factory('csvReader',function () {
-
+  .factory('CsvIterator',function () {
     function splitRow(row){
       return row.split(',').map(function(cell){
         return angular.isNumber(cell) ? parseFloat(cell) : cell.trim()
@@ -47,7 +46,9 @@ angular.module('Ventolone')
     CsvIterator.prototype.hasNext = function() {
       return !!this.rows.length
     }
-
+    return CsvIterator
+  })
+  .factory('csvReader',function (CsvIterator) {
     return function (file) {
       return new CsvIterator(file)
     }
