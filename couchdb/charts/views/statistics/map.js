@@ -1,5 +1,5 @@
 function(doc) {
-  emit(doc.anemometerId, {
+  emit(require('views/lib/utils').generateKeys(doc.anemometerId, doc), {
     speed: {
       max: parseFloat(doc.speed),
       min: parseFloat(doc.speed),
