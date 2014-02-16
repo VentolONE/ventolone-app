@@ -143,14 +143,16 @@ angular.module('Ventolone', [
           dtBattery.addColumn({type: 'string', role: 'tooltip', p:{html:true}})
 
 
-          var tooltip = $interpolate('{{date | date:"dd/MM/yyyy - hh:mm"}} \n {{label}}: {{value}}');
+          var tooltip = $interpolate('{{date | date:"dd/MM/yyyy - hh:mm"}} <br/> {{label}}: {{value|number}}');
 
           $scope.dtOptions = {
-            'title': 'Velocità'
+            'title': 'Velocità',
+            tooltip: {isHtml: true}
           }
 
           $scope.dtBatteryOptions = {
-            'title': 'Batteria'
+            'title': 'Batteria',
+            tooltip: {isHtml: true}
           }
 
           $scope.dtFrequencyOptions = {
