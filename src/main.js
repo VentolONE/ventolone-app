@@ -79,18 +79,8 @@ angular.module('Ventolone', [
       minutes: 8
     }
 
-    $scope.plants = [
-      "MFEREKE",
-      "BOOOHHHH"
-    ]
-
     $scope.dataFrequency = 4
     $scope.plant = $scope.plants[1]
-
-    // $scope.timeSpan = {
-    //   from: '2014-01-01'
-    //   , to: '2014-12-31'
-    // }
 
     $scope.timeSpan = {
       from: '2013-08-15'
