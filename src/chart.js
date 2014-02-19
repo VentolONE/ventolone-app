@@ -1,4 +1,4 @@
-var ngGoogleCharts = angular.module('ngGoogleCharts', [])
+angular.module('ngGoogleCharts', [])
   .factory('chartReady', ["$q", "$window", "$rootScope",
     function($q, $window, $rootScope) {
       var deferred = $q.defer()
