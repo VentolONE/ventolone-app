@@ -140,10 +140,7 @@ angular.module('Ventolone', [
         stats: stats.$promise,
         frequency: frequency.$promise
       }).then(function (data) {
-
-        FrequencyChartsData(data.frequency, angular.noop, group_level, data.stats.count).then(function (data) {
-          $scope.frequency = data
-        })
+        $scope.frequency = FrequencyChartsData(data.frequency, angular.noop, group_level, data.stats.count)
       })
     }
 

@@ -34,13 +34,17 @@ angular.module('ngGoogleCharts', [])
         chartReady.then(function(){
           $scope.$watch('data',function (data) {
             if(data){
-              var dataTable = data instanceof google.visualization.DataTable
-                                ? data
-                                : google.visualization.arrayToDataTable(data),
-                  chart     = $scope.chart || new google.visualization[$attrs.chartType]($element[0]);
+              $q.when(data).then(function (data) {
+                var dataTable = data instanceof google.visualization.DataTable
+                                  ? data
+                                  : google.visualization.arrayToDataTable(data),
+                    chart     = $scope.chart || new google.visualization[$attrs.chartType]($element[0]);
 
-              chart.draw(dataTable, options);
+                chart.draw(dataTable, options);
+              })
             }
+
+
           })
         })
       }
