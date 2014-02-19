@@ -76,10 +76,13 @@ angular.module('Ventolone', [
 
     $scope.dataFrequency = 4
 
-    Sample.dates(function(dates) {
+    var statistics = Sample.statistics({
+      startkey: JSON.stringify([anemometer._id]),
+      endkey: JSON.stringify([anemometer._id,{}]),
+    },function (statistics) {
       $scope.timeSpan = {
-        from: $filter('date')(new Date(dates.min * 1000), 'yyyy-MM-dd'),
-        to: $filter('date')(new Date(dates.max * 1000), 'yyyy-MM-dd')
+        from: $filter('date')(new Date(statistics.time.min * 1000), 'yyyy-MM-dd'),
+        to: $filter('date')(new Date(statistics.time.max * 1000), 'yyyy-MM-dd')
       }
 
       $scope.$watch('dataFrequency', updateTimeCharts)
@@ -89,10 +92,6 @@ angular.module('Ventolone', [
       $scope.$watch('dataFrequency', updateFrequencyCharts)
       $scope.$watch('timeSpan.to', updateFrequencyCharts)
       $scope.$watch('timeSpan.from', updateFrequencyCharts)
-    })
-
-    params.then(function() {
-      console.log(arguments)
     })
 
     var tooltip = $interpolate('{{date | date:"dd/MM/yyyy - hh:mm"}} <br/> {{label}}: {{value|number}}');
@@ -114,11 +113,6 @@ angular.module('Ventolone', [
     }
 
 
-    var stats = Sample.stats({
-      key: JSON.stringify([anemometer._id]),
-      group_level: 1
-    })
-
       function updateFrequencyCharts() {
         var dataFrequency = $scope.dataFrequency,
           group_level = (dataFrequency - 1) * 2 + 1,
@@ -129,10 +123,10 @@ angular.module('Ventolone', [
           })
 
           $q.all({
-            stats: stats.$promise,
+            statistics: statistics.$promise,
             frequency: frequency.$promise
           }).then(function(data) {
-            $scope.frequency = FrequencyChartsData(data.frequency, angular.noop, group_level, data.stats.count)
+            $scope.frequency = FrequencyChartsData(data.frequency, angular.noop, group_level, data.statistics.count)
           })
       }
 

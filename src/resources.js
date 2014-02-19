@@ -8,31 +8,34 @@ angular.module('Ventolone.resources', ['ngResource'])
 })
 .factory('Sample',function ($resource,resourcesConf,getRows) {
 
-  function makeView(viewName, isArray, transformResponse) {
+  function makeView(viewName, isArray, transformResponse, params) {
     return {
       method:'GET',
       transformResponse: transformResponse || getRows,
       isArray: isArray == null ? true : isArray,
-      params:{
+      params: angular.extend({
         viewName: viewName
-      }
+      },params)
     }
   }
 
-  function makeStatsView(viewName){
+  function makeStatsView(viewName, params){
     return makeView(viewName, false, function (data) {
       return (getRows(data)[0] || {}).value
-    })
+    },params || {})
   }
 
   return $resource(resourcesConf.basePath + '/sample/_design/charts/_view/:viewName',{
     group:true,
     descending:false
   },{
-    time:      makeView('time'),
-    frequency: makeView('frequency'),
-    stats:     makeStatsView('stats'),
-    dates:     makeStatsView('dates'),
+    time:       makeView('time'),
+    frequency:  makeView('frequency'),
+    stats:      makeStatsView('stats'),
+    dates:      makeStatsView('dates'),
+    statistics: makeStatsView('statistics', {
+      group_level:1
+    }),
   })
 })
 .factory('Anemometer', function ($resource, resourcesConf, getRows) {
