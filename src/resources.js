@@ -95,3 +95,16 @@ angular.module('Ventolone.resources', ['ngResource'])
     }
   }
 })
+.factory('params', function($http, resourcesConf){
+  return $http({
+    method:'get',
+    url: resourcesConf.basePath+'/sample/_design/charts',
+    transformResponse: function (data) {
+      var exports = {}
+      eval(JSON.parse(data).views.lib.params)
+      return exports
+    }
+  }).then(function (response) {
+    return response.data
+  })
+})
