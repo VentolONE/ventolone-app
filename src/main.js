@@ -76,24 +76,24 @@ angular.module('Ventolone', [
 
     $scope.dataFrequency = 4
 
-    $scope.timeSpan = {
-      from: '2013-08-15',
-      to: '2013-09-15'
-    }
-
-
     Sample.dates(function(dates) {
       $scope.timeSpan = {
         from: $filter('date')(new Date(dates.min * 1000), 'yyyy-MM-dd'),
         to: $filter('date')(new Date(dates.max * 1000), 'yyyy-MM-dd')
       }
+
+      $scope.$watch('dataFrequency', updateTimeCharts)
+      $scope.$watch('timeSpan.to', updateTimeCharts)
+      $scope.$watch('timeSpan.from', updateTimeCharts)
+      
+      $scope.$watch('dataFrequency', updateFrequencyCharts)
+      $scope.$watch('timeSpan.to', updateFrequencyCharts)
+      $scope.$watch('timeSpan.from', updateFrequencyCharts)
     })
 
     params.then(function() {
       console.log(arguments)
     })
-
-    var intervals = [3600 * 24, 3600 * 6, 3600, 1800, 600, 60]
 
     var tooltip = $interpolate('{{date | date:"dd/MM/yyyy - hh:mm"}} <br/> {{label}}: {{value|number}}');
 
@@ -113,9 +113,6 @@ angular.module('Ventolone', [
       }
     }
 
-    $scope.$watch('dataFrequency', updateTimeCharts)
-    $scope.$watch('timeSpan.to', updateTimeCharts)
-    $scope.$watch('timeSpan.from', updateTimeCharts)
 
     var stats = Sample.stats({
       key: JSON.stringify([anemometer._id]),
@@ -139,9 +136,6 @@ angular.module('Ventolone', [
           })
       }
 
-    $scope.$watch('dataFrequency', updateFrequencyCharts)
-    $scope.$watch('timeSpan.to', updateFrequencyCharts)
-    $scope.$watch('timeSpan.from', updateFrequencyCharts)
 
   })
   .controller('UploadController', function($scope, readFile, csvReader, upload, anemometer) {
