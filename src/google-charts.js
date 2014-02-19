@@ -43,8 +43,6 @@ angular.module('ngGoogleCharts', [])
                 chart.draw(dataTable, options);
               })
             }
-
-
           })
         })
       }
