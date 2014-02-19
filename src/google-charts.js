@@ -12,18 +12,19 @@ angular.module('ngGoogleCharts', [])
         }
       });
       return deferred.promise
-  }])
-  .directive('chart', function(chartReady,$q){
+    }
+  ])
+  .directive('chart', function(chartReady, $q) {
     return {
       restrict: 'E',
-      scope:{
-        data:'=',
+      scope: {
+        data: '=',
         options: '=',
         title: '@'
       },
-      template:'<div></div>',
-      replace:true,
-      link: function($scope,$element,$attrs){
+      template: '<div></div>',
+      replace: true,
+      link: function($scope, $element, $attrs) {
         var options = angular.extend({
           title: $attrs.title,
           tooltip: {
@@ -31,14 +32,12 @@ angular.module('ngGoogleCharts', [])
           }
         }, $scope.options)
 
-        chartReady.then(function(){
-          $scope.$watch('data',function (data) {
-            if(data){
-              $q.when(data).then(function (data) {
-                var dataTable = data instanceof google.visualization.DataTable
-                                  ? data
-                                  : google.visualization.arrayToDataTable(data),
-                    chart     = $scope.chart || new google.visualization[$attrs.chartType]($element[0]);
+        chartReady.then(function() {
+          $scope.$watch('data', function(data) {
+            if (data) {
+              $q.when(data).then(function(data) {
+                var dataTable = data instanceof google.visualization.DataTable ? data : google.visualization.arrayToDataTable(data),
+                  chart = $scope.chart || new google.visualization[$attrs.chartType]($element[0]);
 
                 chart.draw(dataTable, options);
               })

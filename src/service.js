@@ -19,14 +19,14 @@ angular.module('Ventolone')
       return deferred.promise
     }
   })
-  .factory('CsvIterator',function () {
-    function splitRow(row){
-      return row.split(',').map(function(cell){
+  .factory('CsvIterator', function() {
+    function splitRow(row) {
+      return row.split(',').map(function(cell) {
         return angular.isNumber(cell) ? parseFloat(cell) : cell.trim()
       })
     }
 
-    var CsvIterator = function (file) {
+    var CsvIterator = function(file) {
       this.rows = file.split('\n')
       return this
     }
@@ -39,8 +39,8 @@ angular.module('Ventolone')
       return this.rows.length
     }
 
-    CsvIterator.prototype.slice = function(begin,end) {
-      return this.rows.slice(begin,end).map(splitRow)
+    CsvIterator.prototype.slice = function(begin, end) {
+      return this.rows.slice(begin, end).map(splitRow)
     }
 
     CsvIterator.prototype.hasNext = function() {
@@ -48,8 +48,8 @@ angular.module('Ventolone')
     }
     return CsvIterator
   })
-  .factory('csvReader',function (CsvIterator) {
-    return function (file) {
+  .factory('csvReader', function(CsvIterator) {
+    return function(file) {
       return new CsvIterator(file)
     }
   })
