@@ -18,11 +18,19 @@ angular.module('ngGoogleCharts', [])
       restrict: 'E',
       scope:{
         data:'=',
-        options: '='
+        options: '=',
+        title: '@'
       },
       template:'<div></div>',
       replace:true,
       link: function($scope,$element,$attrs){
+        var options = angular.extend({
+          title: $attrs.title,
+          tooltip: {
+            isHtml: true
+          }
+        }, $scope.options)
+
         chartReady.then(function(){
           $scope.$watch('data',function (data) {
             if(data){
@@ -31,7 +39,7 @@ angular.module('ngGoogleCharts', [])
                                 : google.visualization.arrayToDataTable(data),
                   chart     = $scope.chart || new google.visualization[$attrs.chartType]($element[0]);
 
-              chart.draw(dataTable, $scope.options);
+              chart.draw(dataTable, options);
             }
           })
         })

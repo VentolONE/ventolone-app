@@ -1,6 +1,6 @@
 angular.module('Ventolone', [
   'ngRoute'
-  ,'ngGoogleCharts'
+  ,'Ventolone.charts'
   ,'Ventolone.resources'
   ,'ngRouting'
 ])
@@ -66,7 +66,7 @@ angular.module('Ventolone', [
     })
   }
 })
-.controller('AnemometerCtrl', function ($scope, anemometer, $routeParams, Sample , chartReady , $q, $interpolate, $filter, params) {
+.controller('AnemometerCtrl', function ($scope, anemometer, Sample , $q, $interpolate, $filter, params, TimeChartsData, timeFilter, frequencyTimeFilter, FrequencyChartsData) {
   $scope.anemometer = anemometer
 
   $scope.options = {
@@ -100,131 +100,56 @@ angular.module('Ventolone', [
 
     var intervals =  [3600 * 24, 3600 * 6, 3600, 1800, 600, 60]
 
-    function timeFilter(dataFrequency, date){
-      if(date){
-        var d = new Date(date)
-            ,filter = [new Date(d.getUTCFullYear(), d.getMonth(), 1)]
+    var tooltip = $interpolate('{{date | date:"dd/MM/yyyy - hh:mm"}} <br/> {{label}}: {{value|number}}');
 
-        for(var i=1; i<dataFrequency-1; i++){
-          filter.push(new Date(date))
-        }
-        return filter
-      }
-      return []
-    }
-
-    $scope.$watch('dataFrequency+plant+timeSpan.from+timeSpan.to', function() {
+    function updateTimeCharts(){
       var dataFrequency = $scope.dataFrequency
       if(dataFrequency && anemometer._id){
-        $q.all({
-          chartReady: chartReady,
-          data: Sample.time({
-            group_level:dataFrequency,
-            startkey:  JSON.stringify([anemometer._id].concat(timeFilter(dataFrequency, $scope.timeSpan.from))),
-            endkey:  JSON.stringify([anemometer._id].concat(timeFilter(dataFrequency, $scope.timeSpan.to)).concat({}))
-          }).$promise
-        }).then(function(ready) {
-          var dt = new google.visualization.DataTable()
-              dtBattery = new google.visualization.DataTable()
+        var samples = Sample.time({
+          group_level:dataFrequency,
+          startkey:  JSON.stringify([anemometer._id].concat(timeFilter(dataFrequency, $scope.timeSpan.from))),
+          endkey:  JSON.stringify([anemometer._id].concat(timeFilter(dataFrequency, $scope.timeSpan.to)).concat({}))
+        })
 
-          dt.addColumn('date', 'Date')
-          dt.addColumn('number', 'Speed (m/s)')
-          dt.addColumn({type: 'string', role: 'tooltip', p:{html:true}})
-
-          dtBattery.addColumn('date','Date')
-          dtBattery.addColumn('number','Battery %')
-          dtBattery.addColumn({type: 'string', role: 'tooltip', p:{html:true}})
-
-
-          var tooltip = $interpolate('{{date | date:"dd/MM/yyyy - hh:mm"}} <br/> {{label}}: {{value|number}}');
-
-          $scope.dtOptions = {
-            'title': 'Velocità',
-            tooltip: {isHtml: true}
-          }
-
-          $scope.dtBatteryOptions = {
-            'title': 'Batteria',
-            tooltip: {isHtml: true}
-          }
-
-          $scope.dtFrequencyOptions = {
-            'title': 'Frequenza'
-          }
-
-          angular.forEach(ready.data, function(value, key) {
-            var date = new Date(value.key[value.key.length - 1])
-
-            dt.addRow([
-              date,
-              value.value.speed,
-              tooltip({date:date, label:'Speed (m/s)', value:value.value.speed})
-            ])
-            dtBattery.addRow([
-              date,
-              value.value.battery*100,
-              tooltip({date:date, label:'Battery %', value:value.value.battery*100})
-            ])
-          });
-
-          $scope.data = dt
-          $scope.dataBattery = dtBattery
+        TimeChartsData(samples.$promise, tooltip).then(function (data) {
+          $scope.data = data.speed
+          $scope.dataBattery = data.battery          
         })
       }
-    });
-
-    function frequencyTimeFilter (dataFrequency, date, val) {
-      if(date){
-        var d = new Date(date)
-            ,filter = [new Date(d.getUTCFullYear(), d.getMonth(), 1),val]
-
-        for(var i=1; i<dataFrequency-1; i++){
-          filter.push(new Date(date))
-          filter.push(val)
-        }
-        return filter
-      }
-      return []
     }
 
-    $scope.$watch('dataFrequency+plant+timeSpan.from+timeSpan.to',function () {
+    $scope.$watch('dataFrequency', updateTimeCharts)
+    $scope.$watch('timeSpan.to'  , updateTimeCharts)
+    $scope.$watch('timeSpan.from', updateTimeCharts)
+
+    var stats = Sample.stats({
+      key: JSON.stringify([anemometer._id]),
+      group_level:1
+    }) 
+
+    function updateFrequencyCharts () {
       var dataFrequency = $scope.dataFrequency
-      var group_level = (dataFrequency-1)*2+1
+          ,group_level = (dataFrequency-1)*2+1
+          ,frequency = Sample.frequency({
+            group_level: group_level,
+            startkey: JSON.stringify([anemometer._id].concat(frequencyTimeFilter(dataFrequency, $scope.timeSpan.from, -100))),
+            endkey: JSON.stringify([anemometer._id].concat(frequencyTimeFilter(dataFrequency, $scope.timeSpan.to, 100)))
+          })
 
       $q.all({
-        chartReady:chartReady,
-        stats: Sample.stats({
-          key: JSON.stringify([anemometer._id]),
-          group_level:1
-        }).$promise,
-        frequency: Sample.frequency({
-          group_level: group_level,
-          startkey: JSON.stringify([anemometer._id].concat(frequencyTimeFilter(dataFrequency, $scope.timeSpan.from, -100))),
-          endkey: JSON.stringify([anemometer._id].concat(frequencyTimeFilter(dataFrequency, $scope.timeSpan.to, 100)))
-        }).$promise
+        stats: stats.$promise,
+        frequency: frequency.$promise
       }).then(function (data) {
-        var total = data.stats.count
-            ,dt = new google.visualization.DataTable()
 
-        dt.addColumn('number', 'Speed (m/s)')
-        dt.addColumn('number', '%')
-
-        var d = {}
-
-        angular.forEach(data.frequency, function(value, key) {
-          d[value.key[group_level-1]]= (d[value.key[group_level-1]] || 0) + value.value
-        });
-
-        function byValue(a,b){return a-b}
-
-        angular.forEach(Object.keys(d).map(parseFloat).sort(byValue), function(key){
-          dt.addRow([parseFloat(key), parseInt(d[key])/total*100 ])
-        });
-
-        $scope.frequency = dt
+        FrequencyChartsData(data.frequency, angular.noop, group_level, data.stats.count).then(function (data) {
+          $scope.frequency = data
+        })
       })
-    })
+    }
 
+    $scope.$watch('dataFrequency', updateFrequencyCharts)
+    $scope.$watch('timeSpan.to'  , updateFrequencyCharts)
+    $scope.$watch('timeSpan.from', updateFrequencyCharts)
 
 })
 .controller('UploadController',function ($scope, readFile, csvReader, upload, anemometer) {
