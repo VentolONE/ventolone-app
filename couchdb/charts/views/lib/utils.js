@@ -1,5 +1,5 @@
 function intervalsKeys(doc) {
-  var intervals = [3600 * 24, 3600 * 6, 3600, 1800, 600, 60],
+  var intervals = require('views/lib/params').intervals,
     keys = [],
     date;
 
