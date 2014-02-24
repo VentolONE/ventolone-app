@@ -80,18 +80,20 @@ angular.module('Ventolone', [
       startkey: JSON.stringify([anemometer._id]),
       endkey: JSON.stringify([anemometer._id,{}]),
     },function (statistics) {
-      $scope.timeSpan = {
-        from: $filter('date')(new Date(statistics.time.min * 1000), 'yyyy-MM-dd'),
-        to: $filter('date')(new Date(statistics.time.max * 1000), 'yyyy-MM-dd')
-      }
+      if(statistics.time){
+        $scope.timeSpan = {
+          from: $filter('date')(new Date(statistics.time.min * 1000), 'yyyy-MM-dd'),
+          to: $filter('date')(new Date(statistics.time.max * 1000), 'yyyy-MM-dd')
+        }
 
-      $scope.$watch('dataFrequency', updateTimeCharts)
-      $scope.$watch('timeSpan.to', updateTimeCharts)
-      $scope.$watch('timeSpan.from', updateTimeCharts)
-      
-      $scope.$watch('dataFrequency', updateFrequencyCharts)
-      $scope.$watch('timeSpan.to', updateFrequencyCharts)
-      $scope.$watch('timeSpan.from', updateFrequencyCharts)
+        $scope.$watch('dataFrequency', updateTimeCharts)
+        $scope.$watch('timeSpan.to', updateTimeCharts)
+        $scope.$watch('timeSpan.from', updateTimeCharts)
+        
+        $scope.$watch('dataFrequency', updateFrequencyCharts)
+        $scope.$watch('timeSpan.to', updateFrequencyCharts)
+        $scope.$watch('timeSpan.from', updateFrequencyCharts)
+      }
     })
 
     var tooltip = $interpolate('{{date | date:"dd/MM/yyyy - hh:mm"}} <br/> {{label}}: {{value|number}}');
