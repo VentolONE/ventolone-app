@@ -1,8 +1,30 @@
 <a href="{{h.anemometersPath()}}">List</a>
 <a href="{{h.newAnemometerPath()}}">New</a>
 
-<ul>
-  <li ng-repeat="anemometer in anemometers">
-    <a href="{{h.anemometerPath(anemometer._id)}}">{{anemometer.locale}}</a> | <a ng-click="delete(anemometer)">X</a> ({{anemometer._id}})
-  </li>
-</ul>
+<div class="row" ng-repeat="anemometer in anemometers" ng-show="anemometer.statistics">
+  <div class="col-xs-3">
+    <a href="{{h.anemometerPath(anemometer._id)}}">{{anemometer.locale}}</a> | <a ng-click="delete(anemometer)">X</a>     
+  </div>
+  <div class="col-xs-6">
+    <div class="row">
+      <div class="col-xs-6">
+        <gauge-chart data="anemometer.statistics.chart.battery" green="[90,100]" red="[0,10]" yellow="[75,90]"/>
+      </div>
+      <div class="col-xs-6">
+        <gauge-chart data="anemometer.statistics.chart.speed" green="[12,15]" red="[0,1]" yellow="[null,null]" max="15"/>
+      </div>
+    </div>
+  </div>
+  <div class="col-xs-3">
+    <div class="well">
+      <dl>
+        <dt>From</dt>
+        <dd>{{anemometer.statistics.data.time.min | date}}</dd>
+        <dt>To</dt>
+        <dd>{{anemometer.statistics.data.time.max | date}}</dd>
+        <dt># Samples</dt>
+        <dd>{{anemometer.statistics.data.count | number}}</dd>
+      </dl>
+    </div>
+  </div>
+</div>

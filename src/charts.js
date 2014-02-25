@@ -87,6 +87,23 @@ angular.module('Ventolone.charts', ['ngGoogleCharts'])
       })
     }
   })
+  .factory('StatisticsChart', function(chartReady, $q, $filter){
+    return function (statistics){
+      return $q.all([statistics, chartReady]).then(function (statistics) {
+        var stats = statistics[0]
+        return {
+          battery: google.visualization.arrayToDataTable([
+            ['Label', 'Value'],
+            ['Battery', parseInt((stats.battery.sum / stats.count)*100)]
+          ]),
+          speed: google.visualization.arrayToDataTable([
+            ['Label', 'Value'],
+            ['Speed', parseInt((stats.speed.sum / stats.count) * 100)/100]
+          ]),
+        }
+      })
+    }
+  })
   .constant('byValue', function byValue(a, b) {
     return a - b
   })

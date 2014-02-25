@@ -13,8 +13,32 @@ angular.module('Ventolone.controllers',[])
       Anemometer.save($scope.anemometer)
     }
   })
-  .controller('AnemometerListCtrl', function($scope, Anemometer, $route) {
+  .controller('AnemometerListCtrl', function($scope, Anemometer, $route, Sample, StatisticsChart) {
+    $scope.options = {
+      width: 400, height: 120,
+      redFrom: 90, redTo: 100,
+      yellowFrom:75, yellowTo: 90,
+      minorTicks: 5
+    };
+
     Anemometer.query().$promise.then(function(anemometers) {
+      anemometers.map(function (anemometer) {
+        Sample.statistics({
+          startkey: JSON.stringify([anemometer._id]),
+          endkey: JSON.stringify([anemometer._id,{}])
+        },function (statistics) {
+          if(statistics.time){
+            StatisticsChart(statistics).then(function (stats) {
+              statistics.time.min = new Date(statistics.time.min*1000)
+              statistics.time.max = new Date(statistics.time.max*1000)
+              anemometer.statistics = {
+                chart : stats,
+                data: statistics
+              }
+            })
+          }
+        })
+      })
       $scope.anemometers = anemometers
     })
 
