@@ -1,4 +1,5 @@
 exports.intervals = [3600 * 24, 3600 * 6, 3600, 1800, 600, 60]
+exports.batteryMaxLevel = 423
 exports.intervalsGroupLevels = {
   month: 2,
   day: 3,

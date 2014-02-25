@@ -1,4 +1,5 @@
 function(doc) {
+  var batteryMaxLevel = require('views/lib/params').batteryMaxLevel
   emit(require('views/lib/utils').generateKeys(doc.anemometerId, doc), {
     speed: {
       max: parseFloat(doc.speed),
@@ -11,9 +12,9 @@ function(doc) {
       sum: parseFloat(doc.time)
     },
     battery: {
-      max: parseFloat(doc.battery),
-      min: parseFloat(doc.battery),
-      sum: parseFloat(doc.battery)
+      max: parseFloat(doc.battery / batteryMaxLevel),
+      min: parseFloat(doc.battery / batteryMaxLevel),
+      sum: parseFloat(doc.battery / batteryMaxLevel)
     },
     count: 1
   });
