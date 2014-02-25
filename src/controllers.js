@@ -28,7 +28,7 @@ angular.module('Ventolone.controllers',[])
           endkey: JSON.stringify([anemometer._id,{}])
         },function (statistics) {
           if(statistics.time){
-            StatisticsChart(statistics).then(function (stats) {
+            StatisticsChart(statistics,anemometer).then(function (stats) {
               statistics.time.min = new Date(statistics.time.min*1000)
               statistics.time.max = new Date(statistics.time.max*1000)
               anemometer.statistics = {
@@ -79,7 +79,7 @@ angular.module('Ventolone.controllers',[])
         $scope.$watch('dataFrequency', updateTimeCharts)
         $scope.$watch('timeSpan.to', updateTimeCharts)
         $scope.$watch('timeSpan.from', updateTimeCharts)
-        
+
         $scope.$watch('dataFrequency', updateFrequencyCharts)
         $scope.$watch('timeSpan.to', updateFrequencyCharts)
         $scope.$watch('timeSpan.from', updateFrequencyCharts)
