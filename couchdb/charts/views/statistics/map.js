@@ -4,7 +4,8 @@ function(doc) {
     speed: {
       max: parseFloat(doc.speed),
       min: parseFloat(doc.speed),
-      sum: parseFloat(doc.speed)
+      sum: parseFloat(doc.speed),
+      cubicSum: Math.pow(parseFloat(doc.speed),3)
     },
     time: {
       max: parseFloat(doc.time),
