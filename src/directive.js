@@ -76,3 +76,40 @@ angular.module('Ventolone')
       template:'<i class="fa fa-{{name}}"></i>'
     }
   })
+  .directive('progressBar',function ($interval) {
+    return {
+      restrict:'E',
+      replace:true,
+      scope: {
+        value: '=',
+        type: '=',
+        active: '=',
+        text: '@',
+        striped: '=',
+        bouncing:'@'
+      },
+      template:''+
+      '<div class="progress active" ng-class="{active: active, \'progress-striped\': striped }">'+
+      '  <div class="progress-bar progress-bar-{{type}}" role="progressbar" ng-style="style" style="width: {{value || 100}}%;">'+
+      '    <span class="sr-only">{{text}}</span>'+
+      '  </div>'+
+      '</div>',
+      link: function ($scope, $element, $attrs) {
+        $scope.$watch('value',function (value) {
+          $scope.style={
+            width: (value||0)*100 +'%'
+          }
+        })
+        if($attrs.bouncing){
+          var i = 0
+          $interval(function () {
+            i+=Math.PI/360
+            $scope.style = {
+              width: ($scope.value||0.3)*100 +'%'
+              ,'margin-left': (Math.abs((1 - $scope.value) * Math.sin(i))  * 100) +'%'
+            }
+          },5)
+        }
+      }
+    }
+  })
