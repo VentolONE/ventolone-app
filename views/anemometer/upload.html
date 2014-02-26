@@ -1,11 +1,6 @@
 <div class="row margin-top">
   <div class="col-xs-12">
-    <progress-bar
-      value="uploadsProgress"
-      active="uploadActive"
-      striped="uploadActive"
-      type="uploadsComplete ? 'success' : ''"
-      text="{{uploadsPerCent | number}}% Complete"></progress-bar>
+    <progress-bar value="uploadsProgress" active="uploadsActive" striped="uploadsActive" type="uploadsComplete ? 'success' : ''" text="{{uploadsPerCent | number}}% Complete"></progress-bar>
   </div>
 </div>
 <div class="row">
@@ -22,9 +17,26 @@
 </div>
 <div class="row margin-top" ng-if="uploadsComplete">
   <div class="col-xs-12">
-    <progress-bar value="0.2" text="Processing..."
-        striped="true"
-        active="true" 
-        bouncing="uploadsComplete"></progress-bar>
+    <progress-bar value="0.2" text="Processing..." striped="true" active="true" bouncing="uploadsComplete"></progress-bar>
+  </div>
+</div>
+<div class="row margin-top" ng-show="processingComplete">
+  <div class="well col-xs-12">
+    <h3>Processing complete</h3>
+    <h4>Go to
+      <a href="{{h.anemometerPath(anemometer._id)}}">{{anemometer.locale}}</a>
+    </h4>
+    <dl>
+      <dt># Values</dt>
+      <dd>{{statistics.count}}</dd>
+      <dt>From</dt>
+      <dd>{{statistics.time.min | date}}</dd>
+      <dt>To</dt>
+      <dd>{{statistics.time.max | date}}</dd>
+      <dt>Battery</dt>
+      <dd>{{statistics.battery.sum / statistics.count | number}}</dd>
+      <dt>Speed</dt>
+      <dd>{{statistics.speed.sum / statistics.count | number}}</dd>
+    </dl>
   </div>
 </div>

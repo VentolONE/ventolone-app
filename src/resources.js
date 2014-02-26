@@ -38,6 +38,14 @@ angular.module('Ventolone.resources', ['ngResource'])
     }),
   })
 })
+.factory('anemometerStatistics', function(Sample){
+  return function name(anemometerId, cb){
+    return Sample.statistics({
+      startkey: JSON.stringify([anemometerId]),
+      endkey: JSON.stringify([anemometerId,{}])
+    },cb)
+  };
+})
 .factory('Anemometer', function ($resource, resourcesConf, getRows) {
   return $resource(resourcesConf.basePath+'/anemometer/:id',{},{
     query: {

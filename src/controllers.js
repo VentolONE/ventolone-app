@@ -124,7 +124,8 @@ angular.module('Ventolone.controllers',[])
 
 
   })
-  .controller('UploadController', function($scope, readFile, csvReader, upload, anemometer) {
+  .controller('UploadController', function($scope, readFile, csvReader, upload, anemometer, anemometerStatistics) {
+    $scope.anemometer = anemometer
     var iterator
     $scope.$watch('importFile', function(file) {
       if (file) {
@@ -147,6 +148,14 @@ angular.module('Ventolone.controllers',[])
           $scope.uploadsComplete = true
           $scope.importFile = null
           $scope.numberOfLines = null
+
+          anemometerStatistics(anemometer._id, function (stats) {
+            stats.time.max = new Date(stats.time.max * 1000)
+            stats.time.min = new Date(stats.time.min * 1000)
+            $scope.statistics = stats
+            $scope.uploadsComplete = false
+            $scope.processingComplete = true
+          })
         },
         angular.noop,
         function(val) {
