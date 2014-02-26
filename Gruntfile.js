@@ -6,7 +6,7 @@ module.exports = function(grunt) {
     'couch-push': {
       localhost: {
         files: {
-          'http://localhost:5984/sample': 'design_docs.json'
+          'http://localhost:5984/ventolone%2Fsample': 'design_docs.json'
         }
       }
     },
@@ -24,10 +24,54 @@ module.exports = function(grunt) {
           keepalive: true
         }
       }
+    },
+    http: {
+      'drop-sample-db': {
+        options: {
+          url: 'http://localhost:5984/ventolone%2Fsample',
+          method: 'DELETE',
+          ignoreErrors: true
+        }
+      },
+      'drop-anemometer-db': {
+        options: {
+          url: 'http://localhost:5984/ventolone%2Fanemometer',
+          method: 'DELETE',
+          ignoreErrors: true
+        }
+      },
+      'create-sample-db': {
+        options: {
+          url: 'http://localhost:5984/ventolone%2Fsample',
+          method: 'PUT',
+          ignoreErrors: true
+        }
+      },
+      'create-anemometer-db': {
+        options: {
+          url: 'http://localhost:5984/ventolone%2Fanemometer',
+          method: 'PUT',
+          ignoreErrors: true
+        }
+      }
     }
   });
 
-  // Actually load this plugin's task(s).
   grunt.loadNpmTasks('grunt-contrib-connect');
   grunt.loadNpmTasks('grunt-couch');
+  grunt.loadNpmTasks('grunt-http');
+
+  grunt.task.registerTask('recreate-sample-db', [
+    'http:drop-sample-db'
+    , 'http:create-sample-db'
+    , 'couch'
+  ]);
+  
+  grunt.task.registerTask('reset-db',[
+    'http:drop-sample-db'
+    ,'http:create-sample-db'
+    ,'http:drop-anemometer-db'
+    ,'http:create-anemometer-db'
+    ,'couch'
+  ]);
 };
