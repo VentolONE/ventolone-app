@@ -13,7 +13,7 @@
       <icon name="table"></icon>
       Choose file
     </file>
-    <button class="btn btn-primary btn-block" ng-disabled="!numberOfLines" ng-click="submit()">
+    <button class="btn btn-primary btn-block" ng-disabled="!numberOfLines || uploadsActive" ng-click="submit()">
       <icon name="upload"></icon>
       Upload {{numberOfLines| number}} records
     </button>
