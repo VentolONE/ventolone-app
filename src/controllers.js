@@ -151,7 +151,8 @@ angular.module('Ventolone.controllers',[])
         angular.noop,
         function(val) {
           $scope.uploads++
-          $scope.uploadsPerCent = $scope.uploads / up.numberOfUploads * 100
+          $scope.uploadsProgress = $scope.uploads / up.numberOfUploads
+          $scope.uploadsPercent  = $scope.uploads / up.numberOfUploads * 100
         }
       )
     }

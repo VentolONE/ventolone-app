@@ -1,14 +1,15 @@
-<div class="row">
+<div class="row margin-top">
   <div class="col-xs-12">
-    <div class="progress" ng-class="{'active progress-striped': uploadsActive}">
-      <div class="progress-bar" ng-class="{'progress-bar-success': uploadsComplete}" role="progressbar" aria-valuenow="{{uploadsPerCent}}" aria-valuemin="0" aria-valuemax="100" style="width: {{uploadsPerCent}}%;">
-        <span class="sr-only">{{uploadsPerCent | number}}% Complete</span>
-      </div>
-    </div>
+    <progress-bar
+      value="uploadsProgress"
+      active="uploadActive"
+      striped="uploadActive"
+      type="uploadsComplete ? 'success' : ''"
+      text="{{uploadsPerCent | number}}% Complete"></progress-bar>
   </div>
 </div>
 <div class="row">
-  <div class="col-xs-6 col-xs-offset-3">
+  <div class="col-xs-8 col-xs-offset-2">
     <file ng-model="importFile" class="btn-block">
       <icon name="table"></icon>
       Choose file
@@ -19,14 +20,8 @@
     </button>
   </div>
 </div>
-<div class="row" ng-show="uploadComplete || true">
+<div class="row margin-top" ng-show="uploadComplete || true">
   <div class="col-xs-12">
-    <div class="well">
-      <div class="progress active progress-striped">
-        <div class="progress-bar progress-bar-warning" role="progressbar" style="width: 100%;">
-          <span class="sr-only">Processing</span>
-        </div>
-      </div>
-    </div>
+    <progress-bar value="0.2" text="Processing..." striped="true" active="true" bouncing="true"></progress-bar>
   </div>
 </div>
