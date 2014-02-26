@@ -93,7 +93,7 @@ angular.module('Ventolone.charts', ['ngGoogleCharts'])
         var stats = statistics[0]
 
         var airDensity = 1.225 * Math.pow(1 - 0.000026 * anemometer.altitudine, 4.256)
-        stats.maxPowerExtractable  = 0.593 * 0.5 * airDensity * (stats.speed.sum / stats.count)
+        stats.maxPowerExtractable  = 0.593 * 0.5 * airDensity * Math.pow(stats.speed.cubicSum / stats.count, 1/3)
 
         return {
           battery: google.visualization.arrayToDataTable([
