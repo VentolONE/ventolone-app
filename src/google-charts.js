@@ -72,8 +72,8 @@ angular.module('ngGoogleCharts', [])
           ,yellowTo: $scope.yellow[1]
           ,max: $scope.max
           ,min: $scope.min
-          ,width: 120
-          ,height: 120
+          ,width: 220
+          ,height: 220
         }, $scope.options)
 
         chartReady.then(function () {

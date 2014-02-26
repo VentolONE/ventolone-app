@@ -88,9 +88,13 @@ angular.module('Ventolone.charts', ['ngGoogleCharts'])
     }
   })
   .factory('StatisticsChart', function(chartReady, $q, $filter){
-    return function (statistics){
+    return function (statistics,anemometer){
       return $q.all([statistics, chartReady]).then(function (statistics) {
         var stats = statistics[0]
+
+        var airDensity = 1.225 * Math.pow(1 - 0.000026 * anemometer.altitudine, 4.256)
+        stats.maxPowerExtractable  = 0.593 * 0.5 * airDensity * (stats.speed.sum / stats.count)
+
         return {
           battery: google.visualization.arrayToDataTable([
             ['Label', 'Value'],
@@ -99,6 +103,10 @@ angular.module('Ventolone.charts', ['ngGoogleCharts'])
           speed: google.visualization.arrayToDataTable([
             ['Label', 'Value'],
             ['Speed', parseInt((stats.speed.sum / stats.count) * 100)/100]
+          ]),
+          maxPowerExtractable: google.visualization.arrayToDataTable([
+            ['Label', 'Value'],
+            ['Potenziale', parseInt((stats.maxPowerExtractable) * 100)/100]
           ]),
         }
       })
