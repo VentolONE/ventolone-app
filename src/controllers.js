@@ -135,6 +135,7 @@ angular.module('Ventolone.controllers',[])
         })
       }
     })
+    
 
     $scope.submit = function() {
       $scope.uploads = 0

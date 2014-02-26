@@ -21,22 +21,38 @@
   </div>
 </div>
 <div class="row margin-top" ng-show="processingComplete">
-  <div class="well col-xs-12">
-    <h3>Processing complete</h3>
-    <h4>Go to
-      <a href="{{h.anemometerPath(anemometer._id)}}">{{anemometer.locale}}</a>
-    </h4>
-    <dl>
-      <dt># Values</dt>
-      <dd>{{statistics.count}}</dd>
-      <dt>From</dt>
-      <dd>{{statistics.time.min | date}}</dd>
-      <dt>To</dt>
-      <dd>{{statistics.time.max | date}}</dd>
-      <dt>Battery</dt>
-      <dd>{{statistics.battery.sum / statistics.count | number}}</dd>
-      <dt>Speed</dt>
-      <dd>{{statistics.speed.sum / statistics.count | number}}</dd>
-    </dl>
+  <div class="panel panel-info">
+    <div class="panel-heading">
+      <h3 class="panel-title">Processing complete</h3>
+    </div>
+    <div class="panel-body">
+      <div class="row">
+        <div class="col-xs-6">
+          <dl>
+            <dt># Values</dt>
+            <dd>{{statistics.count}}</dd>
+            <dt>From</dt>
+            <dd>{{statistics.time.min | date}}</dd>
+            <dt>To</dt>
+            <dd>{{statistics.time.max | date}}</dd>
+          </dl>
+        </div>
+        <div class="col-xs-6">
+          <dl>
+            <dt>Battery</dt>
+            <dd>{{statistics.battery.sum / statistics.count | number}}</dd>
+            <dt>Speed</dt>
+            <dd>{{statistics.speed.sum / statistics.count | number}}</dd>
+          </dl>
+        </div>
+      </div>
+    </div>
+    <div class="panel-footer">
+      <div>
+        <span>Go to
+          <a href="{{h.anemometerPath(anemometer._id)}}">{{anemometer.locale}}</a>
+        </span>
+      </div>
+    </div>
   </div>
 </div>
