@@ -100,16 +100,6 @@ angular.module('Ventolone')
             width: (value||0)*100 +'%'
           }
         })
-        if($attrs.bouncing){
-          var i = 0
-          $interval(function () {
-            i+=Math.PI/360
-            $scope.style = {
-              width: ($scope.value||0.3)*100 +'%'
-              ,'margin-left': (Math.abs((1 - $scope.value) * Math.sin(i))  * 100) +'%'
-            }
-          },5)
-        }
       }
     }
   })

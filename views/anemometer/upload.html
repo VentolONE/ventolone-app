@@ -15,9 +15,9 @@
     </button>
   </div>
 </div>
-<div class="row margin-top" ng-if="uploadsComplete">
+<div class="row margin-top" ng-show="uploadsComplete">
   <div class="col-xs-12">
-    <progress-bar value="0.2" text="Processing..." striped="true" active="true" bouncing="uploadsComplete"></progress-bar>
+    <progress-bar value="0.2" striped="true" active="true" class="bouncing"></progress-bar>
   </div>
 </div>
 <div class="row margin-top" ng-show="processingComplete">
