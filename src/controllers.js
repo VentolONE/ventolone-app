@@ -3,7 +3,7 @@ angular.module('Ventolone.controllers',[])
     $scope.anemometer = {}
     $scope.submit = function() {
       Anemometer.save($scope.anemometer).$promise.then(function(response) {
-        $location.path($scope.h.anemometerRoute(response.id))
+        $location.path($scope.h.anemometerUploadRoute(response.id))
       })
     }
   })
@@ -124,7 +124,7 @@ angular.module('Ventolone.controllers',[])
 
 
   })
-  .controller('UploadController', function($scope, readFile, csvReader, upload, anemometer, anemometerStatistics) {
+  .controller('AnemometerUploadCtrl', function($scope, readFile, csvReader, upload, anemometer, anemometerStatistics) {
     $scope.anemometer = anemometer
     var iterator
     $scope.$watch('importFile', function(file) {

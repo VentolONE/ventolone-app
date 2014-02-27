@@ -18,23 +18,13 @@ angular.module('Ventolone', [
       .withResolve(resolve)
       .build([{
         model: 'anemometer'
+        , actions:['upload']
       }])
-      .when('/anemometers/:anemometerId/upload', {
-        templateUrl: 'views/anemometer/upload.html',
-        controller: 'UploadController',
-        resolve: resolve
-      })
       .when('/', {
         redirectTo: '/anemometers'
       })
   })
   .run(function($rootScope, routing) {
     $rootScope.h = routing.helpers
-    $rootScope.h.anemometerUploadPath = function(anemometerId) {
-      return $rootScope.h.anemometerPath(anemometerId) + '/upload'
-    }
-    $rootScope.h.anemometerUploadRoute = function(anemometerId) {
-      return $rootScope.h.anemometerRoute(anemometerId) + '/upload'
-    }
   })
   

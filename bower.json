@@ -17,7 +17,7 @@
     "angular": "~1.2.13",
     "angular-route": "~1.2.13",
     "angular-resource": "~1.2.13",
-    "angular-routing": "~0.0.2",
+    "angular-routing": "~0.1.0",
     "angular-i18n": "~1.2.13"
   }
 }
