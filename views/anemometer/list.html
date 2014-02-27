@@ -1,33 +1,43 @@
-<a href="{{h.anemometersPath()}}">List</a>
 <a href="{{h.newAnemometerPath()}}">New</a>
 
-<div class="row" ng-repeat="anemometer in anemometers" ng-show="anemometer.statistics">
-  <div class="col-xs-3">
-    <a href="{{h.anemometerPath(anemometer._id)}}">{{anemometer.locale}}</a> | <a ng-click="delete(anemometer)">X</a>
-  </div>
-  <div class="col-xs-6">
-    <div class="row">
-      <div class="col-xs-4">
-        <gauge-chart data="anemometer.statistics.chart.battery" green="[90,100]" red="[0,10]" yellow="[75,90]"/>
-      </div>
-      <div class="col-xs-4">
-        <gauge-chart data="anemometer.statistics.chart.speed" green="[12,15]" red="[0,1]" yellow="[null,null]" max="15"/>
-      </div>
-      <div class="col-xs-4">
-        <gauge-chart data="anemometer.statistics.chart.maxPowerExtractable" green="[12,15]" red="[0,1]" yellow="[null,null]" />
+<div class="row" ng-repeat="anemometer in anemometers">
+  <div class="panel panel-info">
+    <div class="panel-heading">
+      <div class="panel-title">
+        <a href="{{h.anemometerPath(anemometer._id)}}">{{anemometer.locale}}
+          </a> 
+        <span ng-show="anemometer.statistics">
+          #{{anemometer.statistics.data.count | number}} ({{anemometer.statistics.data.time.min | date}} - {{anemometer.statistics.data.time.max | date}})
+        </span>
       </div>
     </div>
-  </div>
-  <div class="col-xs-3">
-    <div class="well">
-      <dl>
-        <dt>From</dt>
-        <dd>{{anemometer.statistics.data.time.min | date}}</dd>
-        <dt>To</dt>
-        <dd>{{anemometer.statistics.data.time.max | date}}</dd>
-        <dt># Samples</dt>
-        <dd>{{anemometer.statistics.data.count | number}}</dd>
-      </dl>
+    <div class="panel-body">
+      <div class="row" ng-show="!anemometer.statistics">
+        <div class="col-xs-12">
+          <p>No data</p>
+        </div>
+      </div>
+      <div class="row" ng-if="anemometer.statistics">
+        <div class="col-xs-4">
+          <gauge-chart data="anemometer.statistics.chart.battery" green="[90,100]" red="[0,10]" yellow="[75,90]" />
+        </div>
+        <div class="col-xs-4">
+          <gauge-chart data="anemometer.statistics.chart.speed" green="[12,15]" red="[0,1]" yellow="[null,null]" max="15" />
+        </div>
+        <div class="col-xs-4">
+          <gauge-chart data="anemometer.statistics.chart.maxPowerExtractable" green="[12,15]" red="[0,1]" yellow="[null,null]" />
+        </div>
+      </div>
+    </div>
+    <div class="panel-footer">
+      <button class="btn btn-danger" ng-click="delete(anemometer)">
+        <icon name="eraser"></icon>
+        Delete
+      </button>
+      <a class="btn btn-primary" href="{{h.anemometerUploadPath(anemometer._id)}}">
+        <icon name="upload"></icon>
+        Upload
+      </a>
     </div>
   </div>
 </div>
