@@ -1,6 +1,6 @@
 angular.module('Ventolone.resources', ['ngResource'])
 .constant('resourcesConf',{
-  basePath: 'http://localhost:5984',
+  basePath: 'http://localhost:5984/ventolone%2F',
   numberOfDocs: 10000
 })
 .constant('getRows',function getRows(data) {
@@ -25,7 +25,7 @@ angular.module('Ventolone.resources', ['ngResource'])
     },params || {})
   }
 
-  return $resource(resourcesConf.basePath + '/sample/_design/charts/_view/:viewName',{
+  return $resource(resourcesConf.basePath + 'sample/_design/charts/_view/:viewName',{
     group:true,
     descending:false
   },{
@@ -47,7 +47,7 @@ angular.module('Ventolone.resources', ['ngResource'])
   };
 })
 .factory('Anemometer', function ($resource, resourcesConf, getRows) {
-  return $resource(resourcesConf.basePath+'/anemometer/:id',{},{
+  return $resource(resourcesConf.basePath+'anemometer/:id',{},{
     query: {
       isArray: true,
       method: 'GET',
@@ -73,9 +73,11 @@ angular.module('Ventolone.resources', ['ngResource'])
     for (var i = 0; i < numberOfUploads; i++) {
       (function(batch){
         var slice = iterator.slice(i*numberOfDocs,(i+1)*numberOfDocs)
-            , promise = $http.post(resourcesConf.basePath+'/sample/_bulk_docs', {
+            , promise = $http.post(resourcesConf.basePath+'sample/_bulk_docs', {
               docs: slice.map(function (item) {
-                if(item[0]){
+                if( item.reduce(function (acc, value) {
+                  return acc && value!=null && angular.isNumber(parseFloat(value))
+                }, true) ){
                   return {
                     _id:         anemometer._id+'_'+item[0]
                     , anemometerId: anemometer._id
@@ -109,7 +111,7 @@ angular.module('Ventolone.resources', ['ngResource'])
 .factory('params', function($http, resourcesConf){
   return $http({
     method:'get',
-    url: resourcesConf.basePath+'/sample/_design/charts',
+    url: resourcesConf.basePath+'sample/_design/charts',
     transformResponse: function (data) {
       var exports = {}
       eval(JSON.parse(data).views.lib.params)
