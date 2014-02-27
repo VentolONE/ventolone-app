@@ -76,7 +76,7 @@ angular.module('Ventolone.resources', ['ngResource'])
             , promise = $http.post(resourcesConf.basePath+'sample/_bulk_docs', {
               docs: slice.map(function (item) {
                 if( item.reduce(function (acc, value) {
-                  return acc && value!=null && angular.isNumber(parseFloat(value))
+                  return acc && value!=null && value!="" && angular.isNumber(parseFloat(value))
                 }, true) ){
                   return {
                     _id:         anemometer._id+'_'+item[0]
