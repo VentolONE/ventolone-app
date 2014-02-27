@@ -103,3 +103,16 @@ angular.module('Ventolone')
       }
     }
   })
+  .directive('anemometerPanel', function ($rootScope) {
+    return {
+      restrict: 'E',
+      replace: true,
+      templateUrl: 'partials/anemometer-panel.html',
+      scope: {
+        anemometer: '='
+      },
+      link:function ($scope) {
+        $scope.h = $rootScope.h
+      }
+    }
+  })
