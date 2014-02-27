@@ -75,7 +75,7 @@ angular.module('Ventolone.resources', ['ngResource'])
         var slice = iterator.slice(i*numberOfDocs,(i+1)*numberOfDocs)
             , promise = $http.post(resourcesConf.basePath+'sample/_bulk_docs', {
               docs: slice.map(function (item) {
-                if( item.reduce(function (acc, value) {
+                if(item.length == 4 && item.reduce(function (acc, value) {
                   return acc && value!=null && value!="" && angular.isNumber(parseFloat(value))
                 }, true) ){
                   return {
