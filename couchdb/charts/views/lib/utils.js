@@ -4,7 +4,7 @@ function intervalsKeys(doc) {
     date;
 
   for (var i in intervals) {
-    keys.push(new Date(parseInt(doc.time / intervals[i]) * intervals[i] * 1000))
+    keys.push(new Date(parseInt(doc.t / intervals[i]) * intervals[i] * 1000))
   }
   date = keys[0]
 

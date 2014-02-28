@@ -79,13 +79,13 @@ angular.module('Ventolone.resources', ['ngResource'])
                   return acc && value!=null && value!="" && angular.isNumber(parseFloat(value))
                 }, true) ){
                   return {
-                    _id:         anemometer._id+'_'+item[0]
-                    , anemometerId: anemometer._id
-                    , time:      item[0]
-                    , deltaT:    item[1]
-                    , p:         item[2]
-                    , battery:   item[3]
-                    , speed:     item[2]/item[1] * 1.1176
+                    _id: anemometer._id+'_'+item[0]
+                    , a: anemometer._id
+                    , t: item[0]
+                    , d: item[1]
+                    , p: item[2]
+                    , b: item[3]
+                    , s: item[2]/item[1] * 1.1176
                   }
                 }
               }).filter(angular.identity)
