@@ -124,6 +124,7 @@ angular.module('Ventolone.controllers',[])
 
     $scope.submit = function() {
       $scope.uploads = 0
+      $scope.uploadErrors = 0
       $scope.uploadsActive = true
       $scope.uploadsComplete = false
 
@@ -140,7 +141,10 @@ angular.module('Ventolone.controllers',[])
             $scope.processingComplete = true
           })
         },
-        angular.noop,
+        function () {
+          $scope.uploadErrors++
+          $scope.uploadErrorsProgress = $scope.uploadErrors / up.numberOfUploads
+        },
         function(val) {
           $scope.uploads++
           $scope.uploadsProgress = $scope.uploads / up.numberOfUploads
