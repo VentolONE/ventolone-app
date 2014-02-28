@@ -1,6 +1,11 @@
 <div class="row margin-top">
   <div class="col-xs-12">
-    <progress-bar value="uploadsProgress" active="uploadsActive" striped="uploadsActive" type="uploadsComplete ? 'success' : ''" text="{{uploadsPerCent | number}}% Complete"></progress-bar>
+    <progress-bar 
+      error="0.2"
+      value="uploadsProgress" 
+      active="uploadsActive" 
+      striped="uploadsActive" 
+      type="uploadsComplete ? 'success' : ''" text="{{uploadsPerCent | number}}% Complete"></progress-bar>
   </div>
 </div>
 <div class="row">

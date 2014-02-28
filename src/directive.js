@@ -82,6 +82,7 @@ angular.module('Ventolone')
       replace:true,
       scope: {
         value: '=',
+        error: '=',
         type: '=',
         active: '=',
         text: '@',
@@ -93,10 +94,18 @@ angular.module('Ventolone')
       '  <div class="progress-bar progress-bar-{{type}}" role="progressbar" ng-style="style" style="width: {{value || 100}}%;">'+
       '    <span class="sr-only">{{text}}</span>'+
       '  </div>'+
+      '  <div class="progress-bar progress-bar-danger" role="progressbar" ng-style="styleError">'+
+      '    <span class="sr-only">{{text}}</span>'+
+      '  </div>'+
       '</div>',
       link: function ($scope, $element, $attrs) {
         $scope.$watch('value',function (value) {
-          $scope.style={
+          $scope.style = {
+            width: (value||0)*100 +'%'
+          }
+        })
+        $scope.$watch('error',function (value) {
+          $scope.styleError = {
             width: (value||0)*100 +'%'
           }
         })
