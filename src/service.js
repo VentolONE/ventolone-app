@@ -53,3 +53,22 @@ angular.module('Ventolone')
       return new CsvIterator(file)
     }
   })
+  .factory('anemometerStats', function(Sample, StatisticsChart) {
+    return function anemometerStats(anemometer) {
+      return Sample.statistics({
+        startkey: JSON.stringify([anemometer._id]),
+        endkey: JSON.stringify([anemometer._id, {}])
+      }, function(statistics) {
+        if (statistics.time) {
+          StatisticsChart(statistics, anemometer).then(function(stats) {
+            statistics.time.min = new Date(statistics.time.min * 1000)
+            statistics.time.max = new Date(statistics.time.max * 1000)
+            anemometer.statistics = {
+              chart: stats,
+              data: statistics
+            }
+          })
+        }
+      }).$promise
+    }
+  })

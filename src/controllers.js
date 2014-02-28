@@ -13,7 +13,7 @@ angular.module('Ventolone.controllers',[])
       Anemometer.save($scope.anemometer)
     }
   })
-  .controller('AnemometerListCtrl', function($scope, Anemometer, $route, Sample, StatisticsChart) {
+  .controller('AnemometerListCtrl', function($scope, Anemometer, $route, anemometerStats) {
     $scope.options = {
       width: 400, height: 120,
       redFrom: 90, redTo: 100,
@@ -23,21 +23,7 @@ angular.module('Ventolone.controllers',[])
 
     Anemometer.query().$promise.then(function(anemometers) {
       anemometers.map(function (anemometer) {
-        Sample.statistics({
-          startkey: JSON.stringify([anemometer._id]),
-          endkey: JSON.stringify([anemometer._id,{}])
-        },function (statistics) {
-          if(statistics.time){
-            StatisticsChart(statistics,anemometer).then(function (stats) {
-              statistics.time.min = new Date(statistics.time.min*1000)
-              statistics.time.max = new Date(statistics.time.max*1000)
-              anemometer.statistics = {
-                chart : stats,
-                data: statistics
-              }
-            })
-          }
-        })
+        anemometerStats(anemometer)
       })
       $scope.anemometers = anemometers
     })
@@ -124,7 +110,7 @@ angular.module('Ventolone.controllers',[])
 
 
   })
-  .controller('AnemometerUploadCtrl', function($scope, readFile, csvReader, upload, anemometer, anemometerStatistics, Sample, StatisticsChart) {
+  .controller('AnemometerUploadCtrl', function($scope, readFile, csvReader, upload, anemometer, anemometerStatistics, Sample, anemometerStats) {
     $scope.anemometer = anemometer
     var iterator
     $scope.$watch('importFile', function(file) {
@@ -135,7 +121,6 @@ angular.module('Ventolone.controllers',[])
         })
       }
     })
-    
 
     $scope.submit = function() {
       $scope.uploads = 0
@@ -150,22 +135,9 @@ angular.module('Ventolone.controllers',[])
           $scope.importFile = null
           $scope.numberOfLines = null
 
-          Sample.statistics({
-            startkey: JSON.stringify([anemometer._id]),
-            endkey: JSON.stringify([anemometer._id,{}])
-          },function (statistics) {
+          anemometerStats(anemometer).then(function () {
             $scope.uploadsComplete = false
             $scope.processingComplete = true
-            if(statistics.time){
-              StatisticsChart(statistics,anemometer).then(function (stats) {
-                statistics.time.min = new Date(statistics.time.min*1000)
-                statistics.time.max = new Date(statistics.time.max*1000)
-                anemometer.statistics = {
-                  chart : stats,
-                  data: statistics
-                }
-              })
-            }
           })
         },
         angular.noop,
