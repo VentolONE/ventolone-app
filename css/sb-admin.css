@@ -187,3 +187,7 @@ table.tablesorter thead tr th:hover {
   padding-top: 150px;
   min-height: 600px;
 }
+
+.overlay .fa{
+  font-size: 15em;
+}
