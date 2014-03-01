@@ -8,7 +8,7 @@ function intervalsKeys(doc) {
   }
   date = keys[0]
 
-  keys.unshift(new Date(date.getUTCFullYear(), date.getMonth(), 1))
+  keys.unshift(date.getUTCFullYear()*100 + date.getMonth())
   return keys
 }
 

@@ -118,7 +118,7 @@ angular.module('Ventolone.charts', ['ngGoogleCharts'])
   .constant('timeFilter', function timeFilter(dataFrequency, date) {
     if (date) {
       var d = new Date(date),
-        filter = [new Date(d.getUTCFullYear(), d.getMonth(), 1)]
+        filter = [d.getUTCFullYear()*100 + d.getMonth()]
 
       for (var i = 1; i < dataFrequency - 1; i++) {
         filter.push(new Date(date))
