@@ -15,6 +15,7 @@ angular.module('Ventolone.resources', ['ngResource'])
       isArray: isArray == null ? true : isArray,
       params: angular.extend({
         viewName: viewName
+        , stale: 'update_after'
       },params)
     }
   }
