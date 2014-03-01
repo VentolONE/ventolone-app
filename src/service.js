@@ -54,11 +54,11 @@ angular.module('Ventolone')
     }
   })
   .factory('anemometerStats', function(Sample, StatisticsChart) {
-    return function anemometerStats(anemometer) {
-      return Sample.statistics({
+    return function anemometerStats(anemometer, params) {
+      return Sample.statistics(angular.extend(params || {},{
         startkey: JSON.stringify([anemometer._id]),
         endkey: JSON.stringify([anemometer._id, {}])
-      }, function(statistics) {
+      }), function(statistics) {
         if (statistics.time) {
           StatisticsChart(statistics, anemometer).then(function(stats) {
             statistics.time.min = new Date(statistics.time.min * 1000)
