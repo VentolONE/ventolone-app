@@ -7,10 +7,12 @@ angular.module('Ventolone.controllers', [])
       })
     }
   })
-  .controller('EditAnemometerCtrl', function($scope, Anemometer, anemometer) {
+  .controller('EditAnemometerCtrl', function($scope, Anemometer, anemometer, $location) {
     $scope.anemometer = anemometer
     $scope.submit = function() {
-      Anemometer.save($scope.anemometer)
+      Anemometer.save($scope.anemometer,function (response) {
+        $location.path($scope.h.anemometerRoute(response._id))
+      })
     }
   })
   .controller('AnemometerListCtrl', function($scope, Anemometer, $route) {
