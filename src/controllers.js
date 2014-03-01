@@ -127,6 +127,7 @@ angular.module('Ventolone.controllers',[])
       $scope.uploadErrors = 0
       $scope.uploadsActive = true
       $scope.uploadsComplete = false
+      $scope.uploadErrorsProgress = 0
 
       var up = upload(anemometer, iterator)
       up.promise.then(
