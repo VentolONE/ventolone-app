@@ -75,6 +75,7 @@ angular.module('Ventolone.controllers',[])
     var tooltip = $interpolate('{{date | date:"dd/MM/yyyy - hh:mm"}} <br/> {{label}}: {{value|number}}');
 
     function updateTimeCharts() {
+      $scope.showOverlay = true
       var dataFrequency = $scope.dataFrequency
       if (dataFrequency && anemometer._id) {
         var samples = Sample.time({
@@ -86,6 +87,7 @@ angular.module('Ventolone.controllers',[])
         TimeChartsData(samples.$promise, tooltip).then(function(data) {
           $scope.data = data.speed
           $scope.dataBattery = data.battery
+          $scope.showOverlay = false
         })
       }
     }
