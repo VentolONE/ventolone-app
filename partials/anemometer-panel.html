@@ -1,8 +1,9 @@
 <div class="panel panel-info">
   <div class="panel-heading">
     <div class="panel-title">
-      <a href="{{h.anemometerPath(anemometer._id)}}"><strong>{{anemometer.locale}}</strong>
-          </a> 
+      <a href="{{h.anemometerPath(anemometer._id)}}">
+        <strong>{{anemometer.locale}}</strong>
+      </a>
       <span ng-show="anemometer.statistics">
         #{{anemometer.statistics.data.count | number}} ({{anemometer.statistics.data.time.min | date}} - {{anemometer.statistics.data.time.max | date}})
       </span>
@@ -27,13 +28,17 @@
     </div>
   </div>
   <div class="panel-footer">
-    <button class="btn btn-danger" ng-click="delete(anemometer)">
-      <icon name="eraser"></icon>
-      Delete
-    </button>
     <a class="btn btn-primary" href="{{h.anemometerUploadPath(anemometer._id)}}">
       <icon name="upload"></icon>
       Upload
     </a>
+    <a class="btn btn-warning" href="{{h.editAnemometerPath(anemometer._id)}}">
+      <icon name="edit"></icon>
+      Edit
+    </a>
+    <button class="btn btn-danger" ng-click="delete(anemometer)">
+      <icon name="eraser"></icon>
+      Delete
+    </button>
   </div>
 </div>
