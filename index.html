@@ -13,8 +13,8 @@
   <link href="css/bootstrap.css" rel="stylesheet">
 
   <!-- Add custom CSS here -->
-  <link href="css/sb-admin.css" rel="stylesheet">
-  <link href="css/animation.css" rel="stylesheet">
+  <!-- <link href="css/sb-admin.css" rel="stylesheet"> -->
+  <link href="css/main.css" rel="stylesheet">
   <link rel="stylesheet" href="font-awesome/css/font-awesome.min.css">
 
   <script src="https://www.google.com/jsapi"></script>
@@ -43,14 +43,17 @@
 </head>
 
 <body>
-
-  <div id="wrapper">
-
-    <!-- Sidebar -->
-    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-      <!-- Collect the nav links, forms, and other content for toggling -->
-      <div class="collapse navbar-collapse navbar-ex1-collapse">
-        <ul class="nav navbar-nav side-nav">
+  <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+    <div class="container">
+      <div class="navbar-header">
+        <a class="navbar-brand" href="#">Ventolone</a>
+      </div>
+    </div>
+  </div>
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-xs-3">
+        <ul class="nav nav-sidebar">
           <li>
             <a href="{{h.newAnemometerPath()}}">
               <icon name="plus-square"></icon>
@@ -76,19 +79,12 @@
             </a>
           </li>
         </ul>
-
       </div>
-      <!-- /.navbar-collapse -->
-    </nav>
-
-    <div id="page-wrapper">
-      <!-- /.row -->
-      <div ng-view></div>
+      <div class="col-xs-9">
+        <div ng-view></div>
+      </div>
     </div>
-    <!-- /#page-wrapper -->
-
   </div>
-
 </body>
 
 </html>
