@@ -7,13 +7,13 @@ angular.module('Ventolone.controllers',[])
       })
     }
   })
-  .controller('EditAnemometerCtrl', function($scope, Anemometer, anemometer, $routeParams) {
+  .controller('EditAnemometerCtrl', function($scope, Anemometer, anemometer) {
     $scope.anemometer = anemometer
     $scope.submit = function() {
       Anemometer.save($scope.anemometer)
     }
   })
-  .controller('AnemometerListCtrl', function($scope, Anemometer, $route, anemometerStats) {
+  .controller('AnemometerListCtrl', function($scope, Anemometer, $route) {
     $scope.options = {
       width: 400, height: 120,
       redFrom: 90, redTo: 100,
@@ -22,9 +22,6 @@ angular.module('Ventolone.controllers',[])
     };
 
     Anemometer.query().$promise.then(function(anemometers) {
-      anemometers.map(function (anemometer) {
-        anemometerStats(anemometer)
-      })
       $scope.anemometers = anemometers
     })
 
@@ -40,15 +37,9 @@ angular.module('Ventolone.controllers',[])
   .controller('AnemometerCtrl', function($scope, anemometer, Sample, $q, $interpolate, $filter, params, TimeChartsData, timeFilter, frequencyTimeFilter, FrequencyChartsData) {
     $scope.anemometer = anemometer
 
-    $scope.options = {
-      month: 2,
-      day: 3,
-      half_day: 4,
-      hour: 5,
-      half_hour: 6,
-      ten_minute: 7,
-      minutes: 8
-    }
+    params.then(function (p) {
+      $scope.options = p.intervalsGroupLevels
+    })
 
     $scope.dataFrequency = 4
 
