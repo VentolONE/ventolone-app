@@ -66,7 +66,7 @@ module.exports = function(grunt) {
     , 'http:create-sample-db'
     , 'couch'
   ]);
-  
+
   grunt.task.registerTask('reset-db',[
     'http:drop-sample-db'
     ,'http:create-sample-db'
