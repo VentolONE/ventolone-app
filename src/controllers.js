@@ -1,5 +1,5 @@
-angular.module('Ventolone.controllers',[])
-.controller('NewAnemometerCtrl', function($scope, Anemometer, $location) {
+angular.module('Ventolone.controllers', [])
+  .controller('NewAnemometerCtrl', function($scope, Anemometer, $location) {
     $scope.anemometer = {}
     $scope.submit = function() {
       Anemometer.save($scope.anemometer).$promise.then(function(response) {
@@ -15,9 +15,12 @@ angular.module('Ventolone.controllers',[])
   })
   .controller('AnemometerListCtrl', function($scope, Anemometer, $route) {
     $scope.options = {
-      width: 400, height: 120,
-      redFrom: 90, redTo: 100,
-      yellowFrom:75, yellowTo: 90,
+      width: 400,
+      height: 120,
+      redFrom: 90,
+      redTo: 100,
+      yellowFrom: 75,
+      yellowTo: 90,
       minorTicks: 5
     };
 
@@ -37,7 +40,7 @@ angular.module('Ventolone.controllers',[])
   .controller('AnemometerCtrl', function($scope, anemometer, Sample, $q, $interpolate, $filter, params, TimeChartsData, timeFilter, frequencyTimeFilter, FrequencyChartsData) {
     $scope.anemometer = anemometer
 
-    params.then(function (p) {
+    params.then(function(p) {
       $scope.options = p.intervalsGroupLevels
     })
 
@@ -45,9 +48,9 @@ angular.module('Ventolone.controllers',[])
 
     var statistics = Sample.statistics({
       startkey: JSON.stringify([anemometer._id]),
-      endkey: JSON.stringify([anemometer._id,{}]),
-    },function (statistics) {
-      if(statistics.time){
+      endkey: JSON.stringify([anemometer._id, {}]),
+    }, function(statistics) {
+      if (statistics.time) {
         $scope.timeSpan = {
           from: $filter('date')(new Date(statistics.time.min * 1000), 'yyyy-MM-dd'),
           to: $filter('date')(new Date(statistics.time.max * 1000), 'yyyy-MM-dd')
@@ -84,22 +87,22 @@ angular.module('Ventolone.controllers',[])
     }
 
 
-      function updateFrequencyCharts() {
-        var dataFrequency = $scope.dataFrequency,
-          group_level = (dataFrequency - 1) * 2 + 1,
-          frequency = Sample.frequency({
-            group_level: group_level,
-            startkey: JSON.stringify([anemometer._id].concat(frequencyTimeFilter(dataFrequency, $scope.timeSpan.from, -100))),
-            endkey: JSON.stringify([anemometer._id].concat(frequencyTimeFilter(dataFrequency, $scope.timeSpan.to, 100)))
-          })
+    function updateFrequencyCharts() {
+      var dataFrequency = $scope.dataFrequency,
+        group_level = (dataFrequency - 1) * 2 + 1,
+        frequency = Sample.frequency({
+          group_level: group_level,
+          startkey: JSON.stringify([anemometer._id].concat(frequencyTimeFilter(dataFrequency, $scope.timeSpan.from, -100))),
+          endkey: JSON.stringify([anemometer._id].concat(frequencyTimeFilter(dataFrequency, $scope.timeSpan.to, 100)))
+        })
 
-          $q.all({
-            statistics: statistics.$promise,
-            frequency: frequency.$promise
-          }).then(function(data) {
-            $scope.frequency = FrequencyChartsData(data.frequency, angular.noop, group_level, data.statistics.count)
-          })
-      }
+        $q.all({
+          statistics: statistics.$promise,
+          frequency: frequency.$promise
+        }).then(function(data) {
+          $scope.frequency = FrequencyChartsData(data.frequency, angular.noop, group_level, data.statistics.count)
+        })
+    }
 
 
   })
@@ -130,19 +133,19 @@ angular.module('Ventolone.controllers',[])
           $scope.importFile = null
           $scope.numberOfLines = null
 
-          anemometerStats(anemometer).then(function () {
+          anemometerStats(anemometer).then(function() {
             $scope.uploadsComplete = false
             $scope.processingComplete = true
           })
         },
-        function () {
+        function() {
           $scope.uploadErrors++
           $scope.uploadErrorsProgress = $scope.uploadErrors / up.numberOfUploads
         },
         function(val) {
           $scope.uploads++
           $scope.uploadsProgress = $scope.uploads / up.numberOfUploads
-          $scope.uploadsPercent  = $scope.uploads / up.numberOfUploads * 100
+          $scope.uploadsPercent = $scope.uploads / up.numberOfUploads * 100
         }
       )
     }
