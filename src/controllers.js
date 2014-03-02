@@ -1,4 +1,6 @@
-angular.module('Ventolone.controllers', [])
+angular.module('Ventolone.controllers', [
+  'Ventolone.resources.services'
+])
   .controller('NewAnemometerCtrl', function($scope, Anemometer, $location) {
     $scope.anemometer = {}
     $scope.submit = function() {
@@ -10,7 +12,7 @@ angular.module('Ventolone.controllers', [])
   .controller('EditAnemometerCtrl', function($scope, Anemometer, anemometer, $location) {
     $scope.anemometer = anemometer
     $scope.submit = function() {
-      Anemometer.save($scope.anemometer,function (response) {
+      Anemometer.save($scope.anemometer, function(response) {
         $location.path($scope.h.anemometerRoute(response._id))
       })
     }

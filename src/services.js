@@ -1,4 +1,6 @@
-angular.module('Ventolone')
+angular.module('Ventolone.services', [
+  'Ventolone.charts'
+])
   .factory('readFile', function($q, $rootScope) {
     return function(file) {
       var fr = new FileReader(),
@@ -53,12 +55,9 @@ angular.module('Ventolone')
       return new CsvIterator(file)
     }
   })
-  .factory('anemometerStats', function(Sample, StatisticsChart) {
+  .factory('anemometerStats', function(StatisticsChart, anemometerStatistics) {
     return function anemometerStats(anemometer, params) {
-      return Sample.statistics(angular.extend(params || {},{
-        startkey: JSON.stringify([anemometer._id]),
-        endkey: JSON.stringify([anemometer._id, {}])
-      }), function(statistics) {
+      return anemometerStatistics(anemometer._id, {}, function(statistics) {
         if (statistics.time) {
           StatisticsChart(statistics, anemometer).then(function(stats) {
             statistics.time.min = new Date(statistics.time.min * 1000)
