@@ -1,28 +1,38 @@
 digraph dependencies{
-  node[shape="record"]
+	node[shape="record"] 
+"Ventolone.services"[label="{Ventolone.services|readFile\nCsvIterator\ncsvReader\nanemometerStats}"]
+"Ventolone.routing"[label="{Ventolone.routing|}"]
+"Ventolone.resources"[label="{Ventolone.resources|resourcesConf\nresourcesConf\nSample\nAnemometer\nupload\nparams}"]
+"Ventolone.resources.services"[label="{Ventolone.resources.services|anemometerById\nanemometerStatistics\ntimeFilter\nfrequencyTimeFilter}"]
+"Ventolone.app"[label="{Ventolone.app|}"]
+"ngGoogleCharts"[label="{ngGoogleCharts|chartReady\nchart\ngaugeChart}"]
+"Ventolone.directives"[label="{Ventolone.directives|vField\nfile\nicon\nprogressBar\nanemometerPanel}"]
+"Ventolone.controllers"[label="{Ventolone.controllers|NewAnemometerCtrl\nEditAnemometerCtrl\nAnemometerListCtrl\nAnemometerCtrl\nAnemometerUploadCtrl}"]
+"Ventolone.configuration"[label="{Ventolone.configuration|configuration}"]
+"Ventolone.charts"[label="{Ventolone.charts|TimeChartsData\nFrequencyChartsData\nStatisticsChart\nbyValue}"]
 
-  "Ventolone.configuration"[label="{Ventolone.configuration|configuration}"];
-  "Ventolone.resources"[label="{Ventolone.resources|Sample\nAnemometer\nupload\nparams}"]
-  "Ventolone.resources.services"[label="{Ventolone.resources.services|anemometerById\nanemometerStatistics}"]
-  "Ventolone.controllers"[label="{Ventolone.controllers|AnemometerCtrl\nAnemometerListCtrl\nAnemometerUploadCtrl\nEditAnemometerCtrl\nNewAnemometerCtrl}"]
-  "ngGoogleCharts"[label="{ngGoogleCharts|chartReady\nchart\ngaugeChart}"]
-  "Ventolone.charts"[label="{Ventolone.charts|TimeChartsData\nFrequencyChartsData\nStatisticsChart}"]
-  "Ventolone.services"[label="{Ventolone.services|anemometerStats\ncsvReader\nreadFile\nCsvIterator}"]
-  "Ventolone.directives"[label="{Ventolone.directives|file\nicon\nprogressBar\nanemometerPanel}"]
 
-  "Ventolone.app" -> "Ventolone.controllers"
-  "Ventolone.app" -> "Ventolone.directives"
-  "Ventolone.app" -> "Ventolone.routing"
+"Ventolone.charts" -> "ngGoogleCharts"
+"Ventolone.charts" -> "Ventolone.resources.services"
 
-  "Ventolone.charts" -> "ngGoogleCharts"
-  "Ventolone.charts" -> "Ventolone.resources.services"
-  "Ventolone.controllers" -> "Ventolone.resources.services"
-  "Ventolone.directives" -> "Ventolone.services"
-  "Ventolone.resources" -> "ngResource"[color="red"]
-  "Ventolone.resources" -> "Ventolone.configuration"
-  "Ventolone.resources.services" -> "Ventolone.resources";
-  "Ventolone.routing" -> "ngRouting"[color="red"]
-  "Ventolone.routing" -> "Ventolone.resources.services"
-  "Ventolone.services" -> "Ventolone.charts"
-  "Ventolone.services" -> "Ventolone.resources.services"
+
+"Ventolone.controllers" -> "Ventolone.resources.services"
+
+"Ventolone.directives" -> "Ventolone.services"
+
+
+"Ventolone.app" -> "Ventolone.controllers"
+"Ventolone.app" -> "Ventolone.directives"
+"Ventolone.app" -> "Ventolone.routing"
+
+"Ventolone.resources.services" -> "Ventolone.resources"
+
+"Ventolone.resources" -> "ngResource"
+"Ventolone.resources" -> "Ventolone.configuration"
+
+"Ventolone.routing" -> "ngRouting"
+"Ventolone.routing" -> "Ventolone.resources.services"
+
+"Ventolone.services" -> "Ventolone.charts"
+"Ventolone.services" -> "Ventolone.resources.services"
 }
