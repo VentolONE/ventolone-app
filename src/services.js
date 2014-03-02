@@ -1,5 +1,6 @@
 angular.module('Ventolone.services', [
-  'Ventolone.charts'
+  'Ventolone.charts',
+  'Ventolone.resources.services'
 ])
   .factory('readFile', function($q, $rootScope) {
     return function(file) {
