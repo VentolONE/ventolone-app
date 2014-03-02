@@ -55,18 +55,17 @@ module.exports = function(grunt) {
         }
       }
     },
-    exec: {
+    graphviz: {
       dependencies: {
-        cmd: function(firstName) {
-
-          return 'dot -Tpng dependencies-graph.dot > dependencies-graph.png';
+        files: {
+          'dependencies-graph.png': 'dependencies-graph.dot',
         }
-      }
+      },
     },
     watch: {
       'dependencies': {
         files: ['dependencies-graph.dot'],
-        tasks: ['exec:dependencies']
+        tasks: ['graphviz:dependencies']
       },
     }
   });
@@ -76,18 +75,13 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-http');
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-exec');
+  grunt.loadNpmTasks('grunt-graphviz');
 
   grunt.task.registerTask('recreate-sample-db', [
-    'http:drop-sample-db'
-    , 'http:create-sample-db'
-    , 'couch'
+    'http:drop-sample-db', 'http:create-sample-db', 'couch'
   ]);
 
-  grunt.task.registerTask('reset-db',[
-    'http:drop-sample-db'
-    ,'http:create-sample-db'
-    ,'http:drop-anemometer-db'
-    ,'http:create-anemometer-db'
-    ,'couch'
+  grunt.task.registerTask('reset-db', [
+    'http:drop-sample-db', 'http:create-sample-db', 'http:drop-anemometer-db', 'http:create-anemometer-db', 'couch'
   ]);
 };
