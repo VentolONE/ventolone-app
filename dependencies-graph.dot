@@ -27,10 +27,10 @@ digraph dependencies{
 
 "Ventolone.resources.services" -> "Ventolone.resources"
 
-"Ventolone.resources" -> "ngResource"
+"Ventolone.resources" -> "ngResource"[color="red"]
 "Ventolone.resources" -> "Ventolone.configuration"
 
-"Ventolone.routing" -> "ngRouting"
+"Ventolone.routing" -> "ngRouting"[color="red"]
 "Ventolone.routing" -> "Ventolone.resources.services"
 
 "Ventolone.services" -> "Ventolone.charts"

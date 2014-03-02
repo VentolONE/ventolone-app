@@ -134,7 +134,12 @@ module.exports = function(grunt) {
 
     modulesDefinition = angular.modules.reduce(function(acc, module) {
       return acc + "\n" + module.modules.reduce(function(depAcc, dep) {
-        return depAcc + "\n" + '"' + module.name + '" -> "' + dep + '"'
+        if(angular.modules.map(function (module) {
+          return module.name
+        }).indexOf(dep)==-1){
+          var attr = "[color=\"red\"]"
+        }
+        return depAcc + "\n" + '"' + module.name + '" -> "' + dep + '"' + (attr || '')
       }, "")
     }, modulesDefinition)
 
