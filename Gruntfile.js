@@ -54,12 +54,28 @@ module.exports = function(grunt) {
           ignoreErrors: true
         }
       }
+    },
+    exec: {
+      dependencies: {
+        cmd: function(firstName) {
+
+          return 'dot -Tpng dependencies-graph.dot > dependencies-graph.png';
+        }
+      }
+    },
+    watch: {
+      'dependencies': {
+        files: ['dependencies-graph.dot'],
+        tasks: ['exec:dependencies']
+      },
     }
   });
 
   grunt.loadNpmTasks('grunt-contrib-connect');
   grunt.loadNpmTasks('grunt-couch');
   grunt.loadNpmTasks('grunt-http');
+  grunt.loadNpmTasks('grunt-contrib-watch');
+  grunt.loadNpmTasks('grunt-exec');
 
   grunt.task.registerTask('recreate-sample-db', [
     'http:drop-sample-db'
