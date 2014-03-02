@@ -12,16 +12,14 @@ digraph dependencies{
   "Ventolone.app" -> "Ventolone.controllers"
   "Ventolone.app" -> "Ventolone.directives"
   "Ventolone.app" -> "Ventolone.routing"
-  
+
+  "Ventolone.charts" -> "ngGoogleCharts"
+  "Ventolone.controllers" -> "Ventolone.resources.services"
   "Ventolone.directives" -> "Ventolone.services"
-  "Ventolone.services" -> "Ventolone.charts"
+  "Ventolone.resources" -> "ngResource"[color="red"]
   "Ventolone.resources" -> "Ventolone.configuration"
   "Ventolone.resources.services" -> "Ventolone.resources";
-  "Ventolone.controllers" -> "Ventolone.resources.services"
-  "Ventolone.charts" -> "ngGoogleCharts"
-  "Ventolone.routing" -> "Ventolone.resources.services"
-  "Ventolone.resources" -> "ngResource"[color="red"]
   "Ventolone.routing" -> "ngRouting"[color="red"]
+  "Ventolone.routing" -> "Ventolone.resources.services"
+  "Ventolone.services" -> "Ventolone.charts"
 }
-
-
