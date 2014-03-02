@@ -7,17 +7,19 @@ digraph dependencies{
   "Ventolone.controllers"[label="{Ventolone.controllers|AnemometerCtrl\nAnemometerListCtrl\nAnemometerUploadCtrl\nEditAnemometerCtrl\nNewAnemometerCtrl}"]
   "ngGoogleCharts"[label="{ngGoogleCharts|chartReady\nchart\ngaugeChart}"]
   "Ventolone.charts"[label="{Ventolone.charts|TimeChartsData\nFrequencyChartsData\nStatisticsChart}"]
+  "Ventolone.services"[label="{Ventolone.services|anemometerStats\ncsvReader\nreadFile\nCsvIterator}"]
 
-  "Ventolone.resources" -> "Ventolone.configuration"
-  "Ventolone.resources.services" -> "Ventolone.resources";
-  "Ventolone.app" -> "Ventolone.configuration" 
   "Ventolone.app" -> "Ventolone.controllers"
   "Ventolone.app" -> "Ventolone.directives"
-  "Ventolone.controllers" -> "Ventolone.resources.services"
-  "Ventolone.directives" -> "Ventolone.resources.services"
-  "Ventolone.charts" -> "ngGoogleCharts"
-  "Ventolone.app" -> "Ventolone.charts"
   "Ventolone.app" -> "Ventolone.routing"
+  
+  "Ventolone.directives" -> "Ventolone.services"
+  "Ventolone.services" -> "Ventolone.charts"
+  "Ventolone.resources" -> "Ventolone.configuration"
+  "Ventolone.resources.services" -> "Ventolone.resources";
+  "Ventolone.controllers" -> "Ventolone.resources.services"
+  "Ventolone.charts" -> "ngGoogleCharts"
+  "Ventolone.routing" -> "Ventolone.resources.services"
   "Ventolone.resources" -> "ngResource"[color="red"]
   "Ventolone.routing" -> "ngRouting"[color="red"]
 }
