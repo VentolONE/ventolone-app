@@ -3,7 +3,7 @@ digraph dependencies{
 
   "Ventolone.configuration"[label="{Ventolone.configuration|configuration}"];
   "Ventolone.resources"[label="{Ventolone.resources|Sample\nAnemometer\nupload\nparams}"]
-  "Ventolone.resources.services"[label="{Ventolone.resources.services|anemometerStatistics}"]
+  "Ventolone.resources.services"[label="{Ventolone.resources.services|anemometerById\nanemometerStatistics}"]
   "Ventolone.controllers"[label="{Ventolone.controllers|AnemometerCtrl\nAnemometerListCtrl\nAnemometerUploadCtrl\nEditAnemometerCtrl\nNewAnemometerCtrl}"]
   "ngGoogleCharts"[label="{ngGoogleCharts|chartReady\nchart\ngaugeChart}"]
   "Ventolone.charts"[label="{Ventolone.charts|TimeChartsData\nFrequencyChartsData\nStatisticsChart}"]
@@ -15,6 +15,7 @@ digraph dependencies{
   "Ventolone.app" -> "Ventolone.routing"
 
   "Ventolone.charts" -> "ngGoogleCharts"
+  "Ventolone.charts" -> "Ventolone.resources.services"
   "Ventolone.controllers" -> "Ventolone.resources.services"
   "Ventolone.directives" -> "Ventolone.services"
   "Ventolone.resources" -> "ngResource"[color="red"]
