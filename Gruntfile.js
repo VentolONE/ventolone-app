@@ -134,7 +134,6 @@ module.exports = function(grunt) {
 
     modulesDefinition = angular.modules.reduce(function(acc, module) {
       return acc + "\n" + module.modules.reduce(function(depAcc, dep) {
-        console.log(module.name, '->', dep)
         return depAcc + "\n" + '"' + module.name + '" -> "' + dep + '"'
       }, "")
     }, modulesDefinition)
