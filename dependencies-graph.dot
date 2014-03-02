@@ -8,6 +8,7 @@ digraph dependencies{
   "ngGoogleCharts"[label="{ngGoogleCharts|chartReady\nchart\ngaugeChart}"]
   "Ventolone.charts"[label="{Ventolone.charts|TimeChartsData\nFrequencyChartsData\nStatisticsChart}"]
   "Ventolone.services"[label="{Ventolone.services|anemometerStats\ncsvReader\nreadFile\nCsvIterator}"]
+  "Ventolone.directives"[label="{Ventolone.directives|file\nicon\nprogressBar\nanemometerPanel}"]
 
   "Ventolone.app" -> "Ventolone.controllers"
   "Ventolone.app" -> "Ventolone.directives"
