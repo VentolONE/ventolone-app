@@ -96,7 +96,7 @@ angular.module('Ventolone.directives', [
       }
     }
   })
-  .directive('anemometerPanel', function($rootScope, anemometerStats) {
+  .directive('anemometerPanel', function($rootScope, anemometerStats, timeFilter) {
     return {
       restrict: 'E',
       replace: true,
@@ -104,15 +104,17 @@ angular.module('Ventolone.directives', [
       scope: {
         anemometer: '=',
         from: '=',
-        to: '='
+        to: '=',
+        dataFrequency: '=frequency'
       },
       link: function($scope) {
         $scope.h = $rootScope.h
 
         function update() {
-          anemometerStats($scope.anemometer)
+          anemometerStats($scope.anemometer, $scope)
         }
 
+        $scope.$watch('dataFrequency', update)
         $scope.$watch('from', update)
         $scope.$watch('to', update)
       }

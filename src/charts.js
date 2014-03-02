@@ -1,9 +1,7 @@
-/**
- * Ventolone.charts Module
- *
- *
- */
-angular.module('Ventolone.charts', ['ngGoogleCharts'])
+angular.module('Ventolone.charts', [
+  'ngGoogleCharts',
+  'Ventolone.resources.services'
+])
   .factory('TimeChartsData', function($q, chartReady) {
     return function(data, tooltipTmpl) {
       return $q.all({
@@ -87,26 +85,26 @@ angular.module('Ventolone.charts', ['ngGoogleCharts'])
       })
     }
   })
-  .factory('StatisticsChart', function(chartReady, $q, $filter){
-    return function (statistics,anemometer){
-      return $q.all([statistics, chartReady]).then(function (statistics) {
+  .factory('StatisticsChart', function(chartReady, $q, $filter) {
+    return function(statistics, anemometer) {
+      return $q.all([statistics, chartReady]).then(function(statistics) {
         var stats = statistics[0]
 
         var airDensity = 1.225 * Math.pow(1 - 0.000026 * anemometer.altitudine, 4.256)
-        stats.maxPowerExtractable  = 0.593 * 0.5 * airDensity * Math.pow(stats.speed.cubicSum / stats.count, 1/3)
+        stats.maxPowerExtractable = 0.593 * 0.5 * airDensity * Math.pow(stats.speed.cubicSum / stats.count, 1 / 3)
 
         return {
           battery: google.visualization.arrayToDataTable([
             ['Label', 'Value'],
-            ['Battery', parseInt((stats.battery.sum / stats.count)*100)]
+            ['Battery', parseInt((stats.battery.sum / stats.count) * 100)]
           ]),
           speed: google.visualization.arrayToDataTable([
             ['Label', 'Value'],
-            ['Speed', parseInt((stats.speed.sum / stats.count) * 100)/100]
+            ['Speed', parseInt((stats.speed.sum / stats.count) * 100) / 100]
           ]),
           maxPowerExtractable: google.visualization.arrayToDataTable([
             ['Label', 'Value'],
-            ['Potenziale', parseInt((stats.maxPowerExtractable) * 100)/100]
+            ['Potenziale', parseInt((stats.maxPowerExtractable) * 100) / 100]
           ]),
         }
       })
@@ -114,29 +112,4 @@ angular.module('Ventolone.charts', ['ngGoogleCharts'])
   })
   .constant('byValue', function byValue(a, b) {
     return a - b
-  })
-  .constant('timeFilter', function timeFilter(dataFrequency, date) {
-    if (date) {
-      var d = new Date(date),
-        filter = [d.getUTCFullYear()*100 + d.getMonth()]
-
-      for (var i = 1; i < dataFrequency - 1; i++) {
-        filter.push(new Date(date))
-      }
-      return filter
-    }
-    return []
-  })
-  .constant('frequencyTimeFilter', function frequencyTimeFilter(dataFrequency, date, val) {
-    if (date) {
-      var d = new Date(date),
-        filter = [new Date(d.getUTCFullYear(), d.getMonth(), 1), val]
-
-      for (var i = 1; i < dataFrequency - 1; i++) {
-        filter.push(new Date(date))
-        filter.push(val)
-      }
-      return filter
-    }
-    return []
   })

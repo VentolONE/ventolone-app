@@ -58,7 +58,7 @@ angular.module('Ventolone.services', [
   })
   .factory('anemometerStats', function(StatisticsChart, anemometerStatistics) {
     return function anemometerStats(anemometer, params) {
-      return anemometerStatistics(anemometer._id, {}, function(statistics) {
+      return anemometerStatistics(anemometer._id, params, function(statistics) {
         if (statistics.time) {
           StatisticsChart(statistics, anemometer).then(function(stats) {
             statistics.time.min = new Date(statistics.time.min * 1000)
