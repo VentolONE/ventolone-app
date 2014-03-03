@@ -65,8 +65,15 @@ module.exports = function(grunt) {
     watch: {
       'dependencies': {
         files: ['src/*.js'],
-        tasks: ['generate-graph','graphviz:dependencies']
+        tasks: ['modules-graph','graphviz:dependencies']
       },
+    },
+    'modules-graph':{
+      dependencies:{
+        files:{
+          'dependencies-graph.dot': ['src/*.js']
+        }
+      }
     }
   });
 
@@ -76,6 +83,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-exec');
   grunt.loadNpmTasks('grunt-graphviz');
+  grunt.loadNpmTasks('grunt-angular-modules-graph');
 
   grunt.task.registerTask('recreate-sample-db', [
     'http:drop-sample-db', 'http:create-sample-db', 'couch'
@@ -85,64 +93,5 @@ module.exports = function(grunt) {
     'http:drop-sample-db', 'http:create-sample-db', 'http:drop-anemometer-db', 'http:create-anemometer-db', 'couch'
   ]);
 
-  grunt.registerTask('generate-graph', 'Generate dependencies graph', function() {
 
-    function addName(name) {
-      this.items.push(name)
-      return this
-    }
-
-    function Module(name, deps) {
-      this.name = name
-      this.modules = deps
-      this.items = []
-    }
-
-    var methods = ['constant', 'controller', 'directive', 'factory', 'filter', 'provider', 'service', 'value']
-
-    methods.forEach(function(method) {
-      Module.prototype[method] = function(name) {
-        return addName.call(this, name)
-      }
-    })
-
-    Module.prototype.run = function() {
-      return this
-    };
-    Module.prototype.config = function() {
-      return this
-    };
-
-    var angular = {
-      modules: [],
-      module: function(name, deps) {
-        var module = new Module(name, deps)
-        this.modules.push(module)
-        return module
-      }
-    }
-
-    grunt.file.recurse('src/', function(abspath) {
-      var file = grunt.file.read(abspath)
-      eval(file)
-    })
-
-    var modulesDefinition = angular.modules.reduce(function(acc, module) {
-      var label = '[label="{' + module.name + '|' + module.items.join('\\n') + '}"]'
-      return '"' + module.name + '"' + label + "\n" + acc
-    }, "")
-
-    modulesDefinition = angular.modules.reduce(function(acc, module) {
-      return acc + "\n" + module.modules.reduce(function(depAcc, dep) {
-        if(angular.modules.map(function (module) {
-          return module.name
-        }).indexOf(dep)==-1){
-          var attr = "[color=\"red\"]"
-        }
-        return depAcc + "\n" + '"' + module.name + '" -> "' + dep + '"' + (attr || '')
-      }, "")
-    }, modulesDefinition)
-
-    grunt.file.write('dependencies-graph.dot', "digraph dependencies{\n\tnode[shape=\"record\"] \n" + modulesDefinition + "\n}")
-  });
 };
