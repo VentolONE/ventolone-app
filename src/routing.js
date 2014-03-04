@@ -4,9 +4,14 @@ angular.module('Ventolone.routing', [
 ])
   .config(function(routingProvider) {
     var resolve = {
-      anemometer: function(anemometerById, $route, $rootScope) {
-        return anemometerById($route.current.pathParams.anemometerId, function(anemometer) {
+      anemometer: function(anemometerById, $route, $rootScope, $location, $q) {
+        var anemometerId = $route.current.pathParams.anemometerId
+        return $q.when(anemometerDeferred = anemometerById(anemometerId)).then(function (anemometer) {
           $rootScope.anemometer = anemometer
+          return anemometer
+        },function () {
+          $rootScope.anemometer = null
+          $location.path($rootScope.h.anemometersRoute())
         })
       }
     }

@@ -1,11 +1,15 @@
 angular.module('Ventolone.resources.services', [
   'Ventolone.resources'
 ])
-  .factory('anemometerById', function(Anemometer) {
-    return function anemometerById(anemometerId, cb) {
-      return anemometerId ? Anemometer.get({
-        id: anemometerId
-      }, cb).$promise : null
+  .factory('anemometerById', function(Anemometer, $q) {
+    return function anemometerById(anemometerId) {
+      if(!anemometerId){
+        return null
+      }else{
+        return Anemometer.get({
+          id: anemometerId
+        }).$promise
+      }
     };
   })
   .factory('anemometerStatistics', function(Sample, timeFilter) {
