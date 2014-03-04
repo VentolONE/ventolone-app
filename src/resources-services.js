@@ -3,13 +3,11 @@ angular.module('Ventolone.resources.services', [
 ])
   .factory('anemometerById', function(Anemometer, $q) {
     return function anemometerById(anemometerId) {
-      if(!anemometerId){
-        return null
-      }else{
-        return Anemometer.get({
-          id: anemometerId
-        }).$promise
-      }
+      if (!anemometerId) return null
+
+      return Anemometer.get({
+        id: anemometerId
+      }).$promise
     };
   })
   .factory('anemometerStatistics', function(Sample, timeFilter) {
