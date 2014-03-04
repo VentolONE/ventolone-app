@@ -32,7 +32,7 @@ angular.module('Ventolone.controllers', [
       })
     }
   })
-  .controller('AnemometerCtrl', function($scope, anemometer, Sample, $q, $interpolate, $filter, params, TimeChartsData, timeFilter, frequencyTimeFilter, FrequencyChartsData) {
+  .controller('AnemometerCtrl', function($scope, anemometer, samples, Sample, $q, $interpolate, $filter, params, TimeChartsData, timeFilter, frequencyTimeFilter, FrequencyChartsData) {
     $scope.anemometer = anemometer
 
     params.then(function(p) {
@@ -67,13 +67,7 @@ angular.module('Ventolone.controllers', [
       $scope.showOverlay = true
       var dataFrequency = $scope.dataFrequency
       if (dataFrequency && anemometer._id) {
-        var samples = Sample.time({
-          group_level: dataFrequency,
-          startkey: JSON.stringify([anemometer._id].concat(timeFilter(dataFrequency, $scope.timeSpan.from))),
-          endkey: JSON.stringify([anemometer._id].concat(timeFilter(dataFrequency, $scope.timeSpan.to)).concat({}))
-        })
-
-        TimeChartsData(samples.$promise, tooltip).then(function(data) {
+        TimeChartsData(samples(anemometer, $scope.timeSpan, $scope.dataFrequency), tooltip).then(function(data) {
           $scope.data = data.speed
           $scope.dataBattery = data.battery
           $scope.showOverlay = false
