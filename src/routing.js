@@ -10,7 +10,6 @@ angular.module('Ventolone.routing', [
           $rootScope.anemometer = anemometer
           return anemometer
         }, function() {
-          $rootScope.anemometer = null
           $location.path($rootScope.h.anemometersRoute())
         })
       }
