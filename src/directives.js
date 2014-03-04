@@ -1,5 +1,6 @@
 angular.module('Ventolone.directives', [
-  'Ventolone.services'
+  'Ventolone.services',
+  'Ventolone.resources.services'
 ])
   .directive('vField', function() {
     return {

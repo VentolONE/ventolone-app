@@ -16,6 +16,7 @@ digraph dependencies{
   "Ventolone.charts" -> "Ventolone.resources.services"  [color="black"]
   "Ventolone.controllers" -> "Ventolone.resources.services"  [color="black"]
   "Ventolone.directives" -> "Ventolone.services"  [color="black"]
+  "Ventolone.directives" -> "Ventolone.resources.services"  [color="black"]
   "Ventolone.app" -> "Ventolone.controllers"  [color="black"]
   "Ventolone.app" -> "Ventolone.directives"  [color="black"]
   "Ventolone.app" -> "Ventolone.routing"  [color="black"]
