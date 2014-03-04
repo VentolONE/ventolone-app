@@ -21,8 +21,13 @@
         }, cb)
       };
     })
-    .factory('samples', function(Sample, timeFilter) {
+    .factory('samples', function(Sample, timeFilter, $q) {
       return function samples(anemometer, timeSpan, dataFrequency) {
+        if(timeSpan.to < timeSpan.from){
+          var deferred = $q.defer()
+          deferred.reject()
+          return deferred.promise
+        }
         return Sample.time({
           group_level: dataFrequency,
           startkey: key(anemometer._id, dataFrequency, timeFilter.from),
