@@ -1,9 +1,5 @@
 (function(resourceModule) {
   resourceModule
-    .constant('resourcesConf', {
-      basePath: 'http://localhost:5984/ventolone%2F',
-      numberOfDocs: 10000
-    })
     .factory('resourcesConf', function(configuration){
       return configuration.resources
     })
