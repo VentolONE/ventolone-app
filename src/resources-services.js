@@ -30,8 +30,8 @@
         }
         return Sample.time({
           group_level: dataFrequency,
-          startkey: key(anemometer._id, dataFrequency, timeFilter.from),
-          endkey: key(anemometer._id, dataFrequency, timeFilter.to, true)
+          startkey: key(anemometer._id, dataFrequency, timeSpan.from),
+          endkey: key(anemometer._id, dataFrequency, timeSpan.to, true)
         }).$promise
       };
     })
