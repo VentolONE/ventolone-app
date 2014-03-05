@@ -19,6 +19,6 @@
     "grunt-http": "^1.1.0",
     "grunt-contrib-watch": "^0.5.3",
     "grunt-graphviz": "^0.1.0",
-    "grunt-angular-modules-graph": "^0.1.0"
+    "grunt-angular-modules-graph": "0.1.1"
   }
 }
