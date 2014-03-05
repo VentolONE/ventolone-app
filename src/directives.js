@@ -7,6 +7,7 @@ angular.module('Ventolone.directives', [
       restrict: 'E',
       require: 'ngModel',
       scope: true,
+      replace: true,
       link: function(scope, element, attrs, controller) {
         scope.texts = {}
         angular.forEach([
@@ -17,20 +18,26 @@ angular.module('Ventolone.directives', [
           scope.texts[value] = value + '.' + attrs.ngModel
         });
 
-        element.bind('change', function() {
+        var $input = element.find('input')
+
+        controller.$render = function() {
+          $input.val(controller.$viewValue || '');
+        };
+
+        $input.bind('blur keyup change', function() {
           scope.$apply(function() {
-            controller.$setViewValue(angular.element(this).val());
+            controller.$setViewValue($input.val());
           });
         })
       },
-      template: '' + '  <div class="form-group">' + '    <label>{{texts.label}}</label>' + '    <input class="form-control" placeholder="{{text.placeholder}}" >' + '    <p class="help-block">{{texts.help}}</p>' + '  </div>'
+      templateUrl: 'partials/directives/v-field.html'
     }
   })
   .directive('file', function($interpolate) {
     var fileName = $interpolate("[{{name}} ({{size/1024|number:'1'}}kb)]")
     return {
       replace: true,
-      template: '<button class="btn btn-primary" >' + '  <input type="file" style="opacity:0; width:0; height: 0"></input>' + '  <span ng-transclude>' + '  </span>' + '  <div style="display:inline; font-style:italic;"></div>' + '</button>',
+      templateUrl: 'partials/directives/file.html',
       restrict: 'E',
       require: 'ngModel',
       transclude: true,
