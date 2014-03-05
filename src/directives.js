@@ -18,6 +18,10 @@ angular.module('Ventolone.directives', [
           scope.texts[value] = value + '.' + attrs.ngModel
         });
 
+        if(!attrs.help){
+          delete scope.texts.help
+        }
+
         var $input = element.find('input')
 
         controller.$render = function() {
