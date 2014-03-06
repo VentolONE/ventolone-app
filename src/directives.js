@@ -2,7 +2,7 @@ angular.module('Ventolone.directives', [
   'Ventolone.services',
   'Ventolone.resources.services'
 ])
-  .directive('vField', function() {
+  .directive('field', function() {
     return {
       restrict: 'E',
       require: 'ngModel',
@@ -34,7 +34,7 @@ angular.module('Ventolone.directives', [
           });
         })
       },
-      templateUrl: 'partials/directives/v-field.html'
+      templateUrl: 'partials/directives/field.html'
     }
   })
   .directive('file', function($interpolate) {
