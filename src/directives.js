@@ -2,41 +2,6 @@ angular.module('Ventolone.directives', [
   'Ventolone.services',
   'Ventolone.resources.services'
 ])
-  .directive('field', function() {
-    return {
-      restrict: 'E',
-      require: 'ngModel',
-      scope: true,
-      replace: true,
-      link: function(scope, element, attrs, controller) {
-        scope.texts = {}
-        angular.forEach([
-          'help',
-          'label',
-          'placeholder'
-        ], function(value) {
-          scope.texts[value] = value + '.' + attrs.ngModel
-        });
-
-        if(!attrs.help){
-          delete scope.texts.help
-        }
-
-        var $input = element.find('input')
-
-        controller.$render = function() {
-          $input.val(controller.$viewValue || '');
-        };
-
-        $input.bind('blur keyup change', function() {
-          scope.$apply(function() {
-            controller.$setViewValue($input.val());
-          });
-        })
-      },
-      templateUrl: 'partials/directives/field.html'
-    }
-  })
   .directive('file', function($interpolate) {
     var fileName = $interpolate("[{{name}} ({{size/1024|number:'1'}}kb)]")
     return {
@@ -62,7 +27,6 @@ angular.module('Ventolone.directives', [
             ngModel.$render()
           });
         })
-
 
         $button.bind('click', function() {
           $input[0].click()

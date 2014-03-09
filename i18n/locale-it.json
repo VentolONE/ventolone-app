@@ -1,3 +1,14 @@
 {
-  
+  "anemometer": {
+    "anemometer": "Anemometro",
+    "site": {
+      "label": "Località anemometro"
+    },
+    "lat":{
+      "label": "Latitudine"
+    },
+    "long":{
+      "label": "Longitudine"
+    }
+  }
 }

@@ -1,93 +1,33 @@
-    <div class="col-lg-6">
-      <legend>Dati posto</legend>
-      <div class="form-group">
-        <label>Localit&agrave; turbina</label>
-        <input class="form-control" placeholder="Enter text" name='anemometerLocale' ng-model='anemometer.locale' required>
-        <p class="help-block">Example block-level help text here.</p>
-      </div>
+<div class="col-lg-6">
+  <legend>Dati posto</legend>
+  <field ng-model="anemometer.site" help="true"></field>
+  <field ng-model="anemometer.lat" type="number"></field>
+  <field ng-model="anemometer.long" type="number"></field>
+  <field ng-model="anemometer.altitude" type="number"></field>
+  <field ng-model="anemometer.note" type="textarea"></field>
 
-      <div class="form-group">
-        <label>Latitudine</label>
-        <input class="form-control" placeholder="Enter text" name='anemometerLat' ng-model='anemometer.lat'>
-      </div>
-
-      <div class="form-group">
-        <label>Longitudine</label>
-        <input class="form-control" placeholder="Enter text" name='anemometerLong' ng-model='anemometer.long'>
-      </div>
-
-      <div class="form-group">
-        <label>Altitudine</label>
-        <input class="form-control" placeholder="Enter text" name='anemometerAltitudine' ng-model='anemometer.altitudine' required>
-      </div>
-      <div class="form-group">
-        <label>Note</label>
-        <textarea class="form-control" rows="3" name='anemometerNote1' ng-model='anemometer.note1'></textarea>
-      </div>
-    </div>
-    <div class="col-lg-6">
-      <legend>Dati turbina</legend>
-      <div class="form-group">
-        <label>Nome turbina</label>
-        <input class="form-control" placeholder="Enter text" name='anemometerName' ng-model='anemometer.nome' required>
-        <p class="help-block">Example block-level help text here.</p>
-      </div>
-
-      <div class="form-group">
-        <label>Numero pale</label>
-        <input class="form-control" placeholder="Enter text" name='anemometerPale' ng-model='anemometer.pale' >
-      </div>
-
-      <div class="form-group">
-        <label>Aria frontale (mq.)</label>
-        <input class="form-control" placeholder="Enter text" name='anemometerAir' ng-model='anemometer.air' >
-      </div>
-
-      <div class="form-group">
-        <label>Tipo turbina</label>
-        <select class="form-control" name='anemometerType' ng-model='anemometer.type' >
-          <option>asse verticale</option>
-          <option>asse orizzontale</option>
-        </select>
-      </div>
-
-
-      <div class="form-group">
-        <label>Tipo anemometro</label>
-        <select class="form-control" name='anemometerType' ng-model='anemometer.anemometerType' required>
-          <option>Inspeed Vortex</option>
-          <option>Deltatronic</option>
-        </select>
-      </div>
-
-      <div class="form-group">
-        <label>Diametro turbina (m)</label>
-        <input class="form-control" placeholder="Enter text" name='anemometerDiametro' ng-model='anemometer.diametro' >
-      </div>
-
-      <div class="form-group">
-        <label>Tip speed Ratio (lambda)</label>
-        <input class="form-control" placeholder="Enter text" name='anemometerLambda' ng-model='anemometer.lambda' >
-      </div>
-
-      <div class="form-group">
-        <label>Coefficiente di potenza</label>
-        <input class="form-control" placeholder="Enter text" name='anemometerPower' ng-model='anemometer.power' >
-      </div>
-
-      <div class="form-group">
-        <label>Velocità cut IN (m/s)</label>
-        <input class="form-control" placeholder="Enter text" name='anemometerCutIn' ng-model='anemometer.cutIn' >
-      </div>
-
-      <div class="form-group">
-        <label>Velocità cut OFF (m/s)</label>
-        <input class="form-control" placeholder="Enter text" name='anemometerCutOff' ng-model='anemometer.cutOff' >
-      </div>
-
-      <div class="form-group">
-        <label>Note</label>
-        <textarea class="form-control" rows="3" name='anemometerNote2' ng-model='anemometer.note2'></textarea>
-      </div>
-
-    </div>
+  {{anemometer.note}}<br/>
+  {{anemometer.model}}<br/>
+  {{anemometer.type}}<br/>
+</div>
+<div class="col-lg-6">
+  <legend>Dati turbina</legend>
+  <field ng-model="anemometer.name"></field>
+  <field ng-model="anemometer.bladesNumber" type="number"></field>
+  <field ng-model="anemometer.frontalAir" type="number"></field>
+  <field ng-model="anemometer.type" type="select">
+    <option></option>
+    <option>asse verticale</option>
+    <option>asse orizzontale</option>
+  </field>
+  <field ng-model="anemometer.model" type="select">
+    <option></option>
+    <option>Deltatronic</option>
+    <option>Inspeed Vortex</option>
+  </field>
+  <field ng-model="anemometer.parameter.diameter" type="number"></field>
+  <field ng-model="anemometer.parameter.lambda" type="number"></field>
+  <field ng-model="anemometer.parameter.power" type="number"></field>
+  <field ng-model="anemometer.parameter.cutIn" type="number"></field>
+  <field ng-model="anemometer.parameter.cutOff" type="number"></field>
+</div>
