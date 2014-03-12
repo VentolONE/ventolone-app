@@ -13,11 +13,14 @@ module.exports = function(grunt) {
 
   grunt.initConfig({
     pkg: grunt.file.readJSON('bower.json'),
-    env: _.extend(grunt.file.readJSON(CONFIG_PATH)[process.VENTOLONE_ENV || 'dev'], {
+    env: _.extend(grunt.file.readJSON(CONFIG_PATH)[process.env.VENTOLONE_ENV || 'dev'], {
       couchdb: {
         basePath: 'http://localhost:5984/ventolone%2F',
         user: 'admin',
         password: 'password'
+      },
+      deploy: {
+
       }
     }),
     'couch-push': {
@@ -76,6 +79,22 @@ module.exports = function(grunt) {
           }
         }
       }
+    },
+    copy: {
+      deploy: {
+        files: [{
+          expand: true,
+          dest: "<%=env.deploy.path%>",
+          cwd: 'app/',
+          src: ['**']
+        }],
+        files: {
+          expand: true,
+          dest: DEST,
+          cwd: 'dist/',
+          src: ['**']
+        }
+      }
     }
   });
 
@@ -97,6 +116,8 @@ module.exports = function(grunt) {
       })
   })
 
+  console.log(grunt.config().copy)
+
   grunt.config.set('http', httpConfig)
 
   grunt.loadNpmTasks('grunt-contrib-connect');
@@ -106,6 +127,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-graphviz');
   grunt.loadNpmTasks('grunt-angular-modules-graph');
   grunt.loadNpmTasks('grunt-bower');
+  grunt.loadNpmTasks('grunt-contrib-copy');
 
   grunt.task.registerTask('recreate-sample-db', [
     'http:drop-sample-db', 'http:create-sample-db', 'couch'
