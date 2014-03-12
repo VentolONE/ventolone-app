@@ -38,7 +38,8 @@ module.exports = function(grunt) {
       server: {
         options: {
           port: 8000,
-          keepalive: true
+          keepalive: true,
+          base: 'app'
         }
       }
     },
@@ -59,6 +60,20 @@ module.exports = function(grunt) {
       dependencies: {
         files: {
           'dependencies-graph.dot': ['src/*.js']
+        }
+      }
+    },
+    bower: {
+      deploy: {
+        dest: 'app/lib',
+        options: {
+          packageSpecific: {
+            'angular-i18n': {
+              files: [
+                "angular-locale_it-it.js"
+              ]
+            }
+          }
         }
       }
     }
@@ -90,6 +105,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-graphviz');
   grunt.loadNpmTasks('grunt-angular-modules-graph');
+  grunt.loadNpmTasks('grunt-bower');
 
   grunt.task.registerTask('recreate-sample-db', [
     'http:drop-sample-db', 'http:create-sample-db', 'couch'
