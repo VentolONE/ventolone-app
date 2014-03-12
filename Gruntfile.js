@@ -1,12 +1,29 @@
 'use strict';
 
+var _ = require('lodash'),
+  CONFIG_PATH = '.config.json'
+
 module.exports = function(grunt) {
-  // Project configuration.
+
+  if (!grunt.file.exists(CONFIG_PATH)) {
+    grunt.file.write(CONFIG_PATH, JSON.stringify({
+      dev: {}
+    }))
+  }
+
   grunt.initConfig({
+    pkg: grunt.file.readJSON('bower.json'),
+    env: _.extend(grunt.file.readJSON(CONFIG_PATH)[process.VENTOLONE_ENV || 'dev'], {
+      couchdb: {
+        basePath: 'http://localhost:5984/ventolone%2F',
+        user: 'admin',
+        password: 'password'
+      }
+    }),
     'couch-push': {
       localhost: {
         files: {
-          'http://localhost:5984/ventolone%2Fsample': 'design_docs.json'
+          '<%=env.couchdb.basePath %>sample': 'design_docs.json'
         }
       }
     },
@@ -25,36 +42,6 @@ module.exports = function(grunt) {
         }
       }
     },
-    http: {
-      'drop-sample-db': {
-        options: {
-          url: 'http://localhost:5984/ventolone%2Fsample',
-          method: 'DELETE',
-          ignoreErrors: true
-        }
-      },
-      'drop-anemometer-db': {
-        options: {
-          url: 'http://localhost:5984/ventolone%2Fanemometer',
-          method: 'DELETE',
-          ignoreErrors: true
-        }
-      },
-      'create-sample-db': {
-        options: {
-          url: 'http://localhost:5984/ventolone%2Fsample',
-          method: 'PUT',
-          ignoreErrors: true
-        }
-      },
-      'create-anemometer-db': {
-        options: {
-          url: 'http://localhost:5984/ventolone%2Fanemometer',
-          method: 'PUT',
-          ignoreErrors: true
-        }
-      }
-    },
     graphviz: {
       dependencies: {
         files: {
@@ -65,23 +52,42 @@ module.exports = function(grunt) {
     watch: {
       'dependencies': {
         files: ['src/*.js'],
-        tasks: ['modules-graph','graphviz:dependencies']
+        tasks: ['modules-graph', 'graphviz:dependencies']
       },
     },
-    'modules-graph':{
-      dependencies:{
-        files:{
+    'modules-graph': {
+      dependencies: {
+        files: {
           'dependencies-graph.dot': ['src/*.js']
         }
       }
     }
   });
 
+  var httpConfig = {
+    options: {
+      ignoreErrors: true
+    }
+  }
+
+  _.each(['sample', 'anemometer'], function(db) {
+    _.each(
+      _.zipObject(['create', 'drop'], ['PUT', 'DELETE']), function(method, action) {
+        httpConfig[action + '-' + db + '-db'] = {
+          options: {
+            url: '<%= env.couchdb.basePath %>' + db,
+            method: method
+          }
+        }
+      })
+  })
+
+  grunt.config.set('http', httpConfig)
+
   grunt.loadNpmTasks('grunt-contrib-connect');
   grunt.loadNpmTasks('grunt-couch');
   grunt.loadNpmTasks('grunt-http');
   grunt.loadNpmTasks('grunt-contrib-watch');
-  grunt.loadNpmTasks('grunt-exec');
   grunt.loadNpmTasks('grunt-graphviz');
   grunt.loadNpmTasks('grunt-angular-modules-graph');
 
