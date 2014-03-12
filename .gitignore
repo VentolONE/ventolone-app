@@ -1,3 +1,4 @@
 node_modules
 design_docs.json
 .config.json
+dist
