@@ -13,13 +13,13 @@ module.exports = function(grunt) {
 
   grunt.initConfig({
     pkg: grunt.file.readJSON('bower.json'),
-    env: _.extend(grunt.file.readJSON(CONFIG_PATH)[process.env.VENTOLONE_ENV || 'dev'], {
+    env: _.extend({
       couchdb: {
         basePath: 'http://localhost:5984/ventolone%2F',
         user: 'admin',
         password: 'password'
       }
-    }),
+    }, grunt.file.readJSON(CONFIG_PATH)[process.env.VENTOLONE_ENV || 'dev']),
     'couch-push': {
       localhost: {
         files: {
@@ -78,12 +78,30 @@ module.exports = function(grunt) {
       }
     },
     copy: {
+      dist: {
+        files: [{
+          expand: true,
+          dest: "dist",
+          cwd: 'app/',
+          src: ['**']
+        }]
+      },
       deploy: {
         files: [{
           expand: true,
           dest: "<%=env.deploy.path%>",
-          cwd: 'app/',
+          cwd: 'dist/',
           src: ['**']
+        }]
+      }
+    },
+    replace: {
+      dist: {
+        src: ['dist/src/configuration.js'],
+        overwrite: true,
+        replacements: [{
+          from: 'http://localhost:5984/ventolone%2F',
+          to: '<%= env.couchdb.basePath%>'
         }]
       }
     }
@@ -107,9 +125,6 @@ module.exports = function(grunt) {
       })
   })
 
-  console.log(grunt.config().copy.deploy.files)
-  console.log(grunt.config().env)
-
   grunt.config.set('http', httpConfig)
 
   grunt.loadNpmTasks('grunt-contrib-connect');
@@ -120,6 +135,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-angular-modules-graph');
   grunt.loadNpmTasks('grunt-bower');
   grunt.loadNpmTasks('grunt-contrib-copy');
+  grunt.loadNpmTasks('grunt-text-replace');
 
   grunt.task.registerTask('recreate-sample-db', [
     'http:drop-sample-db', 'http:create-sample-db', 'couch'
@@ -128,6 +144,4 @@ module.exports = function(grunt) {
   grunt.task.registerTask('reset-db', [
     'http:drop-sample-db', 'http:create-sample-db', 'http:drop-anemometer-db', 'http:create-anemometer-db', 'couch'
   ]);
-
-
 };
