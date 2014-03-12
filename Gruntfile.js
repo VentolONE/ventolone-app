@@ -144,4 +144,6 @@ module.exports = function(grunt) {
   grunt.task.registerTask('reset-db', [
     'http:drop-sample-db', 'http:create-sample-db', 'http:drop-anemometer-db', 'http:create-anemometer-db', 'couch'
   ]);
+
+  grunt.registerTask('ship-it', ["bower", "copy:dist", "replace:dist", "copy:deploy"])
 };
