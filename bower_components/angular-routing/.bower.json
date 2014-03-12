@@ -1,6 +1,6 @@
 {
   "name": "angular-routing",
-  "version": "0.1.0-1",
+  "version": "0.1.1",
   "main": "angular-routing.js",
   "ignore": [
     "**/.*",
@@ -11,13 +11,13 @@
     "angular": "~1.x"
   },
   "homepage": "https://github.com/carlo-colombo/angular-routing",
-  "_release": "0.1.0-1",
+  "_release": "0.1.1",
   "_resolution": {
     "type": "version",
-    "tag": "0.1.0-1",
-    "commit": "2546cec6d4d342d4d10e6e41c65c926df6ad7535"
+    "tag": "0.1.1",
+    "commit": "aee306fd333e18cb39afac0c35e864f1acdb2981"
   },
   "_source": "git://github.com/carlo-colombo/angular-routing.git",
-  "_target": "0.1.0-1",
+  "_target": "0.1.1",
   "_originalSource": "angular-routing"
 }
