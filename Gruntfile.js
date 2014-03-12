@@ -18,9 +18,6 @@ module.exports = function(grunt) {
         basePath: 'http://localhost:5984/ventolone%2F',
         user: 'admin',
         password: 'password'
-      },
-      deploy: {
-
       }
     }),
     'couch-push': {
@@ -87,13 +84,7 @@ module.exports = function(grunt) {
           dest: "<%=env.deploy.path%>",
           cwd: 'app/',
           src: ['**']
-        }],
-        files: {
-          expand: true,
-          dest: DEST,
-          cwd: 'dist/',
-          src: ['**']
-        }
+        }]
       }
     }
   });
@@ -116,7 +107,8 @@ module.exports = function(grunt) {
       })
   })
 
-  console.log(grunt.config().copy)
+  console.log(grunt.config().copy.deploy.files)
+  console.log(grunt.config().env)
 
   grunt.config.set('http', httpConfig)
 
