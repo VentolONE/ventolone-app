@@ -89,12 +89,25 @@ module.exports = function(grunt) {
     },
     replace: {
       dist: {
-        src: ['dist/src/configuration.js'],
+        src: ['dist/src/configuration.js', 'dist/index.html'],
         overwrite: true,
         replacements: [{
           from: 'http://localhost:5984/ventolone%2F',
           to: '<%= env.couchdb.basePath%>'
+        }, {
+          from: '<html lang="en" ng-app="Ventolone.app">',
+          to: '<html lang="en" ng-app="Ventolone.app" manifest="manifest.appcache">'
         }]
+      }
+    },
+    appcache: {
+      options: {
+        basePath: 'dist'
+      },
+      all: {
+        dest: 'dist/manifest.appcache',
+        cache: 'dist/**/*.{js,css,html}',
+        network: '*'
       }
     }
   });
@@ -146,6 +159,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-bower');
   grunt.loadNpmTasks('grunt-contrib-copy');
   grunt.loadNpmTasks('grunt-text-replace');
+  grunt.loadNpmTasks('grunt-appcache');
 
   grunt.task.registerTask('recreate-sample-db', [
     'http:drop-sample-db', 'http:create-sample-db', 'couch'
@@ -155,5 +169,5 @@ module.exports = function(grunt) {
     'http:drop-sample-db', 'http:create-sample-db', 'http:drop-anemometer-db', 'http:create-anemometer-db', 'couch'
   ]);
 
-  grunt.registerTask('ship-it', ["bower", "copy:dist", "replace:dist", "copy:deploy"])
+  grunt.registerTask('ship-it', ["bower", "copy:dist", "appcache", "replace:dist", "copy:deploy"])
 };
