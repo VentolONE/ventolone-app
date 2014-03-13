@@ -15,18 +15,10 @@ module.exports = function(grunt) {
     pkg: grunt.file.readJSON('bower.json'),
     env: _.extend({
       couchdb: {
-        basePath: 'http://localhost:5984/ventolone%2F',
-        user: 'admin',
-        password: 'password'
-      }
+        basePath: 'http://localhost:5984/ventolone%2F'
+      },
+      deploy: {}
     }, grunt.file.readJSON(CONFIG_PATH)[process.env.VENTOLONE_ENV || 'dev']),
-    'couch-push': {
-      localhost: {
-        files: {
-          '<%=env.couchdb.basePath %>sample': 'design_docs.json'
-        }
-      }
-    },
     'couch-compile': {
       app: {
         files: {
@@ -107,9 +99,25 @@ module.exports = function(grunt) {
     }
   });
 
+  var couchPushOptions = {
+    localhost: {
+      files: {
+        '<%=env.couchdb.basePath %>sample': 'design_docs.json'
+      }
+    }
+  }
+
+  var auth = grunt.config().env.couchdb.auth
+  if (auth) {
+    couchPushOptions.options = {
+      user: auth.user,
+      pass: auth.password
+    }
+  }
+
   var httpConfig = {
     options: {
-      ignoreErrors: true
+      ignoreErrors: true,
     }
   }
 
@@ -119,13 +127,15 @@ module.exports = function(grunt) {
         httpConfig[action + '-' + db + '-db'] = {
           options: {
             url: '<%= env.couchdb.basePath %>' + db,
-            method: method
+            method: method,
+            auth: auth
           }
         }
       })
   })
 
   grunt.config.set('http', httpConfig)
+  grunt.config.set('couch-push', couchPushOptions)
 
   grunt.loadNpmTasks('grunt-contrib-connect');
   grunt.loadNpmTasks('grunt-couch');
