@@ -47,8 +47,8 @@ angular.module('Ventolone.controllers', [
     }, function(statistics) {
       if (statistics.time) {
         $scope.timeSpan = {
-          from: $filter('date')(new Date(statistics.time.min * 1000), 'yyyy-MM-dd'),
-          to: $filter('date')(new Date(statistics.time.max * 1000), 'yyyy-MM-dd')
+          from: new Date(statistics.time.min * 1000),
+          to: new Date(statistics.time.max * 1000)
         }
 
         $scope.$watch('dataFrequency', updateTimeCharts)
