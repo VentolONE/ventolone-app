@@ -44,7 +44,7 @@ module.exports = function(grunt) {
     },
     watch: {
       'dependencies': {
-        files: ['src/*.js'],
+        files: ['app/src/*.js'],
         tasks: ['modules-graph', 'graphviz:dependencies']
       },
     },
