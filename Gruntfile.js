@@ -51,7 +51,7 @@ module.exports = function(grunt) {
     'modules-graph': {
       dependencies: {
         files: {
-          'dependencies-graph.dot': ['src/*.js']
+          'dependencies-graph.dot': ['app/src/*.js']
         }
       }
     },
