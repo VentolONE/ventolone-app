@@ -5,7 +5,3 @@ angular.module('Ventolone.app', [
   'Ventolone.i18n',
   'Ventolone.forms'
 ])
-
-applicationCache.addEventListener('updateready', function() {        
-  window.location.reload();
-});

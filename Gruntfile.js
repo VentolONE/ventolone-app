@@ -149,6 +149,9 @@ module.exports = function(grunt) {
 
   grunt.config.set('http', httpConfig)
   grunt.config.set('couch-push', couchPushOptions)
+  grunt.config.set('processhtml',{
+    'dist/index.html':['dist/index.html']
+  })
 
   grunt.loadNpmTasks('grunt-contrib-connect');
   grunt.loadNpmTasks('grunt-couch');
@@ -160,6 +163,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-copy');
   grunt.loadNpmTasks('grunt-text-replace');
   grunt.loadNpmTasks('grunt-appcache');
+  grunt.loadNpmTasks('grunt-processhtml');
 
   grunt.task.registerTask('recreate-sample-db', [
     'http:drop-sample-db', 'http:create-sample-db', 'couch'
@@ -169,5 +173,5 @@ module.exports = function(grunt) {
     'http:drop-sample-db', 'http:create-sample-db', 'http:drop-anemometer-db', 'http:create-anemometer-db', 'couch'
   ]);
 
-  grunt.registerTask('ship-it', ["bower", "copy:dist", "appcache", "replace:dist", "copy:deploy"])
+  grunt.registerTask('ship-it', ["bower", "copy:dist", "appcache", "processhtml", "replace:dist", "copy:deploy"])
 };
