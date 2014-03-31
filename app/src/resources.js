@@ -1,9 +1,11 @@
 (function(resourceModule) {
+  var resourcesConf
+
   resourceModule
-    .factory('resourcesConf', function(configuration){
-      return configuration.resources
+    .config(function(configuration){
+      resourcesConf = configuration.resources
     })
-    .factory('Sample', function($resource, resourcesConf) {
+    .factory('Sample', function($resource) {
       return $resource(resourcesConf.basePath + 'sample/_design/charts/_view/:viewName', {
         group: true,
         descending: false
@@ -17,7 +19,7 @@
         }),
       })
     })
-    .factory('Anemometer', function($resource, resourcesConf) {
+    .factory('Anemometer', function($resource) {
       return $resource(resourcesConf.basePath + 'anemometer/:id', {}, {
         query: {
           isArray: true,
@@ -34,7 +36,7 @@
         }
       })
     })
-    .factory('upload', function($http, $q, resourcesConf) {
+    .factory('upload', function($http, $q) {
       var numberOfDocs = resourcesConf.numberOfDocs
       return function(anemometer, iterator) {
         var numberOfUploads = Math.ceil(iterator.size() / numberOfDocs),
