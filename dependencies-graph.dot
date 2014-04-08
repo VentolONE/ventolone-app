@@ -32,4 +32,4 @@ digraph dependencies{
   "Ventolone.routing" -> "Ventolone.resources.services"  [color="black"]
   "Ventolone.services" -> "Ventolone.charts"  [color="black"]
   "Ventolone.services" -> "Ventolone.resources.services"  [color="black"]
-}
+ }

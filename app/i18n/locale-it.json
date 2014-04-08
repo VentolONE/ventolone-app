@@ -9,6 +9,16 @@
     },
     "long":{
       "label": "Longitudine"
+    },
+    "panel":{
+        "no-data": "Nessun dato disponibile"
     }
+  },
+  "commons":{
+    "buttons":{
+      "upload": "Carica",
+      "edit": "Modifica",
+      "delete": "Elimina"
+    }    
   }
 }

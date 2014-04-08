@@ -87,7 +87,13 @@ angular.module('Ventolone.directives', [
         $scope.h = $rootScope.h
 
         function update() {
-          anemometerStats($scope.anemometer, $scope)
+          $scope.loading = true
+          anemometerStats($scope.anemometer, $scope).then(function(){
+              $scope.loading = false
+          }, function(){
+              $scope.noData  = true
+              $scope.loading = false
+          })
         }
 
         $scope.$watch('dataFrequency', update)

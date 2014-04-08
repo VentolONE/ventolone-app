@@ -10,9 +10,10 @@
     </div>
   </div>
   <div class="panel-body">
-    <div class="row text-center" ng-show="!anemometer.statistics">
+    <div class="row text-center">
       <div class="col-xs-12">
-        <i class="fa fa-refresh fa-5x fa-spin"></i>
+        <i ng-show="loading" class="fa fa-refresh fa-5x fa-spin"></i>
+        <span ng-show="noData" translate="anemometer.panel.no-data"></span>
       </div>
     </div>
     <div class="row" ng-if="anemometer.statistics">
@@ -30,15 +31,15 @@
   <div class="panel-footer">
     <a class="btn btn-primary" href="{{h.anemometerUploadPath(anemometer._id)}}">
       <icon name="upload"></icon>
-      Upload
+      <span translate="commons.buttons.upload"></span>
     </a>
     <a class="btn btn-warning" href="{{h.editAnemometerPath(anemometer._id)}}">
       <icon name="edit"></icon>
-      Edit
+      <span translate="commons.buttons.edit"></span>
     </a>
     <button class="btn btn-danger" ng-show="delete" ng-click="delete(anemometer)">
       <icon name="eraser"></icon>
-      Delete
+      <span translate="commons.buttons.delete"></span>
     </button>
   </div>
 </div>

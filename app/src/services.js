@@ -56,9 +56,10 @@ angular.module('Ventolone.services', [
       return new CsvIterator(file)
     }
   })
-  .factory('anemometerStats', function(StatisticsChart, anemometerStatistics) {
+  .factory('anemometerStats', function(StatisticsChart, anemometerStatistics, $q) {
     return function anemometerStats(anemometer, params) {
-      return anemometerStatistics(anemometer._id, params, function(statistics) {
+      var deferred = $q.defer()    
+      anemometerStatistics(anemometer._id, params, function(statistics) {
         if (statistics.time) {
           StatisticsChart(statistics, anemometer).then(function(stats) {
             statistics.time.min = new Date(statistics.time.min * 1000)
@@ -67,8 +68,13 @@ angular.module('Ventolone.services', [
               chart: stats,
               data: statistics
             }
+            deferred.resolve()
           })
         }
-      }).$promise
+        else{
+            deferred.reject()
+        }
+      })
+      return deferred.promise
     }
   })
