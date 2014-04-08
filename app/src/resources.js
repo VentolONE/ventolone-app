@@ -81,7 +81,7 @@
         }
       }
     })
-    .factory('params', function($http, resourcesConf) {
+    .factory('params', function($http) {
       return $http({
         method: 'get',
         url: resourcesConf.basePath + 'sample/_design/charts',
