@@ -47,6 +47,16 @@ module.exports = function(grunt) {
         files: ['app/src/*.js'],
         tasks: ['modules-graph', 'graphviz:dependencies']
       },
+      karma: {
+        files: ['app/src/**/*.js', 'test/**/*.js'],
+        tasks: ['karma:unit:run']
+      }
+    },
+    karma: {
+      unit: {
+        configFile: 'karma.conf.js',
+        background: true
+      }
     },
     'modules-graph': {
       dependencies: {
@@ -164,6 +174,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-text-replace');
   grunt.loadNpmTasks('grunt-appcache');
   grunt.loadNpmTasks('grunt-processhtml');
+  grunt.loadNpmTasks('grunt-karma');
 
   grunt.task.registerTask('recreate-sample-db', [
     'http:drop-sample-db', 'http:create-sample-db', 'couch'
@@ -174,4 +185,6 @@ module.exports = function(grunt) {
   ]);
 
   grunt.registerTask('ship-it', ["bower", "copy:dist", "appcache", "processhtml", "replace:dist", "copy:deploy"])
+
+  grunt.registerTask('test', ['karma:unit:start','watch:karma'])
 };
