@@ -3,7 +3,11 @@
   module
     .factory('anemometerById', function(Anemometer, $q) {
       return function anemometerById(anemometerId) {
-        if (!anemometerId) return null
+        if (!anemometerId){
+          var deferred = $q.defer()
+          deferred.reject()
+          return deferred.promise
+        }
 
         return Anemometer.get({
           id: anemometerId
