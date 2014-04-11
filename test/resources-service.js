@@ -6,12 +6,9 @@ describe('Ventolone.resources module', function() {
     $provide.factory('Anemometer', function($q) {
       return {
         get: function(obj) {
-          var deferred = $q.defer()
-          deferred.resolve({
-            _id: 42
-          })
+          this.$deferred = $q.defer()
           return {
-            $promise: deferred.promise
+            $promise: this.$deferred.promise
           }
         }
       }
@@ -24,25 +21,36 @@ describe('Ventolone.resources module', function() {
     Should(p['finally']).be.a.Function
   }
 
-  describe('anemometerById', function() {
+  function assertFail (msg) {
+    return function () {
+      throw new Error(msg)
+    }
+  }
+
+  describe('#anemometerById', function() {
     it('should be defined and a function', inject(function(anemometerById) {
       Should(anemometerById).be.a.Function
     }))
 
-    it('should return null if called with null as parameter', inject(function(anemometerById) {
-      Should(anemometerById(null)).be.equal(null)
+    it('should return a promise', inject(function(anemometerById) {
+      var a = anemometerById(12)
+      assertPromise(a)
     }))
 
-    it('should return a promise of a resource', inject(function(anemometerById) {
+    it('should return a rejected promise if called with null as parameter', inject(function(anemometerById) {
+      var a = anemometerById(null)
+      Should(a).not.equal(null)
+      a.then(assertFail('Resolved deferred'), angular.noop)
+    }))
+
+    it('should return a promise of a resource', inject(function(anemometerById, Anemometer) {
       var a = anemometerById(12)
-
       Should(a).not.be.equal(null)
-
-      assertPromise(a)
-
-      a.then(function(anemometer) {
-        Should(anemometer).not.be.equal(null)
-      })
+      Anemometer.$deferred.resolve({})
+      a.then(function(val) {
+        Should(val).not.be.equal(null)
+        Should(val).be.a.Object
+      }, assertFail('Rejected deferred'))
     }))
   })
 })
