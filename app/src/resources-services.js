@@ -41,19 +41,21 @@
       }
     })
     .constant('timeFilter', timeFilter)
-    .constant('frequencyTimeFilter', function frequencyTimeFilter(dataFrequency, date, val) {
-      if (date) {
-        var d = new Date(date),
-          filter = [new Date(d.getUTCFullYear(), d.getMonth(), 1), val]
+    .constant('frequencyTimeFilter', frequencyTimeFilter)
 
-        for (var i = 1; i < dataFrequency - 1; i++) {
-          filter.push(new Date(date))
-          filter.push(val)
-        }
-        return filter
+  function frequencyTimeFilter(dataFrequency, date, val) {
+    if (date) {
+      var d = new Date(date),
+        filter = [new Date(d.getUTCFullYear(), d.getMonth(), 1), val]
+
+      for (var i = 1; i < dataFrequency - 1; i++) {
+        filter.push(new Date(date))
+        filter.push(val)
       }
-      return []
-    })
+      return filter
+    }
+    return []
+  }
 
   function key(anemometerId, dataFrequency, date, endKey) {
     var keyList = [anemometerId].concat(timeFilter(dataFrequency, date))
@@ -64,12 +66,10 @@
   }
 
   function timeFilter(dataFrequency, date) {
-    if (date) {
-      var d = new Date(date),
-        filter = [d.getUTCFullYear() * 100 + d.getMonth()]
-
+    if (date && dataFrequency > 1) {
+      var filter = [date.getUTCFullYear() * 100 + date.getMonth()]
       for (var i = 1; i < dataFrequency - 1; i++) {
-        filter.push(new Date(date))
+        filter.push(date)
       }
       return filter
     }

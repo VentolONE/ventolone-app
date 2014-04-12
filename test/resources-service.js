@@ -94,6 +94,33 @@ describe('Ventolone.resources module', function() {
     })
   })
 
+  describe('#timeFilter', function() {
+    var timeFilter
+
+    beforeEach(inject(function(_timeFilter_) {
+      timeFilter = _timeFilter_
+    }))
+
+    it('should return an array to filter samples', function() {
+      angular.forEach([
+        [0, null, []], //
+        [0, new Date('2014-01-01'), []], //
+        [1, new Date('2014-01-01'), []], //
+        [2, new Date('2014-01-01'), [201400]], //
+        [3, new Date('2014-01-01'), [201400, new Date("2014-01-01")]], //
+        [4, new Date('2014-01-01'), [201400, new Date("2014-01-01"), new Date("2014-01-01")]]
+      ], function(val) {
+        Should(timeFilter.apply(null, val))
+          .be.instanceof(Array)
+          .and.eql(val[2])
+      })
+    })
+  })
+
+  describe('#frequencyTimeFilter', function() {
+    // body...
+  })
+
   function resourceMocks($provide) {
     $provide.factory('Anemometer', mockMethods(['get']))
     $provide.factory('Sample', mockMethods(['statistics', 'time']))
