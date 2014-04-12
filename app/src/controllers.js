@@ -95,7 +95,7 @@ angular.module('Ventolone.controllers', [
 
 
   })
-  .controller('AnemometerUploadCtrl', function($scope, readFile, csvReader, upload, anemometer, anemometerStatistics, Sample, anemometerStats) {
+  .controller('AnemometerUploadCtrl', function($scope, readFile, csvReader, upload, anemometer, Sample, anemometerStats) {
     $scope.anemometer = anemometer
     var iterator
     $scope.$watch('importFile', function(file) {
