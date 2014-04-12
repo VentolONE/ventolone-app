@@ -1,43 +1,44 @@
 (function(module) {
 
   module
-    .factory('anemometerById', function(Anemometer, $q) {
-      return function anemometerById(anemometerId) {
-        if (!anemometerId){
-          var deferred = $q.defer()
-          deferred.reject()
-          return deferred.promise
-        }
+    .factory('anemometerService', function(Anemometer, Sample, $q) {
+      return {
+        findById: function findById(id) {
+          if (!id) {
+            var deferred = $q.defer()
+            deferred.reject()
+            return deferred.promise
+          }
 
-        return Anemometer.get({
-          id: anemometerId
-        }).$promise
-      };
-    })
-    .factory('anemometerStatistics', function(Sample, timeFilter) {
-      return function anemometerStatistics(anemometerId, params, cb) {
-        var dataFrequency = params.dataFrequency,
-          group_level = (dataFrequency - 1) * 2 + 1
+          return Anemometer.get({
+            id: id
+          }).$promise
+        },
+        statistics: function statistics(id, params) {
+          var dataFrequency = params.dataFrequency,
+            group_level = (dataFrequency - 1) * 2 + 1
 
-        return Sample.statistics({
-          startkey: key(anemometerId, dataFrequency, params.from),
-          endkey: key(anemometerId, dataFrequency, params.to, true)
-        }, cb)
-      };
-    })
-    .factory('samples', function(Sample, timeFilter, $q) {
-      return function samples(anemometer, timeSpan, dataFrequency) {
-        if(timeSpan.to < timeSpan.from){
-          var deferred = $q.defer()
-          deferred.reject()
-          return deferred.promise
+          return Sample.statistics({
+            startkey: key(id, dataFrequency, params.from),
+            endkey: key(id, dataFrequency, params.to, true)
+          }).$promise
+        },
+        samples: function samples(id, params) {
+          var timeSpan = params.timeSpan || {},
+            dataFrequency = params.dataFrequency;
+
+          if (timeSpan.to < timeSpan.from) {
+            var deferred = $q.defer()
+            deferred.reject()
+            return deferred.promise
+          }
+          return Sample.time({
+            group_level: dataFrequency,
+            startkey: key(id, dataFrequency, timeSpan.from),
+            endkey: key(id, dataFrequency, timeSpan.to, true)
+          }).$promise
         }
-        return Sample.time({
-          group_level: dataFrequency,
-          startkey: key(anemometer._id, dataFrequency, timeSpan.from),
-          endkey: key(anemometer._id, dataFrequency, timeSpan.to, true)
-        }).$promise
-      };
+      }
     })
     .constant('timeFilter', timeFilter)
     .constant('frequencyTimeFilter', function frequencyTimeFilter(dataFrequency, date, val) {

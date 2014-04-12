@@ -56,25 +56,26 @@ angular.module('Ventolone.services', [
       return new CsvIterator(file)
     }
   })
-  .factory('anemometerStats', function(StatisticsChart, anemometerStatistics, $q) {
+  .factory('anemometerStats', function(StatisticsChart, anemometerService, $q) {
     return function anemometerStats(anemometer, params) {
-      var deferred = $q.defer()    
-      anemometerStatistics(anemometer._id, params, function(statistics) {
-        if (statistics.time) {
-          StatisticsChart(statistics, anemometer).then(function(stats) {
-            statistics.time.min = new Date(statistics.time.min * 1000)
-            statistics.time.max = new Date(statistics.time.max * 1000)
-            anemometer.statistics = {
-              chart: stats,
-              data: statistics
-            }
-            deferred.resolve()
-          })
-        }
-        else{
+      var deferred = $q.defer()
+      anemometerService
+        .statistics(anemometer._id, params)
+        .then(function(statistics) {
+          if (statistics.time) {
+            StatisticsChart(statistics, anemometer).then(function(stats) {
+              statistics.time.min = new Date(statistics.time.min * 1000)
+              statistics.time.max = new Date(statistics.time.max * 1000)
+              anemometer.statistics = {
+                chart: stats,
+                data: statistics
+              }
+              deferred.resolve()
+            })
+          } else {
             deferred.reject()
-        }
-      })
+          }
+        })
       return deferred.promise
     }
   })
