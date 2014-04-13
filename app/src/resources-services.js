@@ -44,9 +44,9 @@
     .constant('frequencyTimeFilter', frequencyTimeFilter)
 
   function frequencyTimeFilter(dataFrequency, date, val) {
-    if (date) {
+    if (date && dataFrequency > 1) {
       var d = new Date(date),
-        filter = [new Date(d.getUTCFullYear(), d.getMonth(), 1), val]
+        filter = [date.getUTCFullYear() * 100 + date.getMonth(), val]
 
       for (var i = 1; i < dataFrequency - 1; i++) {
         filter.push(new Date(date))

@@ -102,24 +102,43 @@ describe('Ventolone.resources module', function() {
     }))
 
     it('should return an array to filter samples', function() {
-      angular.forEach([
+      testForFixture([
         [0, null, []], //
         [0, new Date('2014-01-01'), []], //
         [1, new Date('2014-01-01'), []], //
         [2, new Date('2014-01-01'), [201400]], //
         [3, new Date('2014-01-01'), [201400, new Date("2014-01-01")]], //
         [4, new Date('2014-01-01'), [201400, new Date("2014-01-01"), new Date("2014-01-01")]]
-      ], function(val) {
-        Should(timeFilter.apply(null, val))
-          .be.instanceof(Array)
-          .and.eql(val[2])
-      })
+      ], timeFilter)
     })
   })
 
   describe('#frequencyTimeFilter', function() {
-    // body...
+    var frequencyTimeFilter
+
+    beforeEach(inject(function(_frequencyTimeFilter_) {
+      frequencyTimeFilter = _frequencyTimeFilter_
+    }))
+
+    it('should return an array to filter samples', function() {
+      testForFixture([
+        [0, null, []], //
+        [0, new Date('2014-01-01'), 10, []], //
+        [1, new Date('2014-01-01'), 10, []], //
+        [2, new Date('2014-01-01'), 10, [201400, 10]], //
+        [3, new Date('2014-01-01'), 10, [201400, 10, new Date("2014-01-01"), 10]], //
+        [4, new Date('2014-01-01'), 10, [201400, 10, new Date("2014-01-01"), 10, new Date("2014-01-01"), 10]]
+      ], frequencyTimeFilter)
+    })
   })
+
+  function testForFixture(fixtures, fn) {
+    angular.forEach(fixtures, function(fixture) {
+      Should(fn.apply(null, fixture))
+        .be.instanceof(Array)
+        .and.eql(fixture[fixture.length - 1])
+    })
+  }
 
   function resourceMocks($provide) {
     $provide.factory('Anemometer', mockMethods(['get']))
