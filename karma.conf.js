@@ -32,8 +32,6 @@ module.exports = function(config) {
         "test/**/*.js"
     ],
     exclude: [],
-    preprocessors: {},
-    reporters: ['progress'],
     port: 9876,
     colors: true,
     // possible values: config.LOG_DISABLE || config.LOG_ERROR || config.LOG_WARN || config.LOG_INFO || config.LOG_DEBUG
@@ -44,7 +42,7 @@ module.exports = function(config) {
     preprocessors: {
       'app/src/*.js': 'coverage'
     },
-    reporters : ['coverage'],
+    reporters : ['progress','coverage'],
     coverageReporter: {
       type : 'html',
       dir : 'coverage/'
