@@ -91,6 +91,13 @@ describe('Ventolone.resources module', function() {
           Should(val).be.a.Object
         }, assertFail('Rejected deferred'))
       }))
+      it('should return a rejected promise if time span is invalid',inject(function (Sample) {
+        var s = samples(12, {
+          to: new Date('2012-01-01'),
+          from: new Date('2013-01-01')
+        })
+        s.then(assertFail('Resolved deferred'), angular.noop)
+      }))
     })
   })
 
