@@ -40,6 +40,14 @@ module.exports = function(config) {
     logLevel: config.LOG_DEBUG,
     autoWatch: false,
     browsers: ['Chrome', 'Firefox'],
-    singleRun: false
+    singleRun: false,
+    preprocessors: {
+      'app/src/*.js': 'coverage'
+    },
+    reporters : ['coverage'],
+    coverageReporter: {
+      type : 'html',
+      dir : 'coverage/'
+    }
   });
 };
