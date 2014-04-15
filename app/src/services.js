@@ -25,7 +25,7 @@ angular.module('Ventolone.services', [
   .factory('CsvIterator', function() {
     function splitRow(row) {
       return row.split(',').map(function(cell) {
-        return angular.isNumber(cell) ? parseFloat(cell) : cell.trim()
+        return !isNaN(cell) ? parseFloat(cell) : cell.trim()
       })
     }
 
@@ -35,6 +35,9 @@ angular.module('Ventolone.services', [
     }
 
     CsvIterator.prototype.next = function() {
+      if(!this.hasNext()){
+        throw new Error('No items left')
+      }
       return splitRow(this.rows.shift())
     }
 
