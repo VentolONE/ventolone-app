@@ -30,9 +30,8 @@ angular.module('Ventolone.services', [
     }
 
     var CsvIterator = function(file) {
-      this.rows = file ? file
-        .replace(/(^\n|\n$)/,'')
-        .split(/\n+/) : []
+      var cleanedUpFile = file && file.replace(/(^\n+|\n+$)/,'')
+      this.rows = cleanedUpFile ? cleanedUpFile.split(/\n+/) : []
       return this
     }
 

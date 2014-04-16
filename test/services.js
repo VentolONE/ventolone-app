@@ -55,25 +55,69 @@ describe('Ventolone.services module', function() {
     })
 
     describe('#size', function() {
-      it('should return the size',function(){
+      it('should return the size', function() {
         var iter = new CsvIterator('foo\nbar')
         iter.size().should.be.equal(2)
       })
-      it('should not count empty lines', function () {
+      it('should not count empty lines', function() {
         var iter = new CsvIterator('foo\n\n\nbar')
         iter.size().should.be.equal(2)
       })
-      it('should not count an empty line at the end', function () {
+      it('should not count an empty line at the end', function() {
         var iter = new CsvIterator('foo\n')
         iter.size().should.be.equal(1)
       })
-      it('should not count an empty line at the start', function () {
+      it('should not count an empty line at the start', function() {
         var iter = new CsvIterator('\nfoo')
         iter.size().should.be.equal(1)
       })
-      it('should return 0 for an empty string', function () {
+      it('should return 0 for an empty string', function() {
         var iter = new CsvIterator('')
         iter.size().should.be.equal(0)
+      })
+
+      it('should return 0 for a string composed only of line separator', function() {
+        var iter = new CsvIterator('\n\n')
+        iter.size().should.be.equal(0)
+      })
+
+      it('should return 0 for a null argument', function() {
+        var iter = new CsvIterator(null)
+        iter.size().should.be.equal(0)
+      })
+
+    })
+
+    describe('#slice', function() {
+      it('should return a slice of the rows', function() {
+        var iter = new CsvIterator('foo\nbar\nasd\nboo')
+        var slice = iter.slice(0, 2)
+        slice.should.have.lengthOf(2)
+        slice.should.be.eql([
+          ['foo'],
+          ['bar']
+        ])
+      })
+    })
+
+    describe('#hasNext', function() {
+      it('should return true if there are rows left', function() {
+        var iter = new CsvIterator('foo\nbar\nasd\nboo')
+        iter.hasNext().should.be.ok
+      })
+      it('should return false if there are no rows left', function() {
+        var iter = new CsvIterator('foo\nbar')
+        iter.next()
+        iter.next()
+        iter.hasNext().should.be.not.ok
+      })
+      it('should return false for empty imput', function() {
+        var iter = new CsvIterator('')
+        iter.hasNext().should.be.not.ok
+      })
+      it('should return false for a string composed only of line separator', function() {
+        var iter = new CsvIterator('\n\n')
+        iter.hasNext().should.be.not.ok
       })
     })
   })
