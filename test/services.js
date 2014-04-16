@@ -2,9 +2,28 @@ describe('Ventolone.services module', function() {
   beforeEach(module('Ventolone.services'))
 
   describe('readFile', function() {
-    it('', inject(function() {
+    var readFile, blob
 
+    beforeEach(inject(function(_readFile_) {
+      readFile = _readFile_
+      blob = new Blob(['a blob of text'], {
+        type: 'text'
+      })
     }))
+
+    it('should return a promise', function() {
+      utils.assertPromise(readFile())
+    })
+
+    it('should read a blob of text', function() {
+      readFile(blob).then(function (val) {
+        val.should.be.eql('a blob of text')
+      },utils.assertFail('Read fail'))
+    })
+
+    it('should return a rejected promise for a null input', function () {
+      readFile(null).then(utils.assertFail('Resolved deferred'),angular.noop)
+    })
   })
 
   describe('CsvIterator', function() {
