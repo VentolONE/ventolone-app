@@ -29,6 +29,7 @@ module.exports = function(config) {
         "app/src/i18n.js",
         "app/src/main.js",
         
+        "test/test-utils.js",        
         "test/**/*.js"
     ],
     exclude: [],

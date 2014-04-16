@@ -1,7 +1,7 @@
 describe('Ventolone.resources module', function() {
 
   beforeEach(module('Ventolone.resources.services'))
-  beforeEach(module(resourceMocks))
+  beforeEach(module(utils.resourceMocks))
 
   describe('anemometerService', function() {
     var anemometerService
@@ -20,12 +20,12 @@ describe('Ventolone.resources module', function() {
         Should(findById).be.a.Function
       })
       it('should always return a promise', function() {
-        assertPromise(findById(12))
-        assertPromise(findById(null))
+        utils.assertPromise(findById(12))
+        utils.assertPromise(findById(null))
       })
       it('should return a rejected promise if called with null parameter', function() {
         var a = findById(null)
-        a.then(assertFail('Resolved deferred'), angular.noop)
+        a.then(utils.assertFail('Resolved deferred'), angular.noop)
       })
       it('should return a promise of a resource', inject(function(Anemometer) {
         var a = findById(12)
@@ -33,7 +33,7 @@ describe('Ventolone.resources module', function() {
         a.then(function(val) {
           Should(val).not.be.equal(null)
           Should(val).be.a.Object
-        }, assertFail('Rejected deferred'))
+        }, utils.assertFail('Rejected deferred'))
       }))
     })
 
@@ -48,12 +48,12 @@ describe('Ventolone.resources module', function() {
         Should(statistics).be.a.Function
       })
       it('should always return a promise', function() {
-        assertPromise(statistics(12, {}))
-        assertPromise(statistics(null, {}))
+        utils.assertPromise(statistics(12, {}))
+        utils.assertPromise(statistics(null, {}))
       })
       it('should return a rejected promise if called with null parameter', function() {
         var s = statistics(null, {})
-        s.then(assertFail('Resolved deferred'), angular.noop)
+        s.then(utils.assertFail('Resolved deferred'), angular.noop)
       })
       it('should return a promise of a resource', inject(function(Sample) {
         var s = statistics(12, {})
@@ -61,7 +61,7 @@ describe('Ventolone.resources module', function() {
         s.then(function(val) {
           Should(val).not.be.equal(null)
           Should(val).be.a.Object
-        }, assertFail('Rejected deferred'))
+        }, utils.assertFail('Rejected deferred'))
       }))
     })
 
@@ -76,12 +76,12 @@ describe('Ventolone.resources module', function() {
         Should(samples).be.a.Function
       })
       it('should always return a promise', function() {
-        assertPromise(samples(12, {}))
-        assertPromise(samples(null, {}))
+        utils.assertPromise(samples(12, {}))
+        utils.assertPromise(samples(null, {}))
       })
       it('should return a rejected promise if called with null parameter', function() {
         var s = samples(null, {})
-        s.then(assertFail('Resolved deferred'), angular.noop)
+        s.then(utils.assertFail('Resolved deferred'), angular.noop)
       })
       it('should return a promise of a resource', inject(function(Sample) {
         var s = samples(12, {})
@@ -89,14 +89,14 @@ describe('Ventolone.resources module', function() {
         s.then(function(val) {
           Should(val).not.be.equal(null)
           Should(val).be.a.Object
-        }, assertFail('Rejected deferred'))
+        }, utils.assertFail('Rejected deferred'))
       }))
       it('should return a rejected promise if time span is invalid',inject(function (Sample) {
         var s = samples(12, {
           to: new Date('2012-01-01'),
           from: new Date('2013-01-01')
         })
-        s.then(assertFail('Resolved deferred'), angular.noop)
+        s.then(utils.assertFail('Resolved deferred'), angular.noop)
       }))
     })
   })
@@ -109,7 +109,7 @@ describe('Ventolone.resources module', function() {
     }))
 
     it('should return an array to filter samples', function() {
-      testForFixture([
+      utils.testForFixture([
         [0, null, []], //
         [0, new Date('2014-01-01'), []], //
         [1, new Date('2014-01-01'), []], //
@@ -128,7 +128,7 @@ describe('Ventolone.resources module', function() {
     }))
 
     it('should return an array to filter samples', function() {
-      testForFixture([
+      utils.testForFixture([
         [0, null, []], //
         [0, new Date('2014-01-01'), 10, []], //
         [1, new Date('2014-01-01'), 10, []], //
@@ -138,44 +138,4 @@ describe('Ventolone.resources module', function() {
       ], frequencyTimeFilter)
     })
   })
-
-  function testForFixture(fixtures, fn) {
-    angular.forEach(fixtures, function(fixture) {
-      Should(fn.apply(null, fixture))
-        .be.instanceof(Array)
-        .and.eql(fixture[fixture.length - 1])
-    })
-  }
-
-  function resourceMocks($provide) {
-    $provide.factory('Anemometer', mockMethods(['get']))
-    $provide.factory('Sample', mockMethods(['statistics', 'time']))
-  }
-
-  function mockMethods(methods) {
-    return function($q) {
-      var resourceMock = {}
-      angular.forEach(methods, function(method) {
-        resourceMock[method] = function(obj) {
-          this.$deferred = $q.defer()
-          return {
-            $promise: this.$deferred.promise
-          }
-        }
-      })
-      return resourceMock
-    }
-  }
-
-  function assertPromise(p) {
-    Should(p['then']).be.a.Function
-    Should(p['catch']).be.a.Function
-    Should(p['finally']).be.a.Function
-  }
-
-  function assertFail(msg) {
-    return function() {
-      throw new Error(msg)
-    }
-  }
 })
