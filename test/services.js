@@ -8,11 +8,11 @@ describe('Ventolone.services module', function() {
   })
 
   describe('CsvIterator', function() {
+    var CsvIterator
+    beforeEach(inject(function(_CsvIterator_) {
+      CsvIterator = _CsvIterator_
+    }))
     describe('#next', function() {
-      var CsvIterator
-      beforeEach(inject(function(_CsvIterator_) {
-        CsvIterator = _CsvIterator_
-      }))
 
       it('should get the next row', function() {
         var iter = new CsvIterator('foo\nbar')
@@ -26,15 +26,16 @@ describe('Ventolone.services module', function() {
 
         Should(function() {
           iter.next()
-        }).throw();
+        }).
+        throw ();
       })
 
-      it('should spit rows by comma', function () {
+      it('should spit rows by comma', function() {
         var iter = new CsvIterator('b,a,r\nf,o,o')
-        iter.next().should.be.eql(['b','a','r'])
+        iter.next().should.be.eql(['b', 'a', 'r'])
       })
 
-      it('should parse numeric fields', function () {
+      it('should parse numeric fields', function() {
         var iter = new CsvIterator('3,bar,2.3 ')
         var row = iter.next()
         row[0].should.be.instanceOf(Number)
@@ -43,13 +44,36 @@ describe('Ventolone.services module', function() {
         row[2].should.be.equal(2.3)
       })
 
-      it('should trim withspace', function () {
+      it('should trim withspace', function() {
         var iter = new CsvIterator('foo  ,  bar ')
         var row = iter.next()
         row[0].should.have.lengthOf(3)
         row[0].should.be.equal('foo')
         row[1].should.have.lengthOf(3)
         row[1].should.be.equal('bar')
+      })
+    })
+
+    describe('#size', function() {
+      it('should return the size',function(){
+        var iter = new CsvIterator('foo\nbar')
+        iter.size().should.be.equal(2)
+      })
+      it('should not count empty lines', function () {
+        var iter = new CsvIterator('foo\n\n\nbar')
+        iter.size().should.be.equal(2)
+      })
+      it('should not count an empty line at the end', function () {
+        var iter = new CsvIterator('foo\n')
+        iter.size().should.be.equal(1)
+      })
+      it('should not count an empty line at the start', function () {
+        var iter = new CsvIterator('\nfoo')
+        iter.size().should.be.equal(1)
+      })
+      it('should return 0 for an empty string', function () {
+        var iter = new CsvIterator('')
+        iter.size().should.be.equal(0)
       })
     })
   })
@@ -63,7 +87,7 @@ describe('Ventolone.services module', function() {
       Should(csvReader('foo\nbar')).be.instanceOf(CsvIterator)
     }))
 
-    it('should split string by new lines',inject(function(csvReader){
+    it('should split string by new lines', inject(function(csvReader) {
       csvReader('foo\nbar').size().should.be.equal(2)
     }))
   })
