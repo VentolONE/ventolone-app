@@ -95,7 +95,7 @@ angular.module('Ventolone.controllers', [
 
 
   })
-  .controller('AnemometerUploadCtrl', function($scope, readFile, csvReader, upload, anemometer, Sample, anemometerStats) {
+  .controller('AnemometerUploadCtrl', function($scope, readFile, csvReader, batchUpload, anemometer, anemometerStats) {
     $scope.anemometer = anemometer
     var iterator
     $scope.$watch('importFile', function(file) {
@@ -114,7 +114,7 @@ angular.module('Ventolone.controllers', [
       $scope.uploadsComplete = false
       $scope.uploadErrorsProgress = 0
 
-      var up = upload(anemometer, iterator)
+      var up = batchUpload(anemometer, iterator)
       up.promise.then(
         function() {
           $scope.uploadsActive = false

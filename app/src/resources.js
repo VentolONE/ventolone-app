@@ -2,7 +2,7 @@
   var resourcesConf
 
   resourceModule
-    .config(function(configuration){
+    .config(function(configuration) {
       resourcesConf = configuration.resources
     })
     .factory('Sample', function($resource) {
@@ -36,7 +36,28 @@
         }
       })
     })
-    .factory('upload', function($http, $q) {
+    .factory('uploadSlice', function($http) {
+      return function uploadSlice(anemometer, slice) {
+        return $http.post(resourcesConf.basePath + 'sample/_bulk_docs', {
+          docs: slice.map(function(item) {
+            if (item.length == 4 && item.reduce(function(acc, value) {
+              return acc && value != null && value != "" && angular.isNumber(parseFloat(value))
+            }, true)) {
+              return {
+                _id: anemometer._id + '_' + item[0],
+                a: anemometer._id,
+                t: item[0],
+                d: item[1],
+                p: item[2],
+                b: item[3],
+                s: item[2] / item[1] * 1.1176
+              }
+            }
+          }).filter(angular.identity)
+        })
+      }
+    })
+    .factory('batchUpload', function(uploadSlice, $q) {
       var numberOfDocs = resourcesConf.numberOfDocs
       return function(anemometer, iterator) {
         var numberOfUploads = Math.ceil(iterator.size() / numberOfDocs),
@@ -46,23 +67,7 @@
           for (var i = 0; i < numberOfUploads; i++) {
             (function(batch) {
               var slice = iterator.slice(i * numberOfDocs, (i + 1) * numberOfDocs),
-                promise = $http.post(resourcesConf.basePath + 'sample/_bulk_docs', {
-                  docs: slice.map(function(item) {
-                    if (item.length == 4 && item.reduce(function(acc, value) {
-                      return acc && value != null && value != "" && angular.isNumber(parseFloat(value))
-                    }, true)) {
-                      return {
-                        _id: anemometer._id + '_' + item[0],
-                        a: anemometer._id,
-                        t: item[0],
-                        d: item[1],
-                        p: item[2],
-                        b: item[3],
-                        s: item[2] / item[1] * 1.1176
-                      }
-                    }
-                  }).filter(angular.identity)
-                }).success(function() {
+                promise = uploadSlice(anemometer, slice).success(function() {
                   deferred.notify(batch)
                 })
 
@@ -95,27 +100,27 @@
       })
     })
 
-  function getRows(data) {
-    return JSON.parse(data).rows
-  }
-
-  function makeView(viewName, isArray, transformResponse, params) {
-    return {
-      method: 'GET',
-      transformResponse: transformResponse || getRows,
-      isArray: isArray == null ? true : isArray,
-      params: angular.extend({
-        viewName: viewName,
-        stale: 'update_after'
-      }, params)
+    function getRows(data) {
+      return JSON.parse(data).rows
     }
-  }
 
-  function makeStatsView(viewName, params) {
-    return makeView(viewName, false, function(data) {
-      return (getRows(data)[0] || {}).value
-    }, params || {})
-  }
+    function makeView(viewName, isArray, transformResponse, params) {
+      return {
+        method: 'GET',
+        transformResponse: transformResponse || getRows,
+        isArray: isArray == null ? true : isArray,
+        params: angular.extend({
+          viewName: viewName,
+          stale: 'update_after'
+        }, params)
+      }
+    }
+
+    function makeStatsView(viewName, params) {
+      return makeView(viewName, false, function(data) {
+        return (getRows(data)[0] || {}).value
+      }, params || {})
+    }
 })(angular.module('Ventolone.resources', [
   'ngResource',
   'Ventolone.configuration'
