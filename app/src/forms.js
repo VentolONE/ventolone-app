@@ -3,6 +3,7 @@ angular.module('Ventolone.forms', [])
     var templateTpl = $interpolate("partials/directives/fields/{{templateName}}.html"),
       templates = {
         'text': 'input',
+        'password': 'input',
         'number': 'input',
         'textarea': 'textarea',
         'select': 'select'
@@ -27,7 +28,7 @@ angular.module('Ventolone.forms', [])
 
         $scope.inputType = $attrs.type || 'text'
 
-        var $input = $element.find($attrs.type)
+        var $input = $element.find(templates[$attrs.type || 'text'])
 
         $controller.$render = function() {
           $input.val($controller.$viewValue || '');
