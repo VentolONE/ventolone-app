@@ -1,5 +1,6 @@
 digraph dependencies{
   node[shape="record"]
+  "Ventolone.auth"[label="{Ventolone.auth|LoginController\nsecurity}"] 
   "Ventolone.charts"[label="{Ventolone.charts|TimeChartsData\nFrequencyChartsData\nStatisticsChart\nbyValue}"] 
   "Ventolone.configuration"[label="{Ventolone.configuration|configuration}"] 
   "Ventolone.controllers"[label="{Ventolone.controllers|NewAnemometerCtrl\nEditAnemometerCtrl\nAnemometerListCtrl\nAnemometerCtrl\nAnemometerUploadCtrl}"] 
@@ -9,11 +10,13 @@ digraph dependencies{
   "Ventolone.i18n"[label="{Ventolone.i18n|}"] 
   "Ventolone.app"[label="{Ventolone.app|}"] 
   "Ventolone.resources.services"[label="{Ventolone.resources.services|anemometerService\ntimeFilter\nfrequencyTimeFilter}"] 
-  "Ventolone.resources"[label="{Ventolone.resources|Sample\nAnemometer\nupload\nparams}"] 
+  "Ventolone.resources"[label="{Ventolone.resources|Sample\nAnemometer\nuploadSlice\nbatchUpload\nparams}"] 
   "Ventolone.routing"[label="{Ventolone.routing|}"] 
   "Ventolone.services"[label="{Ventolone.services|readFile\nCsvIterator\ncsvReader\nanemometerStats}"] 
 
 
+  "Ventolone.auth" -> "Ventolone.configuration"  [color="black"]
+  "Ventolone.auth" -> "ngRoute"  [color="red"]
   "Ventolone.charts" -> "ngGoogleCharts"  [color="black"]
   "Ventolone.charts" -> "Ventolone.resources.services"  [color="black"]
   "Ventolone.controllers" -> "Ventolone.resources.services"  [color="black"]
@@ -25,6 +28,7 @@ digraph dependencies{
   "Ventolone.app" -> "Ventolone.routing"  [color="black"]
   "Ventolone.app" -> "Ventolone.i18n"  [color="black"]
   "Ventolone.app" -> "Ventolone.forms"  [color="black"]
+  "Ventolone.app" -> "Ventolone.auth"  [color="black"]
   "Ventolone.resources.services" -> "Ventolone.resources"  [color="black"]
   "Ventolone.resources" -> "ngResource"  [color="red"]
   "Ventolone.resources" -> "Ventolone.configuration"  [color="black"]
