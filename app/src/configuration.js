@@ -1,8 +1,9 @@
 angular.module('Ventolone.configuration', [])
   .constant('configuration', {
+    static_path: '',
     resources: {
-      dbUrl: 'http://dev.ventolone.local:8000',
-      basePath: 'http://dev.ventolone.local:8000/ventolone%2F',
+      dbUrl: '/db',
+      basePath: '/db/ventolone_',
       numberOfDocs: 10000
     }
   })

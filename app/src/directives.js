@@ -1,12 +1,13 @@
 angular.module('Ventolone.directives', [
   'Ventolone.services',
+  'Ventolone.configuration',
   'Ventolone.resources.services'
 ])
-  .directive('file', function($interpolate) {
+  .directive('file', function($interpolate, configuration) {
     var fileName = $interpolate("[{{name}} ({{size/1024|number:'1'}}kb)]")
     return {
       replace: true,
-      templateUrl: 'partials/directives/file.html',
+      templateUrl: configuration.static_path + 'partials/directives/file.html',
       restrict: 'E',
       require: 'ngModel',
       transclude: true,
@@ -72,11 +73,11 @@ angular.module('Ventolone.directives', [
       }
     }
   })
-  .directive('anemometerPanel', function($rootScope, anemometerStats, timeFilter) {
+  .directive('anemometerPanel', function($rootScope, anemometerStats, timeFilter, configuration) {
     return {
       restrict: 'E',
       replace: true,
-      templateUrl: 'partials/anemometer-panel.html',
+      templateUrl: configuration.static_path + 'partials/anemometer-panel.html',
       scope: {
         anemometer: '=',
         from: '=',
@@ -88,11 +89,11 @@ angular.module('Ventolone.directives', [
 
         function update() {
           $scope.loading = true
-          anemometerStats($scope.anemometer, $scope).then(function(){
-              $scope.loading = false
-          }, function(){
-              $scope.noData  = true
-              $scope.loading = false
+          anemometerStats($scope.anemometer, $scope).then(function() {
+            $scope.loading = false
+          }, function() {
+            $scope.noData = true
+            $scope.loading = false
           })
         }
 

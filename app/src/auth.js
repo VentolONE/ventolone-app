@@ -2,9 +2,9 @@ angular.module('Ventolone.auth', [
   'Ventolone.configuration',
   'ngRoute'
 ])
-  .config(function($routeProvider) {
+  .config(function($routeProvider, configuration) {
     $routeProvider.when('/login', {
-      templateUrl: 'views/auth/login.html',
+      templateUrl: configuration.static_path + 'views/auth/login.html',
       controller: 'LoginController'
     })
   })

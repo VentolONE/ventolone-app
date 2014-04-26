@@ -1,6 +1,8 @@
-angular.module('Ventolone.forms', [])
-  .directive('field', function($interpolate) {
-    var templateTpl = $interpolate("partials/directives/fields/{{templateName}}.html"),
+angular.module('Ventolone.forms', [
+  'Ventolone.configuration'
+])
+  .directive('field', function($interpolate, configuration) {
+    var templateTpl = $interpolate(configuration.static_path + "partials/directives/fields/{{templateName}}.html"),
       templates = {
         'text': 'input',
         'password': 'input',

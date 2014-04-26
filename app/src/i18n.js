@@ -1,9 +1,10 @@
 angular.module('Ventolone.i18n', [
-  'pascalprecht.translate'
+  'pascalprecht.translate',
+  'Ventolone.configuration'
 ])
-  .config(function($translateProvider) {
+  .config(function($translateProvider, configuration) {
     $translateProvider.useStaticFilesLoader({
-      prefix: 'i18n/locale-',
+      prefix: configuration.static_path + 'i18n/locale-',
       suffix: '.json'
     });
     $translateProvider.preferredLanguage('it');

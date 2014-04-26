@@ -1,8 +1,9 @@
 angular.module('Ventolone.routing', [
   'ngRouting',
-  'Ventolone.resources.services'
+  'Ventolone.resources.services',
+  'Ventolone.configuration'
 ])
-  .config(function(routingProvider) {
+  .config(function(routingProvider, configuration) {
     var resolve = {
       anemometer: function(anemometerService, $route, $rootScope, $location, $q) {
         var anemometerId = $route.current.pathParams.anemometerId
@@ -14,6 +15,8 @@ angular.module('Ventolone.routing', [
         })
       }
     }
+
+    routingProvider.viewTemplate = configuration.static_path + routingProvider.viewTemplate,
 
     routingProvider
       .withResolve(resolve)
