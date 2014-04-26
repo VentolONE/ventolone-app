@@ -3,5 +3,6 @@ angular.module('Ventolone.app', [
   'Ventolone.directives',
   'Ventolone.routing',
   'Ventolone.i18n',
-  'Ventolone.forms'
+  'Ventolone.forms',
+  'Ventolone.auth'
 ])
