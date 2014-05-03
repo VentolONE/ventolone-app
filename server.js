@@ -1,11 +1,10 @@
 #!/bin/env node
 
-var express = require('express');
-var http = require('http');
-var httpProxy = require('http-proxy');
-var _ = require('lodash');
+var express = require('express'),
+  http = require('http'),
+  httpProxy = require('http-proxy'),
+  _ = require('lodash');
 
-var app = express();
 
 var options = _.assign({
   OPENSHIFT_NODEJS_PORT: 8000,
@@ -14,26 +13,31 @@ var options = _.assign({
   NODE_ENV: 'development'
 }, process.env)
 
-var httpProxy = require('http-proxy');
-var proxy = httpProxy.createProxyServer({
-  target: options.VENTOLONE_DB_URL
-});
+var httpProxy = require('http-proxy'),
+  proxy = httpProxy.createProxyServer({
+    target: options.VENTOLONE_DB_URL
+  });
 
 function apiProxy(req, res, next) {
   req.headers = _.omit(req.headers, ['host'])
   proxy.web(req, res)
 }
 
+function index(req, res) {
+  res.render('index', {
+    env: app.get('env')
+  })
+}
+
+var app = express();
 app.set('views', __dirname + '/app')
 app.set('view engine', 'ejs');
 
-app.get('/', function(req, res) {
-  res.render('index', {env: app.get('env')})
-})
+app.get('/', index)
 app.use('/db', apiProxy)
 app.use(express.static(__dirname + '/app'));
 
-var server = app.listen(
+app.listen(
   options.OPENSHIFT_NODEJS_PORT,
   options.OPENSHIFT_NODEJS_IP,
   function() {
