@@ -69,6 +69,7 @@ module.exports = function(grunt) {
       deploy: {
         dest: 'app/lib',
         options: {
+          ignorePackages: ['should','angular-mocks'],
           packageSpecific: {
             'angular-i18n': {
               files: [
@@ -184,7 +185,8 @@ module.exports = function(grunt) {
     'http:drop-sample-db', 'http:create-sample-db', 'http:drop-anemometer-db', 'http:create-anemometer-db', 'couch'
   ]);
 
-  grunt.registerTask('ship-it', ["bower", "copy:dist", "appcache", "processhtml", "replace:dist", "copy:deploy"])
+  grunt.registerTask('build',["bower", "copy:dist", "appcache", "processhtml", "replace:dist"])
+  grunt.registerTask('ship-it', ["build", "copy:deploy"])
 
   grunt.registerTask('test', ['karma:unit:start','watch:karma'])
 };
