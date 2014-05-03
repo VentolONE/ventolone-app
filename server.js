@@ -1,33 +1,41 @@
 #!/bin/env node
+
 var express = require('express');
 var http = require('http');
 var httpProxy = require('http-proxy');
 var _ = require('lodash');
 
-var app = express(),
-  ipaddress = process.env.OPENSHIFT_NODEJS_IP || '0.0.0.0',
-  port = process.env.OPENSHIFT_NODEJS_PORT || 8000,
-  VENTOLONE_DB_URL = process.env.VENTOLONE_DB_URL || 'http://localhost:5984';
+var app = express();
+
+var options = _.assign({
+  OPENSHIFT_NODEJS_PORT: 8000,
+  OPENSHIFT_NODEJS_IP: '0.0.0.0',
+  VENTOLONE_DB_URL: 'http://localhost:5984',
+  NODE_ENV: 'development'
+}, process.env)
 
 var httpProxy = require('http-proxy');
 var proxy = httpProxy.createProxyServer({
-  target: VENTOLONE_DB_URL
+  target: options.VENTOLONE_DB_URL
 });
 
-
 function apiProxy(req, res, next) {
-  if (req.url.match(new RegExp('^\/db\/'))) {
-    req.url = req.url.replace('/db','')
-    req.headers = _.omit(req.headers, ['host'])
-    proxy.web(req, res)
-  } else {
-    next();
-  }
+  req.headers = _.omit(req.headers, ['host'])
+  proxy.web(req, res)
 }
 
-app.use(apiProxy)
+app.set('views', __dirname + '/app')
+app.set('view engine', 'ejs');
+
+app.get('/', function(req, res) {
+  res.render('index', {env: app.get('env')})
+})
+app.use('/db', apiProxy)
 app.use(express.static(__dirname + '/app'));
 
-var server = app.listen(port, ipaddress, function() {
-  console.log('Proxy /db to %s', VENTOLONE_DB_URL)
-})
+var server = app.listen(
+  options.OPENSHIFT_NODEJS_PORT,
+  options.OPENSHIFT_NODEJS_IP,
+  function() {
+    console.log('Proxy /db to %s', options.VENTOLONE_DB_URL)
+  })

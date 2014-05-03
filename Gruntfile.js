@@ -103,9 +103,6 @@ module.exports = function(grunt) {
         src: ['dist/src/configuration.js', 'dist/index.html'],
         overwrite: true,
         replacements: [{
-          from: 'http://localhost:5984/ventolone%2F',
-          to: '<%= env.couchdb.basePath%>'
-        }, {
           from: '<html lang="en" ng-app="Ventolone.app">',
           to: '<html lang="en" ng-app="Ventolone.app" manifest="manifest.appcache">'
         }]
@@ -113,11 +110,11 @@ module.exports = function(grunt) {
     },
     appcache: {
       options: {
-        basePath: 'dist'
+        basePath: 'app'
       },
       all: {
-        dest: 'dist/manifest.appcache',
-        cache: 'dist/**/*.{js,css,html}',
+        dest: 'app/manifest.appcache',
+        cache: 'app/**/*.{js,css,html}',
         network: '*'
       }
     }

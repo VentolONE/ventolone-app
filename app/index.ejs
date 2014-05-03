@@ -1,5 +1,7 @@
 <!DOCTYPE html>
-<html lang="en" ng-app="Ventolone.app">
+<html lang="en" ng-app="Ventolone.app"
+<%= env=='production' ? 'manifest=manifest.appcache' : '' %>
+>
 
 <head>
   <meta charset="utf-8">
@@ -13,8 +15,13 @@
   <link href="css/main.css" rel="stylesheet">
   <link rel="stylesheet" href="font-awesome/css/font-awesome.min.css">
 
-  <!-- build:include ../include/applicationCache-reset.html -->
-  <!-- /build -->
+  <% if (env == 'production'){%>
+    <script>
+      window.applicationCache && applicationCache.addEventListener('updateready', function() {
+        window.location.reload();
+      });
+    </script>
+  <% } %>
   <script src="https://www.google.com/jsapi"></script>
 
   <script src="lib/angular.js"></script>
