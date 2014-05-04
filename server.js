@@ -33,8 +33,10 @@ var app = express();
 app.set('views', __dirname + '/app')
 app.set('view engine', 'ejs');
 
-app.get('/', index)
-app.get('/anemometers/:id?/:action?', index)
+app
+  .get('/', index)
+  .get('/login', index)
+  .get('/anemometers/:id?/:action?', index)
   .use('/db', apiProxy)
   .use(express.static(__dirname + '/app'));
 
