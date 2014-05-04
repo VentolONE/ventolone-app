@@ -3,6 +3,9 @@ angular.module('Ventolone.routing', [
   'Ventolone.resources.services',
   'Ventolone.configuration'
 ])
+  .config(function($locationProvider) {
+    $locationProvider.html5Mode(true);
+  })
   .config(function(routingProvider, configuration) {
     var resolve = {
       anemometer: function(anemometerService, $route, $rootScope, $location, $q) {

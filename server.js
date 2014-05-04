@@ -34,8 +34,9 @@ app.set('views', __dirname + '/app')
 app.set('view engine', 'ejs');
 
 app.get('/', index)
-app.use('/db', apiProxy)
-app.use(express.static(__dirname + '/app'));
+app.get('/anemometers/:id?/:action?', index)
+  .use('/db', apiProxy)
+  .use(express.static(__dirname + '/app'));
 
 app.listen(
   options.OPENSHIFT_NODEJS_PORT,
