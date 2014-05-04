@@ -2,7 +2,7 @@
   <div class="panel-heading">
     <div class="panel-title">
       <a href="{{h.anemometerPath(anemometer._id)}}">
-        <strong>{{anemometer.locale}}</strong>
+        <strong>{{anemometer.site}}</strong>
       </a>
       <span ng-show="anemometer.statistics">
         #{{anemometer.statistics.data.count | number}} ({{anemometer.statistics.data.time.min | date}} - {{anemometer.statistics.data.time.max | date}})
