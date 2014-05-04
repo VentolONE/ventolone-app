@@ -44,5 +44,6 @@ app.listen(
   options.OPENSHIFT_NODEJS_PORT,
   options.OPENSHIFT_NODEJS_IP,
   function() {
+    console.log('Environment:', app.get('env'))
     console.log('Proxy /db to %s', options.VENTOLONE_DB_URL)
   })
